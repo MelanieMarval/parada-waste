@@ -1,0 +1,23 @@
+{
+    "login": {
+        "input": {
+            "user": "User",
+            "pass": "Password"
+        },
+        "button": "Log in"
+    },
+    "myRoute": {
+        "title": "My Route"
+    },
+    "historic": {
+        "title": "Historic",
+        "card": {
+            "order": "Order",
+          "beginAt": "Begin in",
+          "endAt": "Ends in"
+        }
+    },
+    "profile": {
+        "title": "Profile"
+    }
+}

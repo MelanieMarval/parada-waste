@@ -1,0 +1,32 @@
+<ion-content>
+
+    <ion-list class="login">
+        <ion-list-header class="login-logo">
+          <ion-img src="assets/icon/PARADA-Waste-LOGO2-500PX.png"></ion-img>
+        </ion-list-header>
+        <div class="login-input-container">
+            <!--        <ion-label class="login-input-label">Nombre de Usuario</ion-label>-->
+            <ion-item class="login-input">
+                <ion-icon name="person" slot="start"></ion-icon>
+                <ion-input type="email" [placeholder]="'login.input.user' | translate"></ion-input>
+            </ion-item>
+        </div>
+        <div class="login-input-container">
+            <!--        <ion-label class="login-input-label">Contraseña</ion-label>-->
+            <ion-item class="login-input">
+                <ion-icon name="lock-closed" slot="start"></ion-icon>
+                <ion-input type="password" [placeholder]="'login.input.pass' | translate"></ion-input>
+            </ion-item>
+        </div>
+
+        <ion-button class="login-button"
+                    routerLink="/tabs"
+                    color="primary"
+                    expand="block">{{'login.button' | translate}}
+        </ion-button>
+
+<!--        <a href="" class="login-forgotPass">¿Has Olvidado tu Contraseña?</a>-->
+    </ion-list>
+
+
+</ion-content>

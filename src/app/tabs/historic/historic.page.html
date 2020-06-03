@@ -1,0 +1,25 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-title>
+            Historico
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+    <ion-card class="d-flex">
+        <ion-card-header class="card-header">
+            <ion-icon name="file-tray-outline" color="secondary" class="card-icon-left"></ion-icon>
+            <ion-text color="secondary">1032</ion-text>
+        </ion-card-header>
+        <ion-card-content class="ion-no-padding ion-margin">
+            <ion-card-subtitle class="ion-text-right">
+              {{'historic.card.order' | translate}} 1024
+            </ion-card-subtitle>
+            This is content, without any paragraph or header tags,
+            within an ion-card-content element.
+        </ion-card-content>
+    </ion-card>
+
+</ion-content>

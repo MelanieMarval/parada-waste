@@ -1,0 +1,12 @@
+.card {
+    &-header {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+    &-icon-left {
+        font-size: 42px;
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "login": {
+        "input": {
+            "user": "Usuario",
+            "pass": "Contraseña"
+        },
+        "button": "Iniciar Sesión"
+    },
+    "myRoute": {
+        "title": "Mi Ruta"
+    },
+    "historic": {
+        "title": "Histórico",
+        "card": {
+            "order": "Orden",
+            "beginAt": "Inicia en",
+            "endAt": "Termina en"
+        }
+    },
+    "profile": {
+        "title": "Perfíl"
+    }
+}

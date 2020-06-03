@@ -1,0 +1,51 @@
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 90%;
+
+    &-logo {
+        width: 250px;
+        margin: 0 0 4em;
+    }
+
+    &-input-container {
+        width: 330px;
+        margin-bottom: 16px;
+
+        .login-input-label {
+            font-size: 14px;
+        }
+
+        .login-input {
+            //--background: #FFFFFF;
+            //height: 56px;
+            //border-radius: var(--border-radius);
+            //box-shadow: var(--elevation);
+            //margin: 2px 0 6px;
+            //
+            //ion-input {
+            //    height: 54px;
+            //}
+        }
+
+    }
+
+    &-button {
+        margin-top: 24px;
+        width: 330px;
+        text-transform: capitalize;
+        height: 48px;
+        font-size: 18px;
+        letter-spacing: 1px;
+        font-weight: 400;
+    }
+
+    &-forgotPass {
+        margin-top: 16px;
+        font-size: 14px;
+        font-weight: 200;
+        text-decoration: none;
+    }
+}
