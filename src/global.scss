@@ -28,3 +28,18 @@
 .d-flex {
     display: flex;
 }
+.w-100 {
+    width: 100%;
+}
+.travel-prompt {
+    .alert-wrapper {
+        background: var(--ion-color-primary);
+        .alert-title, .alert-input, .alert-button {
+            color: #FFF;
+        }
+        .alert-input-group {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+    }
+}

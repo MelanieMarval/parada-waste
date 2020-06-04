@@ -11,13 +11,26 @@
     },
     "historic": {
         "title": "Historic",
+        "tabs": {
+            "all": "All",
+            "assigned": "Assigned",
+            "finished": "Finished"
+        },
         "card": {
             "order": "Order",
-          "beginAt": "Begin in",
-          "endAt": "Ends in"
+            "beginIn": "Begin in",
+            "endIn": "Ends in"
         }
     },
     "profile": {
         "title": "Profile"
+    },
+    "travel": {
+        "title": "Travel",
+        "prompt": {
+            "title": "Enter mileage",
+            "buttonCancel": "Cancel",
+            "buttonAccept": "Init"
+        }
     }
 }

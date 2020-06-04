@@ -1,10 +1,10 @@
 import { IonicModule } from '@ionic/angular';
+import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-import { HistoricPage } from './historic.page';
-import { TranslateModule } from '@ngx-translate/core';
+
+import { MyRoutePage } from './my-route.page';
 import { ToolbarModule } from '../../shared/toolbar/toolbar.module';
 
 @NgModule({
@@ -12,11 +12,9 @@ import { ToolbarModule } from '../../shared/toolbar/toolbar.module';
         IonicModule,
         CommonModule,
         FormsModule,
-        RouterModule.forChild([{path: '', component: HistoricPage}]),
-        TranslateModule,
-        ToolbarModule
+        ToolbarModule,
+        RouterModule.forChild([{path: '', component: MyRoutePage}])
     ],
-    declarations: [HistoricPage]
+  declarations: [MyRoutePage]
 })
-export class HistoricModule {
-}
+export class MyRouteModule {}

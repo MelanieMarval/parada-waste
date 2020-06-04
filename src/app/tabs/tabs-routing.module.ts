@@ -12,12 +12,12 @@ const routes: Routes = [
                 loadChildren: () => import('./historic/historic.module').then(m => m.HistoricModule)
             },
             {
-                path: 'tab2',
-                loadChildren: () => import('./tab2/tab2.module').then(m => m.Tab2PageModule)
+                path: 'my-route',
+                loadChildren: () => import('./my-route/my-route.module').then(m => m.MyRouteModule)
             },
             {
-                path: 'tab3',
-                loadChildren: () => import('./tab3/tab3.module').then(m => m.Tab3PageModule)
+                path: 'profile',
+                loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule)
             },
             {
                 path: '',
@@ -30,6 +30,10 @@ const routes: Routes = [
         path: '',
         redirectTo: '/tabs/historic',
         pathMatch: 'full'
+    },
+    {
+        path: 'historic/travel/:code',
+        loadChildren: () => import('./travel/travel.module').then(m => m.TravelModule)
     }
 ];
 

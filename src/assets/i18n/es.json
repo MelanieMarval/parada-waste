@@ -11,13 +11,28 @@
     },
     "historic": {
         "title": "Histórico",
+        "tabs": {
+            "all": "Todos",
+            "assigned": "Asignados",
+            "finished": "Terminados"
+        },
         "card": {
             "order": "Orden",
-            "beginAt": "Inicia en",
-            "endAt": "Termina en"
+            "beginIn": "Inicia en",
+            "endIn": "Termina en"
         }
     },
     "profile": {
         "title": "Perfíl"
+    },
+
+
+    "travel": {
+        "title": "Viaje",
+        "prompt": {
+            "title": "Introduzca kilometraje",
+            "buttonCancel": "Cancelar",
+            "buttonAccept": "Iniciar"
+        }
     }
 }
