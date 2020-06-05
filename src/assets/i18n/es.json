@@ -7,7 +7,11 @@
         "button": "Iniciar Sesión"
     },
     "myRoute": {
-        "title": "Mi Ruta"
+        "title": "Mi Ruta",
+        "ifEmpty": {
+            "title": "No hay viajes activos",
+            "text": "Cuando tengas uno podras ver los detalles aqui"
+        }
     },
     "historic": {
         "title": "Histórico",
@@ -27,7 +31,7 @@
     },
 
 
-    "travel": {
+    "journey": {
         "title": "Viaje",
         "prompt": {
             "title": "Introduzca kilometraje",

@@ -32,8 +32,8 @@ const routes: Routes = [
         pathMatch: 'full'
     },
     {
-        path: 'historic/travel/:code',
-        loadChildren: () => import('./travel/travel.module').then(m => m.TravelModule)
+        path: 'historic/journey/:code',
+        loadChildren: () => import('./journey/journey.module').then(m => m.JourneyModule)
     }
 ];
 

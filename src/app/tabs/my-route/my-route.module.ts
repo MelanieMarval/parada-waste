@@ -6,6 +6,9 @@ import { FormsModule } from '@angular/forms';
 
 import { MyRoutePage } from './my-route.page';
 import { ToolbarModule } from '../../shared/toolbar/toolbar.module';
+import { BackgroundEmptyModule } from '../../shared/background-empty/background-empty.module';
+import { TranslateModule } from '@ngx-translate/core';
+import { FinishRoutePage } from './finish-route/finish-route.page';
 
 @NgModule({
     imports: [
@@ -13,8 +16,10 @@ import { ToolbarModule } from '../../shared/toolbar/toolbar.module';
         CommonModule,
         FormsModule,
         ToolbarModule,
-        RouterModule.forChild([{path: '', component: MyRoutePage}])
+        RouterModule.forChild([{path: '', component: MyRoutePage}]),
+        BackgroundEmptyModule,
+        TranslateModule
     ],
-  declarations: [MyRoutePage]
+  declarations: [MyRoutePage, FinishRoutePage]
 })
 export class MyRouteModule {}

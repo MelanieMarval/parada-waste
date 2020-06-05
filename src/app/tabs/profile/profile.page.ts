@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-tab3',
+  selector: 'app-profile',
   templateUrl: 'profile.page.html',
   styleUrls: ['profile.page.scss']
 })

@@ -1,1 +1,26 @@
+ion-tab-bar {
+    --border: 0.55px solid var(--ion-tab-bar-border-color, var(--ion-border-color, var(--ion-color-step-150, rgba(0, 0, 0, 0.2))));
+}
 
+ion-tab-button {
+    .icon-active {
+        display: none;
+        transition: opacity 2s ease-out;
+        opacity: 0;
+    }
+    .icon-inactive {
+        display: block;
+        opacity: 1;
+    }
+}
+ion-tab-button.tab-selected {
+    .icon-active {
+        display: block;
+        opacity: 1;
+    }
+    .icon-inactive {
+        display: none;
+        transition: opacity 2s ease-out;
+        opacity: 0;
+    }
+}

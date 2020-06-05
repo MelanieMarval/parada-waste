@@ -7,7 +7,11 @@
         "button": "Log in"
     },
     "myRoute": {
-        "title": "My Route"
+        "title": "My Route",
+        "ifEmpty": {
+            "title": "There are no active trips",
+            "text": "When you have one you can see the details here"
+        }
     },
     "historic": {
         "title": "Historic",
@@ -25,8 +29,8 @@
     "profile": {
         "title": "Profile"
     },
-    "travel": {
-        "title": "Travel",
+    "journey": {
+        "title": "Journey",
         "prompt": {
             "title": "Enter mileage",
             "buttonCancel": "Cancel",

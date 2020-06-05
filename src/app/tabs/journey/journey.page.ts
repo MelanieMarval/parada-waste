@@ -1,19 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-travel',
-    templateUrl: 'travel.page.html',
-    styleUrls: ['travel.page.scss']
+    selector: 'app-journey',
+    templateUrl: 'journey.page.html',
+    styleUrls: ['journey.page.scss']
 })
-export class TravelPage implements OnInit {
+export class JourneyPage implements OnInit {
 
     travelCode: string;
     travel: any = {};
 
     constructor(private route: ActivatedRoute,
+                private router: Router,
                 private alertController: AlertController,
                 private translate: TranslateService) {
         this.travelCode = route.snapshot.params.code;
@@ -36,9 +37,9 @@ export class TravelPage implements OnInit {
 
 
     enterMileage() {
-        this.translate.get('travel.prompt').subscribe(async text => {
+        this.translate.get('journey.prompt').subscribe(async text => {
             const alert = await this.alertController.create({
-                cssClass: 'travel-prompt',
+                cssClass: 'journey-prompt',
                 header: text.title,
                 inputs: [{
                     name: 'mileage',
@@ -58,6 +59,9 @@ export class TravelPage implements OnInit {
                         cssClass: 'light',
                         handler: (alertData ) => {
                             console.log(alertData);
+                            if (alertData.mileage > 0) {
+                                this.router.navigateByUrl('/tabs/my-route');
+                            }
                         }
                     }
                 ]
