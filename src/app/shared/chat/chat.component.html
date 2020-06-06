@@ -1,0 +1,41 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-title>
+            Juan Perez
+        </ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="closeChat()">
+                <ion-icon name="close" slot="icon-only"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div class="ion-margin">
+        <ion-list>
+            <li class="message message-left">
+                <div class="message-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
+                <span class="message-time">6:00pm</span>
+            </li>
+            <li class="message message-right">
+                <div class="message-text">Doloribus eveniet maiores maxime odio.</div>
+                <span class="message-time">6:12pm</span>
+            </li>
+            <li class="message message-left">
+                <div class="message-text">Accusamus corporis dicta dignissimos dolore, error esse ipsum laboriosam minima necessitatibus nesciunt non quaerat quasi, tempore.</div>
+                <span class="message-time">6:14pm</span>
+            </li>
+        </ion-list>
+    </div>
+
+    <ion-footer class="footer-input-message">
+        <p>{{message}}</p>
+        <ion-item>
+            <ion-textarea placeholder="Enter your message" name="message" [(ngModel)]="message" type="text" maxlength="240"></ion-textarea>
+            <ion-button slot="end" class="btn-no-style" (click)="sendMessage()">
+                <ion-icon slot="icon-only" name="send" color="primary"></ion-icon>
+            </ion-button>
+        </ion-item>
+    </ion-footer>
+</ion-content>
