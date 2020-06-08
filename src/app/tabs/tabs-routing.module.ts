@@ -34,6 +34,10 @@ const routes: Routes = [
     {
         path: 'historic/journey/:code',
         loadChildren: () => import('./journey/journey.module').then(m => m.JourneyModule)
+    },
+    {
+        path: 'chats',
+        loadChildren: () => import('./chats/chats.module').then(m => m.ChatsModule)
     }
 ];
 

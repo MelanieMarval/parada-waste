@@ -1,13 +1,11 @@
 <ion-header>
     <ion-toolbar color="primary">
-        <ion-title>
-            Juan Perez
-        </ion-title>
-        <ion-buttons slot="end">
-            <ion-button (click)="closeChat()">
-                <ion-icon name="close" slot="icon-only"></ion-icon>
-            </ion-button>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
         </ion-buttons>
+        <ion-title>
+            Sonia Duarte
+        </ion-title>
     </ion-toolbar>
 </ion-header>
 
@@ -30,10 +28,9 @@
     </div>
 
     <ion-footer class="footer-input-message">
-        <p>{{message}}</p>
         <ion-item>
             <ion-textarea placeholder="Enter your message" name="message" [(ngModel)]="message" type="text" maxlength="240"></ion-textarea>
-            <ion-button slot="end" class="btn-no-style" (click)="sendMessage()">
+            <ion-button slot="end" class="btn-no-style" (click)="sendMessage()" [disabled]="sending">
                 <ion-icon slot="icon-only" name="send" color="primary"></ion-icon>
             </ion-button>
         </ion-item>

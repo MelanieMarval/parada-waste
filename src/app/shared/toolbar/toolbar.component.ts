@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { ChatComponent } from '../chat/chat.component';
+import { ChatComponent } from '../../tabs/chats/chat/chat.component';
+import { ChatsComponent } from '../../tabs/chats/chats.component';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-toolbar',
@@ -9,7 +11,8 @@ import { ChatComponent } from '../chat/chat.component';
 })
 export class ToolbarComponent implements OnInit {
 
-    constructor(private modalController: ModalController) {
+    constructor(private modalController: ModalController,
+                private router: Router) {
     }
 
     ngOnInit() {
@@ -17,10 +20,14 @@ export class ToolbarComponent implements OnInit {
 
     async openChat() {
         const modal = await this.modalController.create({
-            component: ChatComponent,
+            component: ChatsComponent,
             animated: false,
             cssClass: 'modal-fade'
         });
         await modal.present();
+    }
+
+    openChats() {
+        this.router.navigateByUrl('tabs/chats');
     }
 }

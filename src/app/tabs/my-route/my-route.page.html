@@ -14,6 +14,7 @@
                     <ion-button size="small" color="danger" (click)="confirmCancel()">Cancelar</ion-button>
                 </div>
                 <ion-card-title>Viaje #8840</ion-card-title>
+                <ion-card-subtitle><b>Receptor:</b> Julia Herrera</ion-card-subtitle>
             </ion-card-header>
             <ion-card-content>
                 <p class="detail-p">
@@ -28,20 +29,22 @@
         </ion-card>
 
         <ion-img src="assets/img/map-test.png" class="map"></ion-img>
-
-        <ion-fab vertical="bottom" horizontal="start" class="button-bottom-left">
-            <ion-fab-button *ngIf="isNear" (click)="pushNotification()">
-                <span>Estoy cerca</span>
-            </ion-fab-button>
-            <ion-fab-button *ngIf="!isNear" (click)="doneJourney()">
-                <span>He llegado</span>
-            </ion-fab-button>
-        </ion-fab>
-        <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-            <ion-fab-button>
-                <ion-icon name="chatbubble"></ion-icon>
-            </ion-fab-button>
-        </ion-fab>
     </div>
 
 </ion-content>
+
+<ion-footer *ngIf="hasTravel">
+    <ion-fab vertical="bottom" horizontal="start" class="button-bottom-left">
+        <ion-fab-button *ngIf="isNear" (click)="pushNotification()">
+            <span>Estoy cerca</span>
+        </ion-fab-button>
+        <ion-fab-button *ngIf="!isNear" (click)="doneJourney()">
+            <span>He llegado</span>
+        </ion-fab-button>
+    </ion-fab>
+    <ion-fab vertical="bottom" horizontal="end">
+        <ion-fab-button>
+            <ion-icon name="chatbubble"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+</ion-footer>

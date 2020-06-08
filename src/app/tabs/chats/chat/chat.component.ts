@@ -9,6 +9,7 @@ import { ModalController } from '@ionic/angular';
 export class ChatComponent implements OnInit {
 
     message = '';
+    sending = false;
 
     constructor(private modalController: ModalController) {
     }
@@ -22,5 +23,10 @@ export class ChatComponent implements OnInit {
 
     sendMessage() {
         console.log(this.message);
+        this.sending = true;
+        setTimeout(() => {
+            this.message = '';
+            this.sending = false;
+        }, 3000);
     }
 }
