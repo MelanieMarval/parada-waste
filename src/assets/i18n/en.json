@@ -27,7 +27,25 @@
         }
     },
     "profile": {
-        "title": "Profile"
+        "title": "Profile",
+        "details": {
+            "title": "Details",
+            "email": "Email",
+            "phone": "Phone number"
+        },
+        "options": {
+            "title": "Options",
+            "lang": {
+                "change": "Change Language",
+                "en": "English",
+                "es": "Spanish"
+            },
+            "logout": "Sign Off",
+            "logoutMsg": {
+                "header": "Are you sure you want to sign off?",
+                "btnYes": "Yes, get out"
+            }
+        }
     },
     "journey": {
         "title": "Journey",
@@ -36,5 +54,14 @@
             "buttonCancel": "Cancel",
             "buttonAccept": "Init"
         }
+    },
+    "chats": {
+        "title": "Chats",
+        "placeholder": "Enter your message"
+    },
+
+
+    "button": {
+        "cancel": "Cancel"
     }
 }

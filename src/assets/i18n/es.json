@@ -27,10 +27,26 @@
         }
     },
     "profile": {
-        "title": "Perfíl"
+        "title": "Perfíl",
+        "details": {
+            "title": "Detalles",
+            "email": "Correo Electrónico",
+            "phone": "Número Telefónico"
+        },
+        "options": {
+            "title": "Opciones",
+            "lang": {
+                "change": "Cambiar Idioma",
+                "en": "Inglés",
+                "es": "Español"
+            },
+            "logout": "Cerrar Sesión",
+            "logoutMsg": {
+                "header": "Esta seguro de que desea cerrar su sesión?",
+                "btnYes": "Sí, salir"
+            }
+        }
     },
-
-
     "journey": {
         "title": "Viaje",
         "prompt": {
@@ -38,5 +54,15 @@
             "buttonCancel": "Cancelar",
             "buttonAccept": "Iniciar"
         }
+    },
+    "chats": {
+        "title": "Mensajes",
+        "placeholder": "Ingrese su mensaje"
+    },
+
+
+
+    "button": {
+        "cancel": "Cancelar"
     }
 }

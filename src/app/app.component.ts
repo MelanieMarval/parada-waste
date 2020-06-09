@@ -19,7 +19,7 @@ export class AppComponent {
         private statusBar: StatusBar,
         private translate: TranslateService
     ) {
-        const current = this.translate.currentLang;
+        const current = this.translate.getBrowserLang();
         console.log('-> current', current);
         this.translate.setDefaultLang(this.activeLang);
         this.initializeApp();

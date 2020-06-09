@@ -1,6 +1,6 @@
-<ion-toolbar color="primary">
-    <ion-title>
-        Juan Perez
+<ion-toolbar color="primary" [ngClass]="{'toolbar-transparent': transparent}">
+    <ion-title *ngIf="showName">
+        {{username}}
     </ion-title>
     <ion-buttons slot="end">
         <ion-button color="" (click)="openChats()">

@@ -1,8 +1,55 @@
-<ion-header [translucent]="true">
-    <app-toolbar></app-toolbar>
+<ion-header class="header">
+    <app-toolbar [showName]="false" [transparent]="true"></app-toolbar>
+    <ion-avatar class="header-avatar">
+        <ion-img src="assets/img/avatar/hombre.jpg"></ion-img>
+    </ion-avatar>
+    <ion-toolbar color="primary" class="header-detail toolbar-transparent">
+        <ion-title class="ion-text-center">
+            <span>Juan Perez</span>
+            <p>Conductor (Madrid)</p>
+        </ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
+    <ion-list>
+        <ion-item-divider><ion-label color="tertiary">{{'profile.details.title' | translate}}</ion-label></ion-item-divider>
+        <ion-item-group class="ion-padding-horizontal">
+            <ion-item lines="full">
+                <ion-icon slot="start" name="mail" color="medium"></ion-icon>
+                <ion-label>
+                    <h3>{{'profile.details.email' | translate}}</h3>
+                    <p>juanperez35@gmail.com</p>
+                </ion-label>
+            </ion-item>
+            <ion-item lines="none">
+                <ion-icon slot="start" name="call" color="medium"></ion-icon>
+                <ion-label>
+                    <h3>{{'profile.details.phone' | translate}}</h3>
+                    <p>+57 541225505</p>
+                </ion-label>
+            </ion-item>
+        </ion-item-group>
+
+        <ion-item-divider class="with-line">
+            <ion-label color="tertiary">{{'profile.options.title' | translate}}</ion-label>
+        </ion-item-divider>
+        <ion-item-group class="ion-padding-horizontal">
+            <ion-item lines="full">
+                <ion-label>{{'profile.options.lang.change' | translate}}</ion-label>
+                <ion-select [value]="lang" interface="action-sheet" (ionChange)="changeLanguage($event)" [cancelText]="'button.cancel' | translate">
+                    <ion-select-option value="en">{{'profile.options.lang.en' | translate}}</ion-select-option>
+                    <ion-select-option value="es">{{'profile.options.lang.es' | translate}}</ion-select-option>
+                </ion-select>
+            </ion-item>
+            <ion-item lines="full" button (click)="confirmLogout()" detail="false">
+                <ion-label>
+                    {{'profile.options.logout' | translate}}
+                </ion-label>
+                <ion-icon slot="end" name="power" color="medium"></ion-icon>
+            </ion-item>
+        </ion-item-group>
+    </ion-list>
 
 </ion-content>

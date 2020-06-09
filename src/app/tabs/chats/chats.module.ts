@@ -6,6 +6,7 @@ import { ChatComponent } from './chat/chat.component';
 import { ChatsComponent } from './chats.component';
 import { RouterModule } from '@angular/router';
 import { HistoricPage } from '../historic/historic.page';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
     imports: [
@@ -13,7 +14,8 @@ import { HistoricPage } from '../historic/historic.page';
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        RouterModule.forChild([{ path: '', component: ChatsComponent }, { path: ':id', component: ChatComponent}])
+        RouterModule.forChild([{path: '', component: ChatsComponent}, {path: ':id', component: ChatComponent}]),
+        TranslateModule
     ],
     declarations: [ChatComponent, ChatsComponent],
     exports: [ChatComponent, ChatsComponent]

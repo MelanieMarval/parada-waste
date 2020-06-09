@@ -1,0 +1,29 @@
+.header {
+    background: linear-gradient(180deg, var(--ion-color-primary-shade), var(--ion-color-primary), #007ec0);
+    &-avatar {
+        width: 112px;
+        height: 112px;
+        margin: 0 auto;
+        border: 2px solid;
+    }
+    &-detail {
+        margin: 16px 0;
+        p {
+            margin: 4px 0 0;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: small;
+        }
+    }
+}
+ion-item-divider {
+    border-bottom-width: 0;
+    &.with-line {
+        border-top: 8px solid #EEE;
+        ion-label {
+            margin-top: 21px;
+        }
+    }
+}
+
+

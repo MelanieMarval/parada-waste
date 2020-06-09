@@ -36,38 +36,39 @@ export class JourneyPage implements OnInit {
     }
 
 
-    enterMileage() {
-        this.translate.get('journey.prompt').subscribe(async text => {
-            const alert = await this.alertController.create({
-                cssClass: 'journey-prompt',
-                header: text.title,
-                inputs: [{
-                    name: 'mileage',
-                    type: 'number',
-                    value: 0
-                }],
-                buttons: [
-                    {
-                        text: text.buttonCancel,
-                        role: 'cancel',
-                        cssClass: 'light',
-                        handler: () => {
-                            console.log('Confirm Cancel');
-                        }
-                    }, {
-                        text: text.buttonAccept,
-                        cssClass: 'light',
-                        handler: (alertData ) => {
-                            console.log(alertData);
-                            if (alertData.mileage > 0) {
-                                this.router.navigateByUrl('/tabs/my-route');
-                            }
+    async enterMileage() {
+        const text = await this.translate.get('journey.prompt').toPromise();
+        const alert = await this.alertController.create({
+            cssClass: 'prompt-primary',
+            header: text.title,
+            inputs: [{
+                name: 'mileage',
+                type: 'number',
+                value: 0
+            }],
+            buttons: [
+                {
+                    text: text.buttonCancel,
+                    role: 'cancel',
+                    cssClass: 'light',
+                    handler: () => {
+                        console.log('Confirm Cancel');
+                    }
+                }, {
+                    text: text.buttonAccept,
+                    cssClass: 'light',
+                    handler: (alertData) => {
+                        console.log(alertData);
+                        if (alertData.mileage > 0) {
+                            this.router.navigateByUrl('/tabs/my-route');
                         }
                     }
-                ]
-            });
-
-            await alert.present();
+                }
+            ]
         });
+        await alert.present();
+
     }
+
+
 }
