@@ -1,0 +1,7 @@
+{
+  "name": "parada-waste",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
