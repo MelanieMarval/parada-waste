@@ -11,6 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { OneSignal } from '@ionic-native/onesignal/ngx';
 
 @NgModule({
     declarations: [AppComponent],
@@ -33,6 +34,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
     providers: [
         StatusBar,
         SplashScreen,
+        OneSignal,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
     ],
     bootstrap: [AppComponent]
