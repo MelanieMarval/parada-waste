@@ -1,0 +1,75 @@
+<ion-header [translucent]="true">
+    <app-toolbar></app-toolbar>
+    <ion-toolbar class="toolbar-segments" color="primary">
+        <ion-segment mode="ios" (ionChange)="changeSegment($event)" [value]="segmentSelected">
+            <ion-segment-button value="all">
+                {{'historic.tabs.all' | translate}}
+            </ion-segment-button>
+            <ion-segment-button value="assigned">
+                {{'historic.tabs.assigned' |translate}}
+            </ion-segment-button>
+            <ion-segment-button value="finished">
+                {{'historic.tabs.finished' |translate}}
+            </ion-segment-button>
+        </ion-segment>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+    <ion-card button>
+        <div class="d-flex">
+            <ion-card-header class="card-header">
+                <ion-icon name="file-tray" color="tertiary" class="card-icon-left"></ion-icon>
+                <ion-text color="tertiary">1052</ion-text>
+            </ion-card-header>
+            <ion-card-content class="ion-no-padding ion-margin w-100">
+                <ion-card-subtitle class="ion-text-right" color="tertiary">
+                    En proceso
+                </ion-card-subtitle>
+                <ion-text class="card-route-title" color="tertiary"><ion-icon name="location"></ion-icon> {{'historic.card.beginIn' | translate}}</ion-text>
+                <p class="card-route">Nucleo Trujillo</p>
+                <ion-text class="card-route-title" color="tertiary"><ion-icon name="navigate"></ion-icon> {{'historic.card.endIn' | translate}}</ion-text>
+                <p class="card-route">456 Valle Momboy, Candelaria, Trujillo</p>
+            </ion-card-content>
+        </div>
+    </ion-card>
+
+    <ion-card button (click)="viewDetails()" routerLink="journey/1050">
+        <div class="d-flex">
+            <ion-card-header class="card-header">
+                <ion-icon name="file-tray" color="tertiary" class="card-icon-left"></ion-icon>
+                <ion-text color="tertiary">1050</ion-text>
+            </ion-card-header>
+            <ion-card-content class="ion-no-padding ion-margin w-100">
+                <ion-card-subtitle class="ion-text-right">
+                    Asignado
+                </ion-card-subtitle>
+                <ion-text class="card-route-title" color="tertiary"><ion-icon name="location"></ion-icon> {{'historic.card.beginIn' | translate}}</ion-text>
+                <p class="card-route">SEDE Venezuela</p>
+                <ion-text class="card-route-title" color="tertiary"><ion-icon name="navigate"></ion-icon> {{'historic.card.endIn' | translate}}</ion-text>
+                <p class="card-route">calle 156 c/c 189 Urb. Alianza, El Mirador, Bolivar</p>
+            </ion-card-content>
+        </div>
+    </ion-card>
+
+    <ion-card button>
+        <div class="d-flex">
+            <ion-card-header class="card-header">
+                <ion-icon name="file-tray" color="tertiary" class="card-icon-left"></ion-icon>
+                <ion-text color="tertiary">1032</ion-text>
+            </ion-card-header>
+            <ion-card-content class="ion-no-padding ion-margin w-100">
+                <ion-card-subtitle class="card-status" color="danger">
+                    Finalizado
+                </ion-card-subtitle>
+                <ion-text class="card-route-title" color="tertiary"><ion-icon name="location"></ion-icon> {{'historic.card.beginIn' | translate}}</ion-text>
+                <p class="card-route">SEDE Venezuela</p>
+                <ion-text class="card-route-title" color="tertiary"><ion-icon name="navigate"></ion-icon> {{'historic.card.endIn' | translate}}</ion-text>
+                <p class="card-route">Av. 104 Marino, 2001 Naguanagua, Carabobo</p>
+            </ion-card-content>
+        </div>
+    </ion-card>
+
+
+</ion-content>

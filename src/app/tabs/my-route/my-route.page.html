@@ -1,0 +1,50 @@
+<ion-header [translucent]="true">
+    <app-toolbar></app-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <app-background-empty *ngIf="!hasTravel" [title]="'myRoute.ifEmpty.title' | translate" [text]="'myRoute.ifEmpty.text' | translate"></app-background-empty>
+
+    <div *ngIf="hasTravel">
+
+        <ion-card>
+            <ion-card-header>
+                <div class="button-cancel">
+                    <ion-button size="small" color="danger" (click)="confirmCancel()">{{'button.cancel' | translate}}</ion-button>
+                </div>
+                <ion-card-title>Viaje #8840</ion-card-title>
+                <ion-card-subtitle><b>Receptor:</b> Julia Herrera</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+                <p class="detail-p">
+                    <ion-text color="tertiary">{{'historic.card.beginIn' | translate}}:</ion-text>
+                    {{travel.positionBegin}}
+                </p>
+                <p class="detail-p">
+                    <ion-text color="tertiary">{{'historic.card.endIn' | translate}}:</ion-text>
+                    {{travel.positionEnd}}
+                </p>
+            </ion-card-content>
+        </ion-card>
+
+        <ion-img src="assets/img/map-test.png" class="map"></ion-img>
+    </div>
+
+</ion-content>
+
+<ion-footer *ngIf="hasTravel">
+    <ion-fab vertical="bottom" horizontal="start" class="button-bottom-left">
+        <ion-fab-button *ngIf="isNear" (click)="pushNotification()">
+            <span>Estoy cerca</span>
+        </ion-fab-button>
+        <ion-fab-button *ngIf="!isNear" (click)="doneJourney()">
+            <span>He llegado</span>
+        </ion-fab-button>
+    </ion-fab>
+    <ion-fab vertical="bottom" horizontal="end">
+        <ion-fab-button>
+            <ion-icon name="chatbubble"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+</ion-footer>

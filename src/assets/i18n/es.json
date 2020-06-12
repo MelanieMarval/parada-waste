@@ -1,0 +1,68 @@
+{
+    "login": {
+        "input": {
+            "user": "Usuario",
+            "pass": "Contraseña"
+        },
+        "button": "Iniciar Sesión"
+    },
+    "myRoute": {
+        "title": "Mi Ruta",
+        "ifEmpty": {
+            "title": "No hay viajes activos",
+            "text": "Cuando tengas uno podras ver los detalles aqui"
+        }
+    },
+    "historic": {
+        "title": "Histórico",
+        "tabs": {
+            "all": "Todos",
+            "assigned": "Asignados",
+            "finished": "Terminados"
+        },
+        "card": {
+            "order": "Orden",
+            "beginIn": "Inicia en",
+            "endIn": "Termina en"
+        }
+    },
+    "profile": {
+        "title": "Perfíl",
+        "details": {
+            "title": "Detalles",
+            "email": "Correo Electrónico",
+            "phone": "Número Telefónico"
+        },
+        "options": {
+            "title": "Opciones",
+            "lang": {
+                "change": "Cambiar Idioma",
+                "en": "Inglés",
+                "es": "Español"
+            },
+            "logout": "Cerrar Sesión",
+            "logoutMsg": {
+                "header": "Esta seguro de que desea cerrar su sesión?",
+                "btnYes": "Sí, salir"
+            }
+        }
+    },
+    "journey": {
+        "title": "Viaje",
+        "prompt": {
+            "title": "Introduzca kilometraje",
+            "buttonCancel": "Cancelar",
+            "buttonAccept": "Iniciar"
+        }
+    },
+    "chats": {
+        "title": "Mensajes",
+        "placeholder": "Ingrese su mensaje"
+    },
+
+
+
+    "button": {
+        "cancel": "Cancelar"
+    }
+}

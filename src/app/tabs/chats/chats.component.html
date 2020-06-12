@@ -1,0 +1,70 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-title>
+            {{'chats.title' | translate}}
+        </ion-title>
+        <ion-buttons slot="end">
+            <ion-back-button defaultHref="/" icon="close"></ion-back-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list>
+        <ion-item button class="chat" (click)="openChat(5)">
+            <ion-avatar slot="start" class="chat--avatar">
+                <img src="assets/img/avatar/avatar.png">
+            </ion-avatar>
+            <ion-label class="chat--label">
+                <span>8:12pm</span>
+                <h3>Sonia Duarte</h3>
+                <p>Enviame el numero de track</p>
+            </ion-label>
+        </ion-item>
+        <ion-item button class="chat" (click)="openChat(5)">
+            <ion-avatar slot="start" class="chat--avatar">
+                <img src="assets/img/avatar/hombre.jpg">
+            </ion-avatar>
+            <ion-label class="chat--label">
+                <span>2:36pm</span>
+                <h3>Emmet Raditz</h3>
+                <p>En 2 horas</p>
+            </ion-label>
+        </ion-item>
+        <ion-item button class="chat" (click)="openChat(5)">
+            <ion-avatar slot="start" class="chat--avatar">
+                <img src="assets/img/avatar/avatar.png">
+            </ion-avatar>
+            <ion-label class="chat--label">
+                <span>02/06/20</span>
+                <h3>Ramon Zuso</h3>
+                <p>Listo</p>
+            </ion-label>
+        </ion-item>
+        <ion-item button class="chat" (click)="openChat(5)">
+            <ion-avatar slot="start" class="chat--avatar">
+                <img src="assets/img/avatar/avatar.png">
+            </ion-avatar>
+            <ion-label class="chat--label">
+                <span>29/05/20</span>
+                <h3>Ana Colina</h3>
+                <p>Para manana enviare el correo.</p>
+            </ion-label>
+        </ion-item>
+        <ion-item button class="chat" (click)="openChat(5)">
+            <ion-avatar slot="start" class="chat--avatar">
+                <img src="assets/img/avatar/mujer-1.jpg">
+            </ion-avatar>
+            <ion-label class="chat--label">
+                <span>20/05/20</span>
+                <h3>Grecia Aular</h3>
+                <p>Calle 9. cruzando en la av 94, sigue derecho hasta ver un afiche blanco donde se encuantran 4 banquetas, estare en la segunda.</p>
+            </ion-label>
+        </ion-item>
+    </ion-list>
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button>
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+</ion-content>

@@ -1,0 +1,26 @@
+/* BACKGROUND IF NOT REGISTERS */
+.no-registers {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    ion-img {
+        max-width: 12rem;
+        filter: invert(15%) sepia(93%) saturate(2970%) hue-rotate(188deg) brightness(92%) contrast(101%);
+    }
+
+    ion-text {
+        margin-top: 28px;
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 27px;
+        text-align: center;
+        color: #6f7173;
+        span {
+            font-size: 14px;
+        }
+    }
+}
+/* END REGISTERS */
+/*  ***********************  */

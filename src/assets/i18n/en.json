@@ -1,0 +1,67 @@
+{
+    "login": {
+        "input": {
+            "user": "User",
+            "pass": "Password"
+        },
+        "button": "Log in"
+    },
+    "myRoute": {
+        "title": "My Route",
+        "ifEmpty": {
+            "title": "There are no active trips",
+            "text": "When you have one you can see the details here"
+        }
+    },
+    "historic": {
+        "title": "Historic",
+        "tabs": {
+            "all": "All",
+            "assigned": "Assigned",
+            "finished": "Finished"
+        },
+        "card": {
+            "order": "Order",
+            "beginIn": "Begin in",
+            "endIn": "Ends in"
+        }
+    },
+    "profile": {
+        "title": "Profile",
+        "details": {
+            "title": "Details",
+            "email": "Email",
+            "phone": "Phone number"
+        },
+        "options": {
+            "title": "Options",
+            "lang": {
+                "change": "Change Language",
+                "en": "English",
+                "es": "Spanish"
+            },
+            "logout": "Sign Off",
+            "logoutMsg": {
+                "header": "Are you sure you want to sign off?",
+                "btnYes": "Yes, get out"
+            }
+        }
+    },
+    "journey": {
+        "title": "Journey",
+        "prompt": {
+            "title": "Enter mileage",
+            "buttonCancel": "Cancel",
+            "buttonAccept": "Init"
+        }
+    },
+    "chats": {
+        "title": "Chats",
+        "placeholder": "Enter your message"
+    },
+
+
+    "button": {
+        "cancel": "Cancel"
+    }
+}

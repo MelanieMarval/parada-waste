@@ -1,0 +1,47 @@
+.message {
+    max-width: 80%;
+    margin-bottom: 1em;
+    &-text {
+        padding: .7em;
+    }
+    &-time {
+        color: var(--ion-color-medium-shade);
+        font-size: small;
+        padding: 3px;
+    }
+    &-left {
+        float: left;
+        .message-text {
+            background: var(--ion-color-light-shade);
+            border-radius: 1em 1em 1em 0;
+        }
+    }
+    &-right {
+        &, .message-time {
+            float: right;
+        }
+        .message-text {
+            background: var(--ion-color-tertiary);
+            color: var(--ion-color-tertiary-contrast);
+            border-radius: 1em 1em 0 1em;
+        }
+    }
+
+    // Condicionales
+    &-right + &-right {
+        //.message-time {
+        //    display: none;
+        //}
+    }
+}
+
+.footer-input-message {
+    position: absolute;
+    bottom: 0;
+    ion-button {
+        --background: transparent;
+        --border-radius: 50%;
+        --box-shadow: unset;
+        height: 35px;
+    }
+}

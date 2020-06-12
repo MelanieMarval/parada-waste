@@ -24,3 +24,29 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+
+.d-flex {
+  display: flex;
+}
+.w-100 {
+  width: 100%;
+}
+ion-toolbar.ios {
+  --border-width: 0 !important;
+}
+.toolbar-transparent {
+  --ion-color-base: transparent !important;
+}
+.prompt-primary {
+  .alert-wrapper {
+    background: var(--ion-color-primary);
+    .alert-title, .alert-input, .alert-button {
+      color: #FFF;
+    }
+    .alert-input-group {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+  }
+}
