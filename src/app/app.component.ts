@@ -12,7 +12,7 @@ import { NotificationsService } from './services/notifications.service';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
-  public activeLang = 'es';
+  public activeLang = 'en';
 
   constructor(
       private platform: Platform,

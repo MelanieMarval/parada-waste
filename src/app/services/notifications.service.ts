@@ -34,6 +34,9 @@ export class NotificationsService {
             console.log('-> notificacion abierta', push);
         });
 
+        this.oneSignal.getIds().then(data => {
+            console.log(data);
+        });
         this.oneSignal.endInit();
     }
 

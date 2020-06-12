@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActionSheetController, ModalController, NavParams } from '@ionic/angular';
+import { ActionSheetController, ModalController, NavParams, Platform } from '@ionic/angular';
+import { Router } from '@angular/router';
 // import { CameraResultType, CameraSource, Device, Plugins } from '@capacitor/core';
 import { Camera, CameraOptions } from '@ionic-native/Camera/ngx';
 import { HandleImageProvider } from '../../../providers/handleImage.provider';
-import { Router } from '@angular/router';
+const win: any = window;
 
 @Component({
     selector: 'app-finish-route',
@@ -24,12 +25,13 @@ export class FinishRoutePage implements OnInit {
                 private actionSheetController: ActionSheetController,
                 private router: Router,
                 private navParams: NavParams,
+                private platform: Platform,
                 private camera: Camera) {
     }
 
     async ngOnInit() {
-        // const info = await Device.getInfo();
-        // this.isTest = info.platform === 'web';
+        this.isTest = this.platform.platforms()[2] === 'mobileweb';
+        console.log('-> platform', this.platform.platforms());
         this.journey = {
             receptor: '',
             files: []
@@ -59,21 +61,21 @@ export class FinishRoutePage implements OnInit {
                 text: 'Tomar una Foto',
                 icon: 'camera',
                 handler: () => {
-                    self.captureImage(true);
+                    self.captureImage(this.camera.PictureSourceType.CAMERA);
                 }
             }, {
                 text: 'Buscar Foto en la Galeria',
                 icon: 'image',
                 handler: () => {
-                    self.captureImage(false);
+                    self.captureImage(this.camera.PictureSourceType.PHOTOLIBRARY);
                 }
             }]
         });
         await actionSheet.present();
     }
 
-    async captureImage(fromCamera: boolean, sourceType?: any) {
-        const options = {
+    async captureImage(sourceType: any) {
+        const options: CameraOptions = {
             quality: 100,
             sourceType,
             destinationType: this.camera.DestinationType.FILE_URI,
@@ -82,7 +84,7 @@ export class FinishRoutePage implements OnInit {
         };
 
         const image = await this.camera.getPicture(options);
-        await this.chargeImage(image.dataUrl);
+        await this.chargeImage(image);
     }
 
     async chargeImage(image: any) {

@@ -38,7 +38,6 @@ import {File} from '@ionic-native/file/ngx';
         SplashScreen,
         OneSignal,
         Camera,
-        File,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
     ],
     bootstrap: [AppComponent]
