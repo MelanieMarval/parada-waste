@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 // import { CameraResultType, CameraSource, Device, Plugins } from '@capacitor/core';
 import { Camera, CameraOptions } from '@ionic-native/Camera/ngx';
 import { HandleImageProvider } from '../../../providers/handleImage.provider';
+import { File } from '@ionic-native/file/ngx';
+
 const win: any = window;
 
 @Component({
@@ -26,7 +28,8 @@ export class FinishRoutePage implements OnInit {
                 private router: Router,
                 private navParams: NavParams,
                 private platform: Platform,
-                private camera: Camera) {
+                private camera: Camera,
+                private file: File) {
     }
 
     async ngOnInit() {
@@ -78,13 +81,22 @@ export class FinishRoutePage implements OnInit {
         const options: CameraOptions = {
             quality: 100,
             sourceType,
-            destinationType: this.camera.DestinationType.FILE_URI,
+            destinationType: this.camera.DestinationType.DATA_URL,
             encodingType: this.camera.EncodingType.JPEG,
             mediaType: this.camera.MediaType.PICTURE,
         };
 
         const image = await this.camera.getPicture(options);
-        await this.chargeImage(image);
+        const imgUrl = 'data:image/png;base64,' + image;
+        // const tempFilename = image.substr(image.lastIndexOf('/') + 1);
+        // const tempBaseFilesystemPath = image.substr(0, image.lastIndexOf('/') + 1);
+        // const newBaseFilesystemPath = this.file.dataDirectory;
+        //
+        // await this.file.copyFile(tempBaseFilesystemPath, tempFilename, newBaseFilesystemPath, tempFilename);
+        // const storedPhoto = newBaseFilesystemPath + tempFilename;
+        // const imgUrl = win.Ionic.WebView.convertFileSrc(storedPhoto);
+
+        await this.chargeImage(imgUrl);
     }
 
     async chargeImage(image: any) {
