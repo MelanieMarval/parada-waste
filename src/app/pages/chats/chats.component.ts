@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { CreateChatComponent } from './create-chat/create-chat.component';
 
 @Component({
     selector: 'app-chat',
@@ -20,7 +21,11 @@ export class ChatsComponent implements OnInit {
         this.router.navigate(['tabs/chats', id]);
     }
 
-    closeChat() {
-        this.modalController.dismiss();
+    async newChat() {
+        const modal = await this.modalController.create({
+            component: CreateChatComponent,
+            cssClass: 'my-custom-class'
+        });
+        return await modal.present();
     }
 }

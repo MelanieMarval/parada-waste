@@ -3,8 +3,8 @@
         <ion-title>
             {{'chats.title' | translate}}
         </ion-title>
-        <ion-buttons slot="end">
-            <ion-back-button defaultHref="/" icon="close"></ion-back-button>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/"></ion-back-button>
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
@@ -63,7 +63,7 @@
         </ion-item>
     </ion-list>
     <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-        <ion-fab-button>
+        <ion-fab-button (click)="newChat()">
             <ion-icon name="add"></ion-icon>
         </ion-fab-button>
     </ion-fab>

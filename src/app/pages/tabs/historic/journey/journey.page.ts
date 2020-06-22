@@ -44,7 +44,7 @@ export class JourneyPage implements OnInit {
 
     ngOnInit(): void {
         this.platform.ready();
-        this.loadMap();
+        // this.loadMap();
         // get Travel by code and use interface with data
         this.travel = {
             id: 545454,

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { ActivatedRoute } from '@angular/router';
+import { FirebaseChatService } from '../../../services/firebase-chat.service';
 
 @Component({
     selector: 'app-chat',
@@ -8,13 +10,34 @@ import { ModalController } from '@ionic/angular';
 })
 export class ChatComponent implements OnInit {
 
+    receiverUser: any;
+    messages: any[] = [];
     message = '';
     sending = false;
+    loading = true;
 
-    constructor(private modalController: ModalController) {
+    constructor(private modalController: ModalController,
+                private route: ActivatedRoute,
+                private chatService: FirebaseChatService) {
     }
 
     ngOnInit() {
+        console.log('-> this.route.snapshot.params.id', this.route.snapshot.params.id);
+        this.receiverUser = this.route.snapshot.params.id;
+        this.getMessages();
+    }
+
+    getMessages() {
+        this.chatService.getAllChatMessages('5', this.receiverUser)
+            .subscribe((res: any) => {
+                console.log('-> res', res);
+                const newMessages = [];
+                res.forEach(x => {
+                    newMessages.push(x.payload.doc.data());
+                });
+                this.messages = newMessages;
+                this.loading = false;
+            });
     }
 
     async closeChat() {

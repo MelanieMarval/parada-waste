@@ -2,6 +2,7 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { AlertController, ModalController, Platform } from '@ionic/angular';
 import { FinishRoutePage } from './finish-route/finish-route.page';
 import {
+    Environment,
     GoogleMap,
     GoogleMapOptions,
     GoogleMaps,
@@ -61,6 +62,14 @@ export class MyRoutePage implements OnInit, AfterViewInit {
     }
 
     loadMap() {
+
+        Environment.setEnv({
+            // api key for server
+            API_KEY_FOR_BROWSER_RELEASE: 'AIzaSyD3t5VAdEBMdICcY9FyVcgBHlkeu72OI4s',
+            // api key for local development
+            API_KEY_FOR_BROWSER_DEBUG: 'AIzaSyD3t5VAdEBMdICcY9FyVcgBHlkeu72OI4s'
+        });
+
         const options: GoogleMapOptions = {
             camera: {
                 target: {

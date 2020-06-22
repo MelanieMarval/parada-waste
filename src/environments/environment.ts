@@ -3,7 +3,18 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+    production: false
+};
+
+export const firebaseConfig = {
+    apiKey: 'AIzaSyDJBSH6qmwGVli4Pifbeng768rwsncczBU',
+    authDomain: 'parada-waste.firebaseapp.com',
+    databaseURL: 'https://parada-waste.firebaseio.com',
+    projectId: 'parada-waste',
+    storageBucket: 'parada-waste.appspot.com',
+    messagingSenderId: '355087430570',
+    appId: '1:355087430570:web:9872bb459705d10a28b1d3',
+    measurementId: 'G-08GHCSCJRQ'
 };
 
 /*
