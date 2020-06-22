@@ -2,12 +2,11 @@
     <app-toolbar></app-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content [scrollY]="false">
 
     <app-background-empty *ngIf="!hasTravel" [title]="'myRoute.ifEmpty.title' | translate" [text]="'myRoute.ifEmpty.text' | translate"></app-background-empty>
 
     <div *ngIf="hasTravel">
-
         <ion-card>
             <ion-card-header>
                 <div class="button-cancel">
@@ -27,9 +26,9 @@
                 </p>
             </ion-card-content>
         </ion-card>
-
-        <ion-img src="assets/img/map-test.png" class="map"></ion-img>
     </div>
+
+    <div #mapCanvas *ngIf="hasTravel" id="map_canvas"></div>
 
 </ion-content>
 

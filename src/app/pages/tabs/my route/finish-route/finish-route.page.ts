@@ -3,8 +3,9 @@ import { ActionSheetController, ModalController, NavParams, Platform } from '@io
 import { Router } from '@angular/router';
 // import { CameraResultType, CameraSource, Device, Plugins } from '@capacitor/core';
 import { Camera, CameraOptions } from '@ionic-native/Camera/ngx';
-import { HandleImageProvider } from '../../../providers/handleImage.provider';
+import { HandleImageProvider } from '../../../../providers/handleImage.provider';
 import { File } from '@ionic-native/file/ngx';
+import { PlatformUtils } from '../../../../utils/platform.utils';
 
 const win: any = window;
 
@@ -33,7 +34,7 @@ export class FinishRoutePage implements OnInit {
     }
 
     async ngOnInit() {
-        this.isTest = this.platform.platforms()[2] === 'mobileweb';
+        this.isTest = PlatformUtils.isTest();
         console.log('-> platform', this.platform.platforms());
         this.journey = {
             receptor: '',

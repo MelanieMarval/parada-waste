@@ -50,3 +50,12 @@ ion-toolbar.ios {
     }
   }
 }
+
+
+a[rel='noopener'] div img, .gmnoprint {
+  opacity: 0;
+}
+
+.gm-style-iw, .gm-style-iw-c {
+  display: none;
+}

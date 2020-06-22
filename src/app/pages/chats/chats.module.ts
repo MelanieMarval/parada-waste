@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ChatComponent } from './chat/chat.component';
 import { ChatsComponent } from './chats.component';
 import { RouterModule } from '@angular/router';
-import { HistoricPage } from '../historic/historic.page';
+import { HistoricPage } from '../tabs/historic/historic.page';
 import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({

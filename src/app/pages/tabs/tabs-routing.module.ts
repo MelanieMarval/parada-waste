@@ -13,7 +13,7 @@ const routes: Routes = [
             },
             {
                 path: 'my-route',
-                loadChildren: () => import('./my-route/my-route.module').then(m => m.MyRouteModule)
+                loadChildren: () => import('./my route/my-route.module').then(m => m.MyRouteModule)
             },
             {
                 path: 'profile',
@@ -33,11 +33,11 @@ const routes: Routes = [
     },
     {
         path: 'historic/journey/:code',
-        loadChildren: () => import('./journey/journey.module').then(m => m.JourneyModule)
+        loadChildren: () => import('./historic/journey/journey.module').then(m => m.JourneyModule)
     },
     {
         path: 'chats',
-        loadChildren: () => import('./chats/chats.module').then(m => m.ChatsModule)
+        loadChildren: () => import('../chats/chats.module').then(m => m.ChatsModule)
     }
 ];
 

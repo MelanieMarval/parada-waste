@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
-import { ChatComponent } from './tabs/chats/chat/chat.component';
-import { ChatsComponent } from './tabs/chats/chats.component';
+import { ChatComponent } from './pages/chats/chat/chat.component';
+import { ChatsComponent } from './pages/chats/chats.component';
 
 const routes: Routes = [
     {
@@ -11,11 +11,11 @@ const routes: Routes = [
     },
     {
         path: 'login',
-        loadChildren: () => import('./login/login.module').then(m => m.LoginModule)
+        loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule)
     },
     {
         path: 'tabs',
-        loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+        loadChildren: () => import('./pages/tabs/tabs.module').then(m => m.TabsPageModule)
     }
 ];
 

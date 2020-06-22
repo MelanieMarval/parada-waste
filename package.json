@@ -10,6 +10,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "run browser": "ionic cordova build browser -l",
     "build android": "ionic cordova build android",
     "run android": "ionic cordova run android"
   },
@@ -22,8 +23,9 @@
     "@angular/platform-browser-dynamic": "~9.1.6",
     "@angular/router": "~9.1.6",
     "@ionic-native/camera": "^5.26.0",
-    "@ionic-native/core": "^5.0.7",
+    "@ionic-native/core": "^5.25.0",
     "@ionic-native/file": "^5.26.0",
+    "@ionic-native/google-maps": "^5.5.0",
     "@ionic-native/ionic-webview": "^5.26.0",
     "@ionic-native/onesignal": "^5.26.0",
     "@ionic-native/splash-screen": "^5.0.0",
@@ -34,8 +36,11 @@
     "browser-image-compression": "^1.0.12",
     "cordova-android": "8.1.0",
     "cordova-android-support-gradle-release": "^3.0.1",
+    "cordova-androidx-build": "^1.0.3",
+    "cordova-browser": "6.0.0",
     "cordova-plugin-camera": "^4.1.0",
     "cordova-plugin-file": "^6.0.2",
+    "cordova-plugin-googlemaps": "^2.7.1",
     "gradle": "^1.2.3",
     "onesignal-cordova-plugin": "^2.9.1",
     "rxjs": "~6.5.1",
@@ -85,10 +90,15 @@
       "cordova-plugin-ionic-keyboard": {},
       "cordova-android-support-gradle-release": {
         "ANDROID_SUPPORT_VERSION": "27.+"
+      },
+      "cordova-plugin-googlemaps": {
+        "API_KEY_FOR_ANDROID": "AIzaSyD3t5VAdEBMdICcY9FyVcgBHlkeu72OI4s",
+        "API_KEY_FOR_IOS": "AIzaSyD3t5VAdEBMdICcY9FyVcgBHlkeu72OI4s"
       }
     },
     "platforms": [
-      "android"
+      "android",
+      "browser"
     ]
   }
 }

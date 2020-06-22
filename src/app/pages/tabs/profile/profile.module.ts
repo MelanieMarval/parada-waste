@@ -1,22 +1,22 @@
 import { IonicModule } from '@ionic/angular';
+import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-import { JourneyPage } from './journey.page';
+import { ProfilePage } from './profile.page';
+
+import { ToolbarModule } from '../../../shared/toolbar/toolbar.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { ToolbarModule } from '../../shared/toolbar/toolbar.module';
 
 @NgModule({
     imports: [
         IonicModule,
         CommonModule,
         FormsModule,
-        RouterModule.forChild([{path: '', component: JourneyPage}]),
+        RouterModule.forChild([{path: '', component: ProfilePage}]),
+        ToolbarModule,
         TranslateModule,
-        ToolbarModule
     ],
-    declarations: [JourneyPage]
+  declarations: [ProfilePage]
 })
-export class JourneyModule {
-}
+export class ProfileModule {}
