@@ -14,15 +14,15 @@
 
 <ion-content>
     <ion-list>
-        <ion-item button class="chat" *ngFor="let chat of chats"
-                  (click)="openChat(chat)">
+        <ion-item button class="chat" *ngFor="let chat of chats" (click)="openChat(chat)"
+                  [ngClass]="{'chat-unread': chat.unread}">
             <ion-avatar slot="start" class="chat--avatar">
                 <img src="assets/img/avatar/avatar.png">
             </ion-avatar>
             <ion-label class="chat--label">
-                <span *ngIf="isToday(chat.lastDate)">{{chat.lastDate | date: 'shortTime'}}</span>
-                <span *ngIf="!isToday(chat.lastDate)">{{chat.lastDate | date: 'shortDate'}}</span>
-                <h3>{{chat.name}}</h3>
+                <span *ngIf="isToday(chat.lastDate)" class="date">{{chat.lastDate | date: 'shortTime'}}</span>
+                <span *ngIf="!isToday(chat.lastDate)" class="date">{{chat.lastDate | date: 'shortDate'}}</span>
+                <h3>{{chat.name}} <span *ngIf="chat.unread" class="point-red"></span></h3>
                 <p>{{chat.lastMessage}}</p>
             </ion-label>
         </ion-item>

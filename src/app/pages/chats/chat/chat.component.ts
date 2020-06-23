@@ -3,6 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { FirebaseChatService } from '../../../services/firebase-chat.service';
 import { IntentProvider } from '../../../providers/intentProvider';
+import { Message } from '../../../services/interfaces/message';
 
 @Component({
     selector: 'app-chat',
@@ -27,6 +28,7 @@ export class ChatComponent implements OnInit {
         this.user = this.intentProvider.userParadaWaste;
         this.receiverUser = this.intentProvider.chatReceiverUser;
         this.getMessages();
+        this.chatService.putChatRead(this.user.id, this.receiverUser.id).then();
     }
 
     getMessages() {
@@ -35,7 +37,7 @@ export class ChatComponent implements OnInit {
             .subscribe((res: any) => {
                 const newMessages = [];
                 res.forEach(x => {
-                    const sms = x.payload.doc.data().message;
+                    const sms = x.payload.doc.data();
                     sms.date = sms.date.toDate();
                     newMessages.push(sms);
                 });
@@ -48,7 +50,11 @@ export class ChatComponent implements OnInit {
     sendMessage() {
         if (this.message) {
             this.sending = true;
-            const data = {message: this.message, date: new Date(), senderId: this.user.id};
+            const data: Message = {
+                message: this.message,
+                date: new Date(),
+                senderId: this.user.id
+            };
 
             this.chatService.sendMessage(this.user, this.receiverUser, data)
                 .then(() => {

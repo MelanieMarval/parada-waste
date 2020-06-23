@@ -1,7 +1,7 @@
 .chat {
     &--label {
         position: relative;
-        span {
+        .date {
             position: absolute;
             right: 0;
             top: 0;
@@ -9,4 +9,19 @@
             color: var(--ion-color-medium);
         }
     }
+    &-unread {
+        --background: #E4E4E4;
+        & .chat--label > * {
+            font-weight: 700;
+            letter-spacing: .6px;
+        }
+    }
+}
+.point-red {
+    width: 7px;
+    height: 7px;
+    margin-bottom: 1px;
+    background: red;
+    display: inline-block;
+    border-radius: 50%;
 }

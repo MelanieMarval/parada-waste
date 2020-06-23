@@ -37,13 +37,17 @@ export class ChatsComponent implements OnInit {
                 res.forEach(x => {
                     const chat = x.payload.doc.data();
                     chat.id = x.payload.doc.id;
-                    chat.lastDate = chat.lastDate.toDate();
+                    chat.lastDate = chat.lastDate ? chat.lastDate.toDate() : chat.lastDate;
                     newChats.push(chat);
                 });
-                this.chats = newChats.sort((a, b) => a.lastDate - b.lastDate);
+                this.chats = newChats.sort((a, b) => b.lastDate - a.lastDate);
                 this.loading = false;
                 console.log('-> this.chats', this.chats);
             });
+    }
+
+    ionViewWillEnter() {
+        this.getChats();
     }
 
     openChat(receiver) {
