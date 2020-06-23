@@ -23,7 +23,12 @@
         "card": {
             "order": "Orden",
             "beginIn": "Inicia en",
-            "endIn": "Termina en"
+            "endIn": "Termina en",
+            "state": {
+                "inProcess": "En proceso",
+                "assigned": "Asignado",
+                "finished": "Finalizado"
+            }
         }
     },
     "profile": {
