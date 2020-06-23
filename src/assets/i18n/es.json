@@ -57,7 +57,8 @@
     },
     "chats": {
         "title": "Mensajes",
-        "placeholder": "Ingrese su mensaje"
+        "placeholder": "Ingrese su mensaje",
+        "searchBar": "Buscar Usuario"
     },
 
 

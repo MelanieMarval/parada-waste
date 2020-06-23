@@ -25,12 +25,18 @@ export class FirebaseChatService {
         return this.angularFirestore.collection(COLLECTION_USERS).doc(userId).collection(COLLECTION_CHATS).snapshotChanges();
     }
 
-    public sendMessage(senderId: string, receiverId: string, message: string) {
-        return this.angularFirestore.collection(COLLECTION_USERS).doc(senderId).collection(COLLECTION_CHATS).doc(receiverId).collection(COLLECTION_MESSAGES).add({message});
-    }
-
     public getAllChatMessages(userId: string, receiverId: string) {
         return this.angularFirestore.collection(COLLECTION_USERS).doc(userId).collection(COLLECTION_CHATS).doc(receiverId).collection(COLLECTION_MESSAGES).snapshotChanges();
     }
+
+    public sendMessage(sender: any, receiver: any, message: any) {
+        // set name
+        this.angularFirestore.collection(COLLECTION_USERS).doc(receiver.id).collection(COLLECTION_CHATS).doc(sender.id).set({name: sender.name, lastDate: message.date, lastMessage: message.message});
+        this.angularFirestore.collection(COLLECTION_USERS).doc(sender.id).collection(COLLECTION_CHATS).doc(receiver.id).set({name: receiver.name, lastDate: message.date, lastMessage: message.message});
+        // add message
+        this.angularFirestore.collection(COLLECTION_USERS).doc(receiver.id).collection(COLLECTION_CHATS).doc(sender.id).collection(COLLECTION_MESSAGES).add({message});
+        return this.angularFirestore.collection(COLLECTION_USERS).doc(sender.id).collection(COLLECTION_CHATS).doc(receiver.id).collection(COLLECTION_MESSAGES).add({message});
+    }
+
 
 }

@@ -4,25 +4,20 @@
             <ion-back-button></ion-back-button>
         </ion-buttons>
         <ion-title>
-            Sonia Duarte
+            {{receiverUser.name}}
         </ion-title>
     </ion-toolbar>
 </ion-header>
+<div class="progress-bar-container">
+    <ion-progress-bar type="indeterminate" color="primary" *ngIf="loading || sending"></ion-progress-bar>
+</div>
 
 <ion-content>
     <div class="ion-margin">
         <ion-list>
-            <li class="message message-left">
-                <div class="message-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
-                <span class="message-time">6:00pm</span>
-            </li>
-            <li class="message message-right">
-                <div class="message-text">Doloribus eveniet maiores maxime odio.</div>
-                <span class="message-time">6:12pm</span>
-            </li>
-            <li class="message message-left">
-                <div class="message-text">Accusamus corporis dicta dignissimos dolore, error esse ipsum laboriosam minima necessitatibus nesciunt non quaerat quasi, tempore.</div>
-                <span class="message-time">6:14pm</span>
+            <li *ngFor="let sms of messages" class="message" [ngClass]="sms.senderId === user.id ? 'message-right' : ' message-left'">
+                <div class="message-text">{{sms.message}}</div>
+                <span class="message-time">{{sms.date | date: 'shortTime'}}</span>
             </li>
         </ion-list>
     </div>

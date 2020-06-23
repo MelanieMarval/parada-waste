@@ -11,6 +11,7 @@
     }
     &-left {
         float: left;
+        clear: both;
         .message-text {
             background: var(--ion-color-light-shade);
             border-radius: 1em 1em 1em 0;
@@ -19,6 +20,7 @@
     &-right {
         &, .message-time {
             float: right;
+            clear: both;
         }
         .message-text {
             background: var(--ion-color-tertiary);

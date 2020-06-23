@@ -4,61 +4,26 @@
             {{'chats.title' | translate}}
         </ion-title>
         <ion-buttons slot="start">
-            <ion-back-button defaultHref="/"></ion-back-button>
+            <ion-back-button defaultHref="/tabs/historic"></ion-back-button>
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
+<div class="progress-bar-container">
+    <ion-progress-bar type="indeterminate" color="primary" *ngIf="loading"></ion-progress-bar>
+</div>
 
 <ion-content>
     <ion-list>
-        <ion-item button class="chat" (click)="openChat(5)">
+        <ion-item button class="chat" *ngFor="let chat of chats"
+                  (click)="openChat(chat)">
             <ion-avatar slot="start" class="chat--avatar">
                 <img src="assets/img/avatar/avatar.png">
             </ion-avatar>
             <ion-label class="chat--label">
-                <span>8:12pm</span>
-                <h3>Sonia Duarte</h3>
-                <p>Enviame el numero de track</p>
-            </ion-label>
-        </ion-item>
-        <ion-item button class="chat" (click)="openChat(5)">
-            <ion-avatar slot="start" class="chat--avatar">
-                <img src="assets/img/avatar/hombre.jpg">
-            </ion-avatar>
-            <ion-label class="chat--label">
-                <span>2:36pm</span>
-                <h3>Emmet Raditz</h3>
-                <p>En 2 horas</p>
-            </ion-label>
-        </ion-item>
-        <ion-item button class="chat" (click)="openChat(5)">
-            <ion-avatar slot="start" class="chat--avatar">
-                <img src="assets/img/avatar/avatar.png">
-            </ion-avatar>
-            <ion-label class="chat--label">
-                <span>02/06/20</span>
-                <h3>Ramon Zuso</h3>
-                <p>Listo</p>
-            </ion-label>
-        </ion-item>
-        <ion-item button class="chat" (click)="openChat(5)">
-            <ion-avatar slot="start" class="chat--avatar">
-                <img src="assets/img/avatar/avatar.png">
-            </ion-avatar>
-            <ion-label class="chat--label">
-                <span>29/05/20</span>
-                <h3>Ana Colina</h3>
-                <p>Para manana enviare el correo.</p>
-            </ion-label>
-        </ion-item>
-        <ion-item button class="chat" (click)="openChat(5)">
-            <ion-avatar slot="start" class="chat--avatar">
-                <img src="assets/img/avatar/mujer-1.jpg">
-            </ion-avatar>
-            <ion-label class="chat--label">
-                <span>20/05/20</span>
-                <h3>Grecia Aular</h3>
-                <p>Calle 9. cruzando en la av 94, sigue derecho hasta ver un afiche blanco donde se encuantran 4 banquetas, estare en la segunda.</p>
+                <span *ngIf="isToday(chat.lastDate)">{{chat.lastDate | date: 'shortTime'}}</span>
+                <span *ngIf="!isToday(chat.lastDate)">{{chat.lastDate | date: 'shortDate'}}</span>
+                <h3>{{chat.name}}</h3>
+                <p>{{chat.lastMessage}}</p>
             </ion-label>
         </ion-item>
     </ion-list>

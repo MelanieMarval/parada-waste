@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { FirebaseChatService } from '../../../services/firebase-chat.service';
+import { IntentProvider } from '../../../providers/intentProvider';
 
 @Component({
     selector: 'app-create-chat',
@@ -10,15 +11,19 @@ import { FirebaseChatService } from '../../../services/firebase-chat.service';
 })
 export class CreateChatComponent implements OnInit {
 
+    user: any;
     users: any[] = [];
     loading = true;
+    searchUser: string;
 
     constructor(private modalController: ModalController,
                 private router: Router,
-                private chatService: FirebaseChatService) {
+                private chatService: FirebaseChatService,
+                private intentProvider: IntentProvider) {
     }
 
     ngOnInit() {
+        this.user = this.intentProvider.userParadaWaste;
         this.getUsers();
     }
 
@@ -26,12 +31,13 @@ export class CreateChatComponent implements OnInit {
         this.loading = true;
         this.chatService.getAllUsers()
             .subscribe((res: any) => {
-                console.log('-> res', res);
                 const newUsers = [];
                 res.forEach(x => {
                     const user = x.payload.doc.data();
                     user.id = x.payload.doc.id;
-                    newUsers.push(user);
+                    if (user.id !== this.user.id) {
+                        newUsers.push(user);
+                    }
                 });
                 this.users = newUsers;
                 this.loading = false;
@@ -43,9 +49,9 @@ export class CreateChatComponent implements OnInit {
         await this.modalController.dismiss();
     }
 
-    openChat(id) {
-        console.log('-> id', id);
-        this.router.navigate(['tabs/chats', id])
+    openChat(receiver) {
+        this.intentProvider.chatReceiverUser = {id: receiver.id, name: receiver.name};
+        this.router.navigate(['tabs/chats', receiver.id])
             .then(() => this.modalController.dismiss());
     }
 }

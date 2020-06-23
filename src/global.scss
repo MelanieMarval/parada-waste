@@ -32,12 +32,6 @@
 .w-100 {
   width: 100%;
 }
-.progress-bar-container {
-  height: 5px;
-  width: 100%;
-  position: fixed;
-  z-index: 10;
-}
 ion-toolbar.ios {
   --border-width: 0 !important;
 }
@@ -65,3 +59,17 @@ a[rel='noopener'] div img, .gmnoprint {
 .gm-style-iw, .gm-style-iw-c {
   display: none;
 }
+/* PROGRESS BAR CONTAINER */
+.progress-bar-container {
+  height: 5px;
+  width: 100%;
+  position: fixed;
+  z-index: 10;
+}
+.md + .progress-bar-container {
+  top: 56px;
+}
+.ios + .progress-bar-container {
+  top: 44px;
+}
+/* END progress bar */

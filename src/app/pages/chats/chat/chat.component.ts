@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { FirebaseChatService } from '../../../services/firebase-chat.service';
+import { IntentProvider } from '../../../providers/intentProvider';
 
 @Component({
     selector: 'app-chat',
@@ -10,6 +11,7 @@ import { FirebaseChatService } from '../../../services/firebase-chat.service';
 })
 export class ChatComponent implements OnInit {
 
+    user: any;
     receiverUser: any;
     messages: any[] = [];
     message = '';
@@ -17,39 +19,47 @@ export class ChatComponent implements OnInit {
     loading = true;
 
     constructor(private modalController: ModalController,
-                private route: ActivatedRoute,
+                private intentProvider: IntentProvider,
                 private chatService: FirebaseChatService) {
     }
 
     ngOnInit() {
-        console.log('-> this.route.snapshot.params.id', this.route.snapshot.params.id);
-        this.receiverUser = this.route.snapshot.params.id;
+        this.user = this.intentProvider.userParadaWaste;
+        this.receiverUser = this.intentProvider.chatReceiverUser;
         this.getMessages();
     }
 
     getMessages() {
-        this.chatService.getAllChatMessages('5', this.receiverUser)
+        this.loading = true;
+        this.chatService.getAllChatMessages(this.user.id, this.receiverUser.id)
             .subscribe((res: any) => {
-                console.log('-> res', res);
                 const newMessages = [];
                 res.forEach(x => {
-                    newMessages.push(x.payload.doc.data());
+                    const sms = x.payload.doc.data().message;
+                    sms.date = sms.date.toDate();
+                    newMessages.push(sms);
                 });
-                this.messages = newMessages;
+                this.messages = newMessages.sort((a, b) => a.date - b.date);
+                console.log('-> this.messages', this.messages);
                 this.loading = false;
             });
     }
 
-    async closeChat() {
-        await this.modalController.dismiss();
-    }
-
     sendMessage() {
-        console.log(this.message);
-        this.sending = true;
-        setTimeout(() => {
-            this.message = '';
-            this.sending = false;
-        }, 3000);
+        if (this.message) {
+            this.sending = true;
+            const data = {message: this.message, date: new Date(), senderId: this.user.id};
+
+            this.chatService.sendMessage(this.user, this.receiverUser, data)
+                .then(() => {
+                    this.message = '';
+                    this.sending = false;
+                    // console.log('-> res', res.collection);
+                    // this.messages = newMessages;
+                }).catch((error) => {
+                    this.sending = false;
+                    console.log(error);
+                });
+        }
     }
 }

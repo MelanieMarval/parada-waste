@@ -1,6 +1,7 @@
 <ion-header>
     <ion-toolbar color="primary">
-        <ion-searchbar placeholder="Buscar usuario"></ion-searchbar>
+        <ion-searchbar mode="ios" class="searchbar-ios"
+                       [placeholder]="'chats.searchBar' | translate" [(ngModel)]="searchUser"></ion-searchbar>
         <ion-buttons slot="end">
             <ion-button slot="icon-only" (click)="dismissModal()">
                 <ion-icon name="close"></ion-icon>
@@ -14,8 +15,8 @@
 
 <ion-content>
     <ion-list>
-        <ion-item button class="chat" lines="full"
-                  *ngFor="let user of users" (click)="openChat(user.id)">
+        <ion-item button class="chat"
+                  *ngFor="let user of users | filterByName: searchUser" (click)="openChat(user)">
             <ion-avatar slot="start" class="chat--avatar">
                 <img src="assets/img/avatar/avatar.png" alt="Img User">
             </ion-avatar>
