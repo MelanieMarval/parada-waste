@@ -34,6 +34,7 @@ export class MyRoutePage implements OnInit, AfterViewInit {
     isNear = true;
     map: GoogleMap;
     address: string;
+    collapse = true;
 
     constructor(private alertController: AlertController,
                 private platform: Platform,
@@ -141,7 +142,8 @@ export class MyRoutePage implements OnInit, AfterViewInit {
             });
     }
 
-    async confirmCancel() {
+    async confirmCancel($event: MouseEvent) {
+        $event.stopPropagation();
         const alert = await this.alertController.create({
             cssClass: 'my-custom-class',
             header: 'Alerta!',

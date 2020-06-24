@@ -17,10 +17,14 @@ export class AuthService {
         return this.http.post(url, credentials, options).toPromise();
     }
 
-    async auth() {
-        const url = this.api.url + 'auth/auth';
+    async auth( credentials: any, accessToken?: string) {
+        if (accessToken) {
+            this.api.accessToken = accessToken;
+        }
+        const url = this.api.url + 'auth/me';
         const options: any = await this.api.getHeaders();
-        return this.http.post(url, {}, options);
+        console.log('-> options', options);
+        return this.http.post(url, credentials, options).toPromise();
     }
 
 }

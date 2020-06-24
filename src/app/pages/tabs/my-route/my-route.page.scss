@@ -13,6 +13,19 @@
 }
 
 #map_canvas {
+    position: absolute;
+    top: 0;
     width: 100%;
-    height: 50vh;
+    height: 100%;
+}
+
+.card-status {
+    //height: 100%;
+    transition: height 2s linear 1s;
+    &.card-hidden {
+        height: 90px;
+    }
+}
+.icon-collapse {
+    font-size: 18px;
 }

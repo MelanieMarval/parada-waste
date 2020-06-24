@@ -2,17 +2,18 @@
     <app-toolbar></app-toolbar>
 </ion-header>
 
-<ion-content [scrollY]="false">
+<ion-content [fullscreen]="true" [scrollY]="false">
 
     <app-background-empty *ngIf="!hasTravel" [title]="'myRoute.ifEmpty.title' | translate" [text]="'myRoute.ifEmpty.text' | translate"></app-background-empty>
 
     <div *ngIf="hasTravel">
-        <ion-card>
+        <ion-card class="card-status" color="light" [ngClass]="{'card-hidden': collapse}" (click)="collapse = !collapse">
             <ion-card-header>
                 <div class="button-cancel">
-                    <ion-button size="small" color="danger" (click)="confirmCancel()">{{'button.cancel' | translate}}</ion-button>
+                    <ion-icon class="icon-collapse" *ngIf="collapse" name="chevron-down-outline" size=""></ion-icon>
+                    <ion-icon class="icon-collapse" *ngIf="!collapse" name="chevron-back-outline" size=""></ion-icon>
                 </div>
-                <ion-card-title>Viaje #8840</ion-card-title>
+                <ion-card-title>Journey #8840</ion-card-title>
                 <ion-card-subtitle><b>Receptor:</b> Julia Herrera</ion-card-subtitle>
             </ion-card-header>
             <ion-card-content>
@@ -24,6 +25,9 @@
                     <ion-text color="tertiary">{{'historic.card.endIn' | translate}}:</ion-text>
                     {{travel.positionEnd}}
                 </p>
+                <ion-button size="small" color="danger" class="ion-margin-top" (click)="confirmCancel($event)">
+                    {{'button.cancel' | translate}}
+                </ion-button>
             </ion-card-content>
         </ion-card>
     </div>

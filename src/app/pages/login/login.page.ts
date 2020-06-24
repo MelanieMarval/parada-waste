@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../services/auth-service.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {AuthService} from '../../services/auth-service.service';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
     selector: 'app-login',
@@ -28,12 +28,20 @@ export class LoginPage implements OnInit {
                 password: this.form.get('password').value
             };
             this.authService.login(user)
-                .then(res => {
+                .then((res: any) => {
                     console.log('-> res', res);
+                    this.auth(res.access_token, user);
                 }).catch(_ => console.log('error'));
         } else {
 
         }
+    }
+
+    private auth(accessToken, user) {
+        this.authService.auth(user, accessToken)
+            .then(res => {
+                console.log('-> res', res);
+            }).catch(_ => console.log('error'));
     }
 
 }

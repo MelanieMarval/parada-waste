@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { HttpHeaders } from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpHeaders} from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root'
@@ -13,19 +13,18 @@ export class ApiService {
     constructor() {
     }
 
+
     getHeaderLogin() {
         let header = new HttpHeaders();
-        header = header.append('content-type', 'application/json; charset=utf-8');
         header = header.append('device_token', this.deviceToken);
-        return header;
+        return {headers: header};
     }
 
-    getHeaders(): HttpHeaders {
+    getHeaders() {
         let header = new HttpHeaders();
-        header = header.append('content-type', 'application/json; charset=utf-8');
         header = header.append('device_token', this.deviceToken);
         header = header.append('Authorization', `Bearer ${this.accessToken}`);
-        return header;
+        return {headers: header};
     }
 
 }
