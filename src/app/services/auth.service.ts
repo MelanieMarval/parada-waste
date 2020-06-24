@@ -11,20 +11,22 @@ export class AuthService {
                 private http: HttpClient) {
     }
 
-    login(credentials: any) {
-        const url = this.api.url + 'auth/login';
-        const options: any = this.api.getHeaderLogin();
+    async login(credentials: any) {
+        const url = `${this.api.url}auth/login`;
+        const options: any = await this.api.getHeaders(false);
         return this.http.post(url, credentials, options).toPromise();
     }
 
-    async auth( credentials: any, accessToken?: string) {
-        if (accessToken) {
-            this.api.accessToken = accessToken;
-        }
-        const url = this.api.url + 'auth/me';
+    async getDriver(credentials: any) {
+        const url = `${this.api.url}auth/me`;
         const options: any = await this.api.getHeaders();
-        console.log('-> options', options);
         return this.http.post(url, credentials, options).toPromise();
+    }
+
+    async logout() {
+        const url = `${this.api.url}auth/logout`;
+        const options: any = await this.api.getHeaders();
+        return this.http.post(url, {}, options).toPromise();
     }
 
 }

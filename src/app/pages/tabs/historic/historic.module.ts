@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { HistoricPage } from './historic.page';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToolbarModule } from '../../../shared/toolbar/toolbar.module';
+import { BackgroundEmptyModule } from '../../../shared/background-empty/background-empty.module';
 
 @NgModule({
     imports: [
@@ -14,7 +15,8 @@ import { ToolbarModule } from '../../../shared/toolbar/toolbar.module';
         FormsModule,
         RouterModule.forChild([{path: '', component: HistoricPage}]),
         TranslateModule,
-        ToolbarModule
+        ToolbarModule,
+        BackgroundEmptyModule,
     ],
     declarations: [HistoricPage]
 })

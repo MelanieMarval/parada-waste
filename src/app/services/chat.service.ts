@@ -5,7 +5,7 @@ import { Message } from './interfaces/message';
 @Injectable({
     providedIn: 'root'
 })
-export class ChatServiceService {
+export class ChatService {
 
     constructor(private fireChatService: FirebaseChatService) {
     }

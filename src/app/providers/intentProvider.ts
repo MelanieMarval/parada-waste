@@ -7,6 +7,7 @@ export class IntentProvider {
 
     private _userParadaWaste: any;
     private _chatReceiverUser: any;
+    private _orderToView: any;
 
 
     get userParadaWaste(): any {
@@ -23,5 +24,13 @@ export class IntentProvider {
 
     set chatReceiverUser(value: any) {
         this._chatReceiverUser = value;
+    }
+
+    get orderToView(): any {
+        return this._orderToView;
+    }
+
+    set orderToView(value: any) {
+        this._orderToView = value;
     }
 }

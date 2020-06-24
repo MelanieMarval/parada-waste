@@ -25,21 +25,32 @@ export class FirebaseChatService {
     }
 
     public getAllMyChats(userId: string) {
-        return this.angularFirestore.collection(COLLECTION_USERS).doc(userId).collection(COLLECTION_CHATS).snapshotChanges();
+        return this.angularFirestore.collection(COLLECTION_USERS).doc(userId)
+            .collection(COLLECTION_CHATS).snapshotChanges();
     }
 
     public getAllChatMessages(userId: string, receiverId: string) {
-        return this.angularFirestore.collection(COLLECTION_USERS).doc(userId).collection(COLLECTION_CHATS).doc(receiverId).collection(COLLECTION_MESSAGES).snapshotChanges();
+        return this.angularFirestore.collection(COLLECTION_USERS).doc(userId)
+            .collection(COLLECTION_CHATS).doc(receiverId)
+            .collection(COLLECTION_MESSAGES).snapshotChanges();
     }
 
     public sendMessage(sender: any, receiver: any, message: any) {
         return new Promise(async resolve => {
             // create chat
-            await this.angularFirestore.collection(COLLECTION_USERS).doc(receiver.id).collection(COLLECTION_CHATS).doc(sender.id).set({name: sender.name, lastDate: message.date, lastMessage: message.message, unread: true});
-            await this.angularFirestore.collection(COLLECTION_USERS).doc(sender.id).collection(COLLECTION_CHATS).doc(receiver.id).set({name: receiver.name, lastDate: message.date, lastMessage: message.message});
+            await this.angularFirestore.collection(COLLECTION_USERS).doc(receiver.id)
+                .collection(COLLECTION_CHATS).doc(sender.id)
+                .set({name: sender.name, lastDate: message.date, lastMessage: message.message, unread: true});
+            await this.angularFirestore.collection(COLLECTION_USERS).doc(sender.id)
+                .collection(COLLECTION_CHATS).doc(receiver.id)
+                .set({name: receiver.name, lastDate: message.date, lastMessage: message.message});
             // add message
-            await this.angularFirestore.collection(COLLECTION_USERS).doc(receiver.id).collection(COLLECTION_CHATS).doc(sender.id).collection(COLLECTION_MESSAGES).add(message);
-            await this.angularFirestore.collection(COLLECTION_USERS).doc(sender.id).collection(COLLECTION_CHATS).doc(receiver.id).collection(COLLECTION_MESSAGES).add(message);
+            await this.angularFirestore.collection(COLLECTION_USERS).doc(receiver.id)
+                .collection(COLLECTION_CHATS).doc(sender.id)
+                .collection(COLLECTION_MESSAGES).add(message);
+            await this.angularFirestore.collection(COLLECTION_USERS).doc(sender.id)
+                .collection(COLLECTION_CHATS).doc(receiver.id)
+                .collection(COLLECTION_MESSAGES).add(message);
             resolve();
         });
     }
@@ -63,7 +74,9 @@ export class FirebaseChatService {
         //             resolve();
         //         }).catch(_ => reject());
         // });
-        return this.angularFirestore.collection(COLLECTION_USERS).doc(senderId).collection(COLLECTION_CHATS).doc(receiverId).update({ unread: false });
+        return this.angularFirestore.collection(COLLECTION_USERS).doc(senderId)
+            .collection(COLLECTION_CHATS).doc(receiverId)
+            .update({ unread: false });
     }
 
 }

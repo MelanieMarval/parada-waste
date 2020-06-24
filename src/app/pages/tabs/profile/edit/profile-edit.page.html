@@ -1,0 +1,38 @@
+<ion-header class="header">
+    <app-toolbar [showName]="false" [transparent]="true"></app-toolbar>
+    <ion-avatar class="header-avatar">
+        <ion-icon name="create" size="large" color="light"></ion-icon>
+        <ion-img [src]="user.photo ? user.photo : 'assets/img/avatar/hombre.jpg'"></ion-img>
+    </ion-avatar>
+    <ion-toolbar color="primary" class="header-detail toolbar-transparent">
+        <ion-title class="ion-text-center">
+            <span>{{user.name}}</span>
+            <p class="ion-text-capitalize">{{user.role}} ({{user.created_at | date: 'shortDate'}})</p>
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-list>
+        <ion-item-divider>
+            <ion-label color="tertiary">{{'profile.details.title' | translate}}</ion-label>
+        </ion-item-divider>
+        <form [formGroup]="form" (ngSubmit)="validate()">
+            <ion-item-group class="ion-padding-horizontal">
+                <ion-item lines="none">
+                    <ion-icon slot="start" name="call" color="medium"></ion-icon>
+                    <ion-label position="floating">Name</ion-label>
+                    <ion-input type="text" formControlName="name"></ion-input>
+                </ion-item>
+                <ion-item lines="full">
+                    <ion-icon slot="start" name="mail" color="medium"></ion-icon>
+                    <ion-label position="floating">{{'profile.details.email' | translate}}</ion-label>
+                    <ion-input type="email" formControlName="email"></ion-input>
+                </ion-item>
+            </ion-item-group>
+        </form>
+
+    </ion-list>
+
+</ion-content>

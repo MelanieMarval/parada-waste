@@ -17,8 +17,11 @@
         "title": "Historic",
         "tabs": {
             "all": "All",
+            "allEmpty": "You still have no journey",
             "assigned": "Assigned",
-            "finished": "Finished"
+            "assignedEmpty": "You have no assigned journey",
+            "finished": "Finished",
+            "finishedEmpty": "You have no finished journey"
         },
         "card": {
             "order": "Order",
@@ -54,6 +57,7 @@
     },
     "journey": {
         "title": "Journey",
+        "businessName": "Business Name",
         "prompt": {
             "title": "Enter mileage",
             "buttonCancel": "Cancel",
@@ -69,5 +73,9 @@
 
     "button": {
         "cancel": "Cancel"
+    },
+
+    "form": {
+        "required": "This field is required"
     }
 }

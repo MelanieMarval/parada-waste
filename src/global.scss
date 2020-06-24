@@ -8,16 +8,13 @@
  * For more information on global stylesheets, visit the documentation:
  * https://ionicframework.com/docs/layout/global-stylesheets
  */
-
 /* Core CSS required for Ionic components to work properly */
 @import "~@ionic/angular/css/core.css";
-
 /* Basic CSS for apps built with Ionic */
 @import "~@ionic/angular/css/normalize.css";
 @import "~@ionic/angular/css/structure.css";
 @import "~@ionic/angular/css/typography.css";
 @import '~@ionic/angular/css/display.css';
-
 /* Optional CSS utils that can be commented out */
 @import "~@ionic/angular/css/padding.css";
 @import "~@ionic/angular/css/float-elements.css";
@@ -26,24 +23,39 @@
 @import "~@ionic/angular/css/flex-utils.css";
 
 
+.error-text {
+  color: var(--ion-color-danger);
+  font-size: small;
+  padding-left: 5px;
+}
+
 .d-flex {
   display: flex;
 }
+
 .w-100 {
   width: 100%;
 }
+.h-100 {
+  height: 100%;
+}
+
 ion-toolbar.ios {
   --border-width: 0 !important;
 }
+
 .toolbar-transparent {
   --ion-color-base: transparent !important;
 }
+
 .prompt-primary {
   .alert-wrapper {
     background: var(--ion-color-primary);
+
     .alert-title, .alert-input, .alert-button {
       color: #FFF;
     }
+
     .alert-input-group {
       padding-top: 0;
       padding-bottom: 0;
@@ -59,6 +71,7 @@ a[rel='noopener'] div img, .gmnoprint {
 .gm-style-iw, .gm-style-iw-c {
   display: none;
 }
+
 /* PROGRESS BAR CONTAINER */
 .progress-bar-container {
   height: 5px;
@@ -66,10 +79,23 @@ a[rel='noopener'] div img, .gmnoprint {
   position: fixed;
   z-index: 10;
 }
+
 .md + .progress-bar-container {
   top: 56px;
 }
+
 .ios + .progress-bar-container {
   top: 44px;
 }
+
 /* END progress bar */
+ion-item-divider {
+  border-bottom-width: 0;
+  &.with-line {
+    border-top: 8px solid #EEE;
+    ion-label {
+      margin-top: 21px;
+    }
+  }
+}
+

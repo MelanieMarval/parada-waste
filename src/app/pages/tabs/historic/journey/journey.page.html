@@ -4,7 +4,7 @@
             <ion-back-button defaultHref="/tabs/historic"></ion-back-button>
         </ion-buttons>
         <ion-title>
-            {{'journey.title' | translate}} {{travelCode}}
+            {{'journey.title' | translate}} {{travel.type}}
         </ion-title>
     </ion-toolbar>
 </ion-header>
@@ -14,12 +14,33 @@
     <ion-card>
         <ion-card-header>
             <p class="detail-p">
-                <ion-text color="tertiary">{{'historic.card.beginIn' | translate}}:</ion-text>
-                {{travel.positionBegin}}
+                <ion-text color="tertiary">{{'journey.businessName' | translate}}:</ion-text>
+                {{travel.business_name}}
             </p>
-            <p class="detail-p">
+            <p class="detail-p detail-location">
+                <ion-text color="tertiary">{{'historic.card.beginIn' | translate}}:</ion-text>
+                {{travel.location_begin?.address_text}}
+            </p>
+            <p class="detail-p detail-location">
                 <ion-text color="tertiary">{{'historic.card.endIn' | translate}}:</ion-text>
-                {{travel.positionEnd}}
+                {{travel.location_end ? travel.location_end?.address_text : 'Aun no hay destino'}}
+            </p>
+        </ion-card-header>
+        <ion-item-divider class="with-line">
+            <ion-label color="tertiary">{{'profile.options.title' | translate}}</ion-label>
+        </ion-item-divider>
+        <ion-card-header>
+            <p class="detail-p">
+                <ion-text color="tertiary">{{'journey.businessName' | translate}}:</ion-text>
+                {{travel.business_name}}
+            </p>
+            <p class="detail-p detail-location">
+                <ion-text color="tertiary">{{'historic.card.beginIn' | translate}}:</ion-text>
+                {{travel.location_begin?.address_text}}
+            </p>
+            <p class="detail-p detail-location">
+                <ion-text color="tertiary">{{'historic.card.endIn' | translate}}:</ion-text>
+                {{travel.location_end ? travel.location_end?.address_text : 'Aun no hay destino'}}
             </p>
         </ion-card-header>
 

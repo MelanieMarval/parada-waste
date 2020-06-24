@@ -1,12 +1,12 @@
 <ion-header class="header">
     <app-toolbar [showName]="false" [transparent]="true"></app-toolbar>
     <ion-avatar class="header-avatar">
-        <ion-img src="assets/img/avatar/hombre.jpg"></ion-img>
+        <ion-img [src]="user.photo ? user.photo : 'assets/img/avatar/hombre.jpg'"></ion-img>
     </ion-avatar>
     <ion-toolbar color="primary" class="header-detail toolbar-transparent">
         <ion-title class="ion-text-center">
-            <span>Juan Perez</span>
-            <p>Conductor (Madrid)</p>
+            <span>{{user.name}}</span>
+            <p class="ion-text-capitalize">{{user.role}} ({{user.created_at | date: 'shortDate'}})</p>
         </ion-title>
     </ion-toolbar>
 </ion-header>
@@ -14,13 +14,16 @@
 <ion-content>
 
     <ion-list>
-        <ion-item-divider><ion-label color="tertiary">{{'profile.details.title' | translate}}</ion-label></ion-item-divider>
+        <ion-item-divider>
+            <ion-label color="tertiary">{{'profile.details.title' | translate}}</ion-label>
+            <ion-icon name="create" slot="end" color="tertiary" class="ion-margin-end" routerLink="edit"></ion-icon>
+        </ion-item-divider>
         <ion-item-group class="ion-padding-horizontal">
             <ion-item lines="full">
                 <ion-icon slot="start" name="mail" color="medium"></ion-icon>
                 <ion-label>
                     <h3>{{'profile.details.email' | translate}}</h3>
-                    <p>juanperez35@gmail.com</p>
+                    <p>{{user.email}}</p>
                 </ion-label>
             </ion-item>
             <ion-item lines="none">

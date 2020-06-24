@@ -11,6 +11,7 @@ import {
     MyLocation,
     GoogleMapOptions
 } from '@ionic-native/google-maps';
+import { IntentProvider } from '../../../../providers/intentProvider';
 
 const removeDefaultMarkers = [
     {
@@ -38,6 +39,7 @@ export class JourneyPage implements OnInit {
                 private router: Router,
                 private platform: Platform,
                 private alertController: AlertController,
+                private intentProvider: IntentProvider,
                 private translate: TranslateService) {
         this.travelCode = route.snapshot.params.code;
     }
@@ -46,17 +48,7 @@ export class JourneyPage implements OnInit {
         this.platform.ready();
         // this.loadMap();
         // get Travel by code and use interface with data
-        this.travel = {
-            id: 545454,
-            code: this.travelCode,
-            positionBegin: 'SEDE Venezuela',
-            positionEnd: 'calle 156 c/c 189 Urb. Alianza, El Mirador, Bolivar',
-            status: 'PENDING', // PENDING, PROCESS, DONE, CANCEL
-            mileage: 15000,
-            processedAt: null,
-            doneAt: null,
-            cancelAt: null
-        };
+        this.travel = this.intentProvider.orderToView;
     }
 
     loadMap() {

@@ -17,8 +17,11 @@
         "title": "Histórico",
         "tabs": {
             "all": "Todos",
+            "allEmpty": "Todavia no tienes ningun viaje",
             "assigned": "Asignados",
-            "finished": "Terminados"
+            "assignedEmpty": "No tienes viajes assignados",
+            "finished": "Terminados",
+            "finishedEmpty": "No tienes viajes terminados"
         },
         "card": {
             "order": "Orden",
@@ -54,6 +57,7 @@
     },
     "journey": {
         "title": "Viaje",
+        "businessName": "Nombre de la empresa",
         "prompt": {
             "title": "Introduzca kilometraje",
             "buttonCancel": "Cancelar",
@@ -70,5 +74,10 @@
 
     "button": {
         "cancel": "Cancelar"
+    },
+
+
+    "form": {
+        "required": "Este campo es requerido"
     }
 }

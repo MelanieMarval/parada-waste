@@ -1,5 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpHeaders} from '@angular/common/http';
+import { StorageService } from './storage.service';
+import { PlatformUtils } from '../utils/platform.utils';
 
 @Injectable({
     providedIn: 'root'
@@ -7,24 +9,21 @@ import {HttpHeaders} from '@angular/common/http';
 export class ApiService {
 
     public url = 'https://paradawastebk.tusitioenlared.com/api/v1/';
-    public deviceToken = 'd41d8cd98f00b204e9800998ecf8427e';
-    public accessToken = '';
+    public testDeviceToken = 'test-browser-emulator-mobile';
 
-    constructor() {
-    }
+    constructor(private storage: StorageService) { }
 
-
-    getHeaderLogin() {
+    async getHeaders(requestAuth = true) {
         let header = new HttpHeaders();
-        header = header.append('device_token', this.deviceToken);
-        return {headers: header};
+        let deviceToken = this.testDeviceToken;
+        if (!PlatformUtils.isTest()) {
+            deviceToken = await this.storage.getDeviceToken();
+        }
+        header = header.append('device_token', deviceToken);
+        if (requestAuth) {
+            const accessToken = await this.storage.getAccessToken();
+            header = header.append('Authorization', `Bearer ${accessToken}`);
+        }
+        return { headers: header };
     }
-
-    getHeaders() {
-        let header = new HttpHeaders();
-        header = header.append('device_token', this.deviceToken);
-        header = header.append('Authorization', `Bearer ${this.accessToken}`);
-        return {headers: header};
-    }
-
 }

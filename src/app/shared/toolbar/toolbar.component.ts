@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { IntentProvider } from '../../providers/intentProvider';
+import { StorageService } from '../../services/storage.service';
 
 @Component({
     selector: 'app-toolbar',
@@ -10,12 +12,15 @@ export class ToolbarComponent implements OnInit {
 
     @Input() showName = true;
     @Input() transparent = false;
-    @Input() username = 'Juan Perez';
+    @Input() username = '';
 
-    constructor(private router: Router) {
+    constructor(private router: Router,
+                private storage: StorageService) {
     }
 
-    ngOnInit() {
+    async ngOnInit() {
+        const driver = await this.storage.getDriver();
+        this.username = driver.name;
     }
 
     openChats() {

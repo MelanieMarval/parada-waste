@@ -3,6 +3,9 @@
     ion-text {
         font-weight: bold;
     }
+    &.detail-location {
+        margin-bottom: 2px;
+    }
 }
 .map {
     margin: 0 16px;

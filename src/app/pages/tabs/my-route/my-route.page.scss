@@ -6,10 +6,14 @@
         height: 2rem;
     }
 }
-.button-cancel {
+.button-collapse {
     position: absolute;
     right: 16px;
     z-index: 1;
+}
+.button-cancel {
+    display: flex;
+    justify-content: flex-end;
 }
 
 #map_canvas {
@@ -17,6 +21,7 @@
     top: 0;
     width: 100%;
     height: 100%;
+    z-index: -1;
 }
 
 .card-status {

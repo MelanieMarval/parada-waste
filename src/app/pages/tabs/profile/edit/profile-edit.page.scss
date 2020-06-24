@@ -5,6 +5,11 @@
         height: 112px;
         margin: 0 auto;
         border: 2px solid;
+        position: relative;
+        ion-icon {
+            position: absolute;
+            right: 0;
+        }
     }
     &-detail {
         margin: 16px 0;

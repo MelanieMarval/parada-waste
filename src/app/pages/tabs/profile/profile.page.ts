@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
+import { IntentProvider } from '../../../providers/intentProvider';
+import { StorageService } from '../../../services/storage.service';
 
 @Component({
     selector: 'app-profile',
@@ -11,14 +14,18 @@ import { Router } from '@angular/router';
 export class ProfilePage implements OnInit {
 
     lang: string;
+    user: any = {};
 
     constructor(private translate: TranslateService,
                 private alertController: AlertController,
-                private router: Router) {
+                private router: Router,
+                private authService: AuthService,
+                private storage: StorageService) {
     }
 
-    ngOnInit(): void {
+    async ngOnInit(){
         this.lang = this.translate.getDefaultLang();
+        this.user = await this.storage.getDriver();
         console.log('-> this.lang', this.lang);
     }
 
@@ -42,12 +49,20 @@ export class ProfilePage implements OnInit {
                 }, {
                     text: text.btnYes,
                     handler: () => {
-                        this.router.navigateByUrl('/login');
+                        this.logout();
                     }
                 }
             ]
         });
 
         await alert.present();
+    }
+
+    private logout() {
+        this.authService.logout()
+            .then(async res => {
+                await this.storage.setLogged(false);
+                this.router.navigateByUrl('/login');
+            }).catch(e => console.log(e));
     }
 }

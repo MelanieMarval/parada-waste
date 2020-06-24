@@ -1,32 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FirebaseChatService } from '../../../services/firebase-chat.service';
-import { DocumentChangeType } from '@angular/fire/firestore';
+import { OrderService } from '../../../services/order.service';
+import { IntentProvider } from '../../../providers/intentProvider';
 
 @Component({
     selector: 'app-historic',
     templateUrl: 'historic.page.html',
-    styleUrls: ['historic.page.scss']
+    styleUrls: ['historic.page.scss'],
 })
 export class HistoricPage implements OnInit {
 
-    private segmentSelected = 'all';
-    users: any[] = [];
-    name: string;
+    segmentSelected = 'all';
+    orders: any[] = [];
 
-    constructor(private firebaseSevice: FirebaseChatService) {
+    constructor(private orderService: OrderService,
+                private router: Router,
+                private intentProvider: IntentProvider) {
     }
 
     ngOnInit(): void {
-        this.firebaseSevice.getAllUsers()
-            .subscribe((res: any) => {
+        this.getOrders();
+    }
+
+    getOrders() {
+        this.orderService.getOrders()
+            .then((res: any) => {
                 console.log('-> res', res);
-                const newUsers = [];
-                res.forEach(x => {
-                    newUsers.push(x.payload.doc.data());
-                });
-                this.users = newUsers;
-                console.log('-> this.users', this.users);
+                this.orders = res;
             });
     }
 
@@ -34,22 +34,18 @@ export class HistoricPage implements OnInit {
         this.segmentSelected = $event.detail.value;
     }
 
-    viewDetails() {
-        console.log('-> ver detalles');
+    viewDetails(order: any) {
+        console.log('-> ver detalles', order);
+        this.intentProvider.orderToView = order;
+        this.router.navigate(['tabs', 'historic', 'journey', order.id]);
     }
 
-    processForm(event: any) {
-        console.log('-> event', event);
-        this.firebaseSevice.create({name: this.name})
-            .then((res) => {
-                console.log('Usuario creado!');
-                console.log('-> res', res);
-                // this.users.push();
-            }, (error) => {
-                console.error(error);
-            });
 
-
+    filterOrders(status: string) {
+        return this.orders.filter(order => {
+            if (order.status === status) {
+                return order;
+            }
+        });
     }
-
 }

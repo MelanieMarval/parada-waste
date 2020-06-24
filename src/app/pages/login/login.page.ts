@@ -1,6 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {AuthService} from '../../services/auth-service.service';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { StorageService } from '../../services/storage.service';
+import { Router } from '@angular/router';
+import { IntentProvider } from '../../providers/intentProvider';
+import { ToastController } from '@ionic/angular';
 
 @Component({
     selector: 'app-login',
@@ -10,8 +14,14 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 export class LoginPage implements OnInit {
 
     form: FormGroup;
+    submitted = false;
+    sending = false;
 
-    constructor(private authService: AuthService) {
+    constructor(private authService: AuthService,
+                private storage: StorageService,
+                private router: Router,
+                private intentProvider: IntentProvider,
+                private toastController: ToastController) {
     }
 
     ngOnInit(): void {
@@ -22,26 +32,58 @@ export class LoginPage implements OnInit {
     }
 
     login() {
+        this.submitted = true;
         if (this.form.valid) {
             const user = {
                 email: this.form.get('email').value,
                 password: this.form.get('password').value
             };
+            this.sending = true;
             this.authService.login(user)
-                .then((res: any) => {
+                .then(async (res: any) => {
                     console.log('-> res', res);
-                    this.auth(res.access_token, user);
-                }).catch(_ => console.log('error'));
-        } else {
-
+                    await this.storage.setAccessToken(res.access_token);
+                    this.auth(user);
+                }).catch(e => this.handleError(e));
         }
     }
 
-    private auth(accessToken, user) {
-        this.authService.auth(user, accessToken)
-            .then(res => {
+    private auth(user) {
+        this.authService.getDriver(user)
+            .then(async res => {
                 console.log('-> res', res);
-            }).catch(_ => console.log('error'));
+                this.sending = false;
+                this.form.reset();
+                this.intentProvider.userParadaWaste = res;
+                await this.storage.setDriver(res);
+                await this.router.navigateByUrl('/tabs');
+            }).catch(e => this.handleError(e));
     }
+
+    async handleError(error) {
+        this.sending = false;
+        let message = '';
+        if (error.status === 401) {
+            message = 'Your email or password are incorrect. Verify!';
+        }
+        if (error.status === 0) {
+            console.log('Check your internet connection');
+        }
+
+        const toast = await this.toastController.create({
+            header: 'Error!',
+            message,
+            position: 'bottom',
+            color: 'dark',
+            mode: 'ios',
+            buttons: [{
+                    text: 'Ok',
+                    role: 'cancel'
+                }
+            ]
+        });
+        await toast.present();
+    }
+
 
 }

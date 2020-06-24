@@ -8,6 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { NotificationsService } from './services/notifications.service';
 import { PlatformUtils } from './utils/platform.utils';
 import { Router } from '@angular/router';
+import { StorageService } from './services/storage.service';
 
 @Component({
     selector: 'app-root',
@@ -23,10 +24,9 @@ export class AppComponent {
         private statusBar: StatusBar,
         private translate: TranslateService,
         private router: Router,
-        private notificationsService: NotificationsService
+        private notificationsService: NotificationsService,
+        private storage: StorageService
     ) {
-        const current = this.translate.getBrowserLang();
-        console.log('-> current', current);
         this.translate.setDefaultLang(this.activeLang);
         this.initializeApp();
     }
@@ -39,6 +39,7 @@ export class AppComponent {
             if (!PlatformUtils.isTest()) {
                 this.notificationsService.initConfig();
             }
+            this.verifySession();
         });
         this.platform.backButton.subscribeWithPriority(10,
             (processNextHandler) => {
@@ -49,5 +50,13 @@ export class AppComponent {
                 }
             }
         );
+    }
+
+    async verifySession() {
+        if (await this.storage.isLogged()) {
+            this.router.navigateByUrl('/tabs');
+        } else {
+            this.router.navigateByUrl('/login');
+        }
     }
 }

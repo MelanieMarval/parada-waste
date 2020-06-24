@@ -19,6 +19,7 @@ import { AngularFireModule } from '@angular/fire';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { IonicStorageModule } from '@ionic/storage';
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import { AppComponent } from './app.component';
         AngularFireModule.initializeApp(firebaseConfig),
         AngularFireDatabaseModule,
         AngularFireStorageModule,
+        IonicStorageModule.forRoot()
     ],
     providers: [
         StatusBar,

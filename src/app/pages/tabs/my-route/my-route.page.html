@@ -9,9 +9,9 @@
     <div *ngIf="hasTravel">
         <ion-card class="card-status" color="light" [ngClass]="{'card-hidden': collapse}" (click)="collapse = !collapse">
             <ion-card-header>
-                <div class="button-cancel">
+                <div class="button-collapse">
                     <ion-icon class="icon-collapse" *ngIf="collapse" name="chevron-down-outline" size=""></ion-icon>
-                    <ion-icon class="icon-collapse" *ngIf="!collapse" name="chevron-back-outline" size=""></ion-icon>
+                    <ion-icon class="icon-collapse" *ngIf="!collapse" name="chevron-up-outline" size=""></ion-icon>
                 </div>
                 <ion-card-title>Journey #8840</ion-card-title>
                 <ion-card-subtitle><b>Receptor:</b> Julia Herrera</ion-card-subtitle>
@@ -25,9 +25,11 @@
                     <ion-text color="tertiary">{{'historic.card.endIn' | translate}}:</ion-text>
                     {{travel.positionEnd}}
                 </p>
-                <ion-button size="small" color="danger" class="ion-margin-top" (click)="confirmCancel($event)">
-                    {{'button.cancel' | translate}}
-                </ion-button>
+                <div class="button-cancel">
+                    <ion-button size="small" color="danger" (click)="confirmCancel($event)">
+                        {{'button.cancel' | translate}}
+                    </ion-button>
+                </div>
             </ion-card-content>
         </ion-card>
     </div>
