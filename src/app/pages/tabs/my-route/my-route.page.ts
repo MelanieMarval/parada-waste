@@ -9,7 +9,8 @@ import {
     GoogleMapsAnimation,
     GoogleMapsEvent,
     Marker,
-    MyLocation
+    MyLocation,
+    ILatLng,
 } from '@ionic-native/google-maps';
 
 const removeDefaultMarkers = [
@@ -17,15 +18,15 @@ const removeDefaultMarkers = [
         featureType: 'poi',
         elementType: 'labels',
         stylers: [
-            {visibility: 'off'}
-        ]
-    }
+            {visibility: 'off'},
+        ],
+    },
 ];
 
 @Component({
     selector: 'app-my-route',
     templateUrl: 'my-route.page.html',
-    styleUrls: ['my-route.page.scss']
+    styleUrls: ['my-route.page.scss'],
 })
 export class MyRoutePage implements OnInit, AfterViewInit {
 
@@ -52,7 +53,7 @@ export class MyRoutePage implements OnInit, AfterViewInit {
             mileage: 15000,
             processedAt: new Date(),
             doneAt: null,
-            cancelAt: null
+            cancelAt: null,
         };
     }
 
@@ -68,19 +69,21 @@ export class MyRoutePage implements OnInit, AfterViewInit {
             // api key for server
             API_KEY_FOR_BROWSER_RELEASE: 'AIzaSyD3t5VAdEBMdICcY9FyVcgBHlkeu72OI4s',
             // api key for local development
-            API_KEY_FOR_BROWSER_DEBUG: 'AIzaSyD3t5VAdEBMdICcY9FyVcgBHlkeu72OI4s'
+            API_KEY_FOR_BROWSER_DEBUG: 'AIzaSyD3t5VAdEBMdICcY9FyVcgBHlkeu72OI4s',
         });
+
+        const bounds: ILatLng[] = [
+            {lat: 40.712216, lng: -74.22655},
+            {lat: 40.773941, lng: -74.12544},
+        ];
 
         const options: GoogleMapOptions = {
             camera: {
-                target: {
-                    lat: 43.0741704,
-                    lng: -89.3809802
-                },
+                target: bounds,
                 zoom: 18,
-                tilt: 30
+                tilt: 30,
             },
-            styles: removeDefaultMarkers
+            styles: removeDefaultMarkers,
         };
         this.map = GoogleMaps.create('map_canvas', options);
 
@@ -100,47 +103,47 @@ export class MyRoutePage implements OnInit, AfterViewInit {
         // this.goToMyLocation();
     }
 
-    goToMyLocation() {
-        this.map.clear();
-
-        // Get the location of you
-        this.map.getMyLocation().then((location: MyLocation) => {
-            console.log(JSON.stringify(location, null, 2));
-
-            // Move the map camera to the location with animation
-            this.map.animateCamera({
-                target: location.latLng,
-                zoom: 17,
-                duration: 5000
-            });
-
-            // add a marker
-            const marker: Marker = this.map.addMarkerSync({
-                title: '@ionic-native/google-maps plugin!',
-                snippet: 'This plugin is awesome!',
-                position: location.latLng,
-                animation: GoogleMapsAnimation.BOUNCE
-            });
-
-            // show the infoWindow
-            marker.showInfoWindow();
-
-            // If clicked it, display the alert
-            marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
-                console.log('clicked!');
-            });
-
-            this.map.on(GoogleMapsEvent.MAP_READY).subscribe(
-                (data) => {
-                    console.log('Click MAP', data);
-                }
-            );
-        })
-            .catch(err => {
-                // this.loading.dismiss();
-                console.log(err.error_message);
-            });
-    }
+    // goToMyLocation() {
+    //     this.map.clear();
+    //
+    //     // Get the location of you
+    //     this.map.getMyLocation().then((location: MyLocation) => {
+    //         console.log(JSON.stringify(location, null, 2));
+    //
+    //         // Move the map camera to the location with animation
+    //         this.map.animateCamera({
+    //             target: location.latLng,
+    //             zoom: 17,
+    //             duration: 5000,
+    //         });
+    //
+    //         // add a marker
+    //         const marker: Marker = this.map.addMarkerSync({
+    //             title: '@ionic-native/google-maps plugin!',
+    //             snippet: 'This plugin is awesome!',
+    //             position: location.latLng,
+    //             animation: GoogleMapsAnimation.BOUNCE,
+    //         });
+    //
+    //         // show the infoWindow
+    //         marker.showInfoWindow();
+    //
+    //         // If clicked it, display the alert
+    //         marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
+    //             console.log('clicked!');
+    //         });
+    //
+    //         this.map.on(GoogleMapsEvent.MAP_READY).subscribe(
+    //             (data) => {
+    //                 console.log('Click MAP', data);
+    //             },
+    //         );
+    //     })
+    //         .catch(err => {
+    //             // this.loading.dismiss();
+    //             console.log(err.error_message);
+    //         });
+    // }
 
     async confirmCancel($event: MouseEvent) {
         $event.stopPropagation();
@@ -155,16 +158,16 @@ export class MyRoutePage implements OnInit, AfterViewInit {
                     cssClass: 'secondary',
                     handler: (blah) => {
                         console.log('Confirm Cancel: blah');
-                    }
+                    },
                 }, {
                     text: 'Si, cancelar',
                     handler: () => {
                         this.travel.cancelAt = new Date();
                         this.travel.status = 'CANCEL';
                         this.hasTravel = false;
-                    }
-                }
-            ]
+                    },
+                },
+            ],
         });
 
         await alert.present();
@@ -180,8 +183,8 @@ export class MyRoutePage implements OnInit, AfterViewInit {
                 component: FinishRoutePage,
                 componentProps: {
                     aParameter: true,
-                    otherParameter: new Date()
-                }
+                    otherParameter: new Date(),
+                },
             });
 
         modal.onDidDismiss().then((detail: any) => {

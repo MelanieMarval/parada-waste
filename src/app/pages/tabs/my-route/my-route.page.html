@@ -7,7 +7,7 @@
     <app-background-empty *ngIf="!hasTravel" [title]="'myRoute.ifEmpty.title' | translate" [text]="'myRoute.ifEmpty.text' | translate"></app-background-empty>
 
     <div *ngIf="hasTravel">
-        <ion-card class="card-status" color="light" [ngClass]="{'card-hidden': collapse}" (click)="collapse = !collapse">
+        <ion-card class="card-status" [ngClass]="{'card-hidden': collapse}" (click)="collapse = !collapse">
             <ion-card-header>
                 <div class="button-collapse">
                     <ion-icon class="icon-collapse" *ngIf="collapse" name="chevron-down-outline" size=""></ion-icon>

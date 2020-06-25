@@ -26,6 +26,7 @@
 
 .card-status {
     //height: 100%;
+    --background: #FFF;
     transition: height 2s linear 1s;
     &.card-hidden {
         height: 90px;

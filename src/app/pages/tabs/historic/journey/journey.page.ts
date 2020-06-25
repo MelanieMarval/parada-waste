@@ -9,7 +9,7 @@ import {
     Marker,
     GoogleMapsAnimation,
     MyLocation,
-    GoogleMapOptions
+    GoogleMapOptions, Environment,
 } from '@ionic-native/google-maps';
 import { IntentProvider } from '../../../../providers/intent.provider';
 
@@ -18,15 +18,15 @@ const removeDefaultMarkers = [
         featureType: 'poi',
         elementType: 'labels',
         stylers: [
-            {visibility: 'off'}
-        ]
-    }
+            {visibility: 'off'},
+        ],
+    },
 ];
 
 @Component({
     selector: 'app-journey',
     templateUrl: 'journey.page.html',
-    styleUrls: ['journey.page.scss']
+    styleUrls: ['journey.page.scss'],
 })
 export class JourneyPage implements OnInit {
 
@@ -46,39 +46,46 @@ export class JourneyPage implements OnInit {
 
     ngOnInit(): void {
         this.platform.ready();
-        // this.loadMap();
+        this.loadMap();
         // get Travel by code and use interface with data
         this.travel = this.intentProvider.orderToView;
     }
 
     loadMap() {
+        Environment.setEnv({
+            // api key for server
+            API_KEY_FOR_BROWSER_RELEASE: 'AIzaSyD3t5VAdEBMdICcY9FyVcgBHlkeu72OI4s',
+            // api key for local development
+            API_KEY_FOR_BROWSER_DEBUG: 'AIzaSyD3t5VAdEBMdICcY9FyVcgBHlkeu72OI4s',
+        });
+
         const options: GoogleMapOptions = {
             camera: {
                 target: {
                     lat: 43.0741704,
-                    lng: -89.3809802
+                    lng: -89.3809802,
                 },
                 zoom: 18,
-                tilt: 1 // 30
+                tilt: 1, // 30
             },
             // styles: removeDefaultMarkers
         };
-        this.map = GoogleMaps.create('map_canvas', options);
+        this.map = GoogleMaps.create('map_canvas_journey', options);
         this.goToMyLocation();
     }
 
-    goToMyLocation(){
+    goToMyLocation() {
         this.map.clear();
 
         // Get the location of you
         this.map.getMyLocation().then((location: MyLocation) => {
-            console.log(JSON.stringify(location, null ,2));
+            console.log(JSON.stringify(location, null, 2));
 
             // Move the map camera to the location with animation
             this.map.animateCamera({
                 target: location.latLng,
                 zoom: 17,
-                duration: 5000
+                duration: 5000,
             });
 
             // add a marker
@@ -86,7 +93,7 @@ export class JourneyPage implements OnInit {
                 title: '@ionic-native/google-maps plugin!',
                 snippet: 'This plugin is awesome!',
                 position: location.latLng,
-                animation: GoogleMapsAnimation.BOUNCE
+                animation: GoogleMapsAnimation.BOUNCE,
             });
 
             // show the infoWindow
@@ -100,7 +107,7 @@ export class JourneyPage implements OnInit {
             this.map.on(GoogleMapsEvent.MAP_READY).subscribe(
                 (data) => {
                     console.log('Click MAP', data);
-                }
+                },
             );
         })
             .catch(err => {
@@ -117,7 +124,7 @@ export class JourneyPage implements OnInit {
             inputs: [{
                 name: 'mileage',
                 type: 'number',
-                value: 0
+                value: 0,
             }],
             buttons: [
                 {
@@ -126,7 +133,7 @@ export class JourneyPage implements OnInit {
                     cssClass: 'light',
                     handler: () => {
                         console.log('Confirm Cancel');
-                    }
+                    },
                 }, {
                     text: text.buttonAccept,
                     cssClass: 'light',
@@ -135,9 +142,9 @@ export class JourneyPage implements OnInit {
                         if (alertData.mileage > 0) {
                             this.router.navigateByUrl('/tabs/my-route');
                         }
-                    }
-                }
-            ]
+                    },
+                },
+            ],
         });
         await alert.present();
     }
