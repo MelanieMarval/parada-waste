@@ -72,10 +72,12 @@
 
 
     "button": {
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "save": "Save"
     },
 
     "form": {
-        "required": "This field is required"
+        "required": "This field is required",
+        "email": "It's not a valid email"
     }
 }

@@ -11,7 +11,7 @@
                     <ion-icon name="person" slot="start"></ion-icon>
                     <ion-input type="email" [disabled]="sending" [placeholder]="'login.input.user' | translate" formControlName="email"></ion-input>
                 </ion-item>
-                <span *ngIf="form.get('email').errors?.required && submitted" class="error-text">{{'form.required' | translate}}</span>
+                <small *ngIf="form.get('email').errors?.required && submitted" class="error-text">{{'form.required' | translate}}</small>
             </div>
             <div class="login-input-container">
                 <!--        <ion-label class="login-input-label">Contraseña</ion-label>-->
@@ -19,7 +19,7 @@
                     <ion-icon name="lock-closed" slot="start"></ion-icon>
                     <ion-input type="password" [disabled]="sending" [placeholder]="'login.input.pass' | translate" formControlName="password"></ion-input>
                 </ion-item>
-                <span *ngIf="form.get('password').errors?.required && submitted" class="error-text">{{'form.required' | translate}}</span>
+                <small *ngIf="form.get('password').errors?.required && submitted" class="error-text">{{'form.required' | translate}}</small>
             </div>
             <ion-button class="login-button" color="primary" type="submit"
                         expand="block">

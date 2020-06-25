@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { FirebaseChatService } from '../../../services/firebase-chat.service';
-import { IntentProvider } from '../../../providers/intentProvider';
+import { IntentProvider } from '../../../providers/intent.provider';
 import { Message } from '../../../services/interfaces/message';
+import { StorageService } from '../../../services/storage.service';
 
 @Component({
     selector: 'app-chat',
@@ -21,11 +22,12 @@ export class ChatComponent implements OnInit {
 
     constructor(private modalController: ModalController,
                 private intentProvider: IntentProvider,
+                private storage: StorageService,
                 private chatService: FirebaseChatService) {
     }
 
-    ngOnInit() {
-        this.user = this.intentProvider.userParadaWaste;
+    async ngOnInit() {
+        this.user = await this.storage.getDriver();
         this.receiverUser = this.intentProvider.chatReceiverUser;
         this.getMessages();
         this.chatService.putChatRead(this.user.id, this.receiverUser.id).then();

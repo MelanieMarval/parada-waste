@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { IntentProvider } from '../../providers/intentProvider';
+import { IntentProvider } from '../../providers/intent.provider';
 import { StorageService } from '../../services/storage.service';
 
 @Component({

@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewChecked, Component, DoCheck, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
-import { IntentProvider } from '../../../providers/intentProvider';
+import { IntentProvider } from '../../../providers/intent.provider';
 import { StorageService } from '../../../services/storage.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { StorageService } from '../../../services/storage.service';
     templateUrl: 'profile.page.html',
     styleUrls: ['profile.page.scss']
 })
-export class ProfilePage implements OnInit {
+export class ProfilePage implements OnInit, DoCheck {
 
     lang: string;
     user: any = {};
@@ -20,13 +20,21 @@ export class ProfilePage implements OnInit {
                 private alertController: AlertController,
                 private router: Router,
                 private authService: AuthService,
-                private storage: StorageService) {
+                private storage: StorageService,
+                private intentProvider: IntentProvider) {
     }
 
     async ngOnInit(){
         this.lang = this.translate.getDefaultLang();
         this.user = await this.storage.getDriver();
         console.log('-> this.lang', this.lang);
+    }
+
+    async ngDoCheck() {
+        if (this.intentProvider.updateDriver) {
+            this.intentProvider.updateDriver = false;
+            this.user = await this.storage.getDriver();
+        }
     }
 
     changeLanguage($event: any) {
@@ -63,6 +71,12 @@ export class ProfilePage implements OnInit {
             .then(async res => {
                 await this.storage.setLogged(false);
                 this.router.navigateByUrl('/login');
-            }).catch(e => console.log(e));
+            }).catch(async e => {
+                console.log(e);
+                if (e.status === 401) {
+                    await this.storage.setLogged(false);
+                    this.router.navigateByUrl('/login');
+                }
+            });
     }
 }

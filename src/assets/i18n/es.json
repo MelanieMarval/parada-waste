@@ -73,11 +73,13 @@
 
 
     "button": {
-        "cancel": "Cancelar"
+        "cancel": "Cancelar",
+        "save": "Guardar"
     },
 
 
     "form": {
-        "required": "Este campo es requerido"
+        "required": "Este campo es requerido",
+        "email": "No es un correo válido"
     }
 }

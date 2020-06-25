@@ -2,12 +2,12 @@
     <app-toolbar [showName]="false" [transparent]="true"></app-toolbar>
     <ion-avatar class="header-avatar">
         <ion-icon name="create" size="large" color="light"></ion-icon>
-        <ion-img [src]="user.photo ? user.photo : 'assets/img/avatar/hombre.jpg'"></ion-img>
+        <ion-img [src]="'assets/img/avatar/hombre.jpg'"></ion-img>
     </ion-avatar>
-    <ion-toolbar color="primary" class="header-detail toolbar-transparent">
+    <ion-toolbar color="primary" class="header-detail toolbar-transparent ion-no-border">
         <ion-title class="ion-text-center">
-            <span>{{user.name}}</span>
-            <p class="ion-text-capitalize">{{user.role}} ({{user.created_at | date: 'shortDate'}})</p>
+            <span>{{user?.name}}</span>
+            <p class="ion-text-capitalize">{{user?.role}} ({{user?.created_at | date: 'shortDate'}})</p>
         </ion-title>
     </ion-toolbar>
 </ion-header>
@@ -18,21 +18,53 @@
         <ion-item-divider>
             <ion-label color="tertiary">{{'profile.details.title' | translate}}</ion-label>
         </ion-item-divider>
-        <form [formGroup]="form" (ngSubmit)="validate()">
-            <ion-item-group class="ion-padding-horizontal">
+        <form *ngIf="user" [formGroup]="form">
+            <ion-list class="ion-padding-horizontal">
+                <ion-item lines="none">
+                    <ion-icon slot="start" name="person" color="medium"></ion-icon>
+                    <ion-label position="floating">Name</ion-label>
+                    <ion-input required type="text" formControlName="name"></ion-input>
+                </ion-item>
+                <div class="error-text">
+                    <small *ngIf="form.get('name').touched && form.get('name').errors?.required">{{'form.required' | translate}}</small>
+                </div>
                 <ion-item lines="none">
                     <ion-icon slot="start" name="call" color="medium"></ion-icon>
-                    <ion-label position="floating">Name</ion-label>
-                    <ion-input type="text" formControlName="name"></ion-input>
+                    <ion-label position="floating">Phone</ion-label>
+                    <ion-input required type="tel" formControlName="phone"></ion-input>
                 </ion-item>
+                <div class="error-text">
+                    <small *ngIf="form.get('phone').touched && form.get('phone').errors?.required">{{'form.required' | translate}}</small>
+                </div>
                 <ion-item lines="full">
                     <ion-icon slot="start" name="mail" color="medium"></ion-icon>
                     <ion-label position="floating">{{'profile.details.email' | translate}}</ion-label>
-                    <ion-input type="email" formControlName="email"></ion-input>
+                    <ion-input required type="email" formControlName="email"></ion-input>
                 </ion-item>
-            </ion-item-group>
+                <div class="error-text">
+                    <small *ngIf="form.get('email').touched && form.get('email').errors?.required">{{'form.required' | translate}}</small>
+                    <small *ngIf="form.get('email').touched && form.get('email').errors?.pattern">{{'form.email' | translate}}</small>
+                </div>
+            </ion-list>
         </form>
-
     </ion-list>
+
+    <ion-footer class="footer-button --with-col">
+        <ion-row>
+            <ion-col size="6">
+                <ion-button class="login-button" color="medium" type="submit" expand="block"
+                            [disabled]="saving" routerLink="/tabs/profile">
+                    <span>{{'button.cancel' | translate}}</span>
+                </ion-button>
+            </ion-col>
+            <ion-col size="6">
+                <ion-button class="login-button" color="primary" type="submit" expand="block" [disabled]="saving"
+                    (click)="validate()">
+                    <span *ngIf="!saving">{{'button.save' | translate}}</span>
+                    <ion-spinner *ngIf="saving"></ion-spinner>
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-footer>
 
 </ion-content>

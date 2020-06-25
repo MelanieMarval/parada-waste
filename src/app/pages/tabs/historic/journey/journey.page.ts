@@ -11,7 +11,7 @@ import {
     MyLocation,
     GoogleMapOptions
 } from '@ionic-native/google-maps';
-import { IntentProvider } from '../../../../providers/intentProvider';
+import { IntentProvider } from '../../../../providers/intent.provider';
 
 const removeDefaultMarkers = [
     {

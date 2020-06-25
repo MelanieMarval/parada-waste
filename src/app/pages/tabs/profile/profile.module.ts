@@ -14,10 +14,7 @@ import { ProfileEditPage } from './edit/profile-edit.page';
         IonicModule,
         CommonModule,
         FormsModule,
-        RouterModule.forChild([
-            {path: '', component: ProfilePage},
-            {path: 'edit', component: ProfileEditPage},
-        ]),
+        RouterModule.forChild([{path: '', component: ProfilePage}]),
         ToolbarModule,
         TranslateModule,
         ReactiveFormsModule,

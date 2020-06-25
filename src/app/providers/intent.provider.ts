@@ -5,17 +5,17 @@ import { Injectable } from '@angular/core';
 })
 export class IntentProvider {
 
-    private _userParadaWaste: any;
+    private _updateDriver: boolean;
     private _chatReceiverUser: any;
     private _orderToView: any;
 
 
-    get userParadaWaste(): any {
-        return this._userParadaWaste;
+    get updateDriver(): boolean {
+        return this._updateDriver;
     }
 
-    set userParadaWaste(value: any) {
-        this._userParadaWaste = value;
+    set updateDriver(value: boolean) {
+        this._updateDriver = value;
     }
 
     get chatReceiverUser(): any {

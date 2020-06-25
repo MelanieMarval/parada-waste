@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { FirebaseChatService } from '../../../services/firebase-chat.service';
-import { IntentProvider } from '../../../providers/intentProvider';
+import { IntentProvider } from '../../../providers/intent.provider';
+import { StorageService } from '../../../services/storage.service';
 
 @Component({
     selector: 'app-create-chat',
@@ -19,11 +20,12 @@ export class CreateChatComponent implements OnInit {
     constructor(private modalController: ModalController,
                 private router: Router,
                 private chatService: FirebaseChatService,
+                private storage: StorageService,
                 private intentProvider: IntentProvider) {
     }
 
-    ngOnInit() {
-        this.user = this.intentProvider.userParadaWaste;
+    async ngOnInit() {
+        this.user = await this.storage.getDriver();
         this.getUsers();
     }
 

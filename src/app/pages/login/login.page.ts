@@ -3,7 +3,7 @@ import { AuthService } from '../../services/auth.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { StorageService } from '../../services/storage.service';
 import { Router } from '@angular/router';
-import { IntentProvider } from '../../providers/intentProvider';
+import { IntentProvider } from '../../providers/intent.provider';
 import { ToastController } from '@ionic/angular';
 
 @Component({
@@ -54,7 +54,6 @@ export class LoginPage implements OnInit {
                 console.log('-> res', res);
                 this.sending = false;
                 this.form.reset();
-                this.intentProvider.userParadaWaste = res;
                 await this.storage.setDriver(res);
                 await this.router.navigateByUrl('/tabs');
             }).catch(e => this.handleError(e));
@@ -67,7 +66,7 @@ export class LoginPage implements OnInit {
             message = 'Your email or password are incorrect. Verify!';
         }
         if (error.status === 0) {
-            console.log('Check your internet connection');
+            message = 'Check your internet connection';
         }
 
         const toast = await this.toastController.create({

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { OrderService } from '../../../services/order.service';
-import { IntentProvider } from '../../../providers/intentProvider';
+import { IntentProvider } from '../../../providers/intent.provider';
 
 @Component({
     selector: 'app-historic',
