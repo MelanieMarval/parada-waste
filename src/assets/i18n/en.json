@@ -67,7 +67,12 @@
     "chats": {
         "title": "Chats",
         "placeholder": "Enter your message",
-        "searchBar": "Search User"
+        "searchBar": "Search User",
+        "buttonCreate": "Create Group",
+        "type": {
+            "single": "Single",
+            "group": "Group"
+        }
     },
 
 

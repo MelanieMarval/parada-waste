@@ -21,8 +21,7 @@
                 </ion-item>
                 <small *ngIf="form.get('password').errors?.required && submitted" class="error-text">{{'form.required' | translate}}</small>
             </div>
-            <ion-button class="login-button" color="primary" type="submit"
-                        expand="block">
+            <ion-button class="login-button" color="primary" type="submit" expand="block">
                 <span *ngIf="!sending">{{'login.button' | translate}}</span>
                 <ion-spinner *ngIf="sending"></ion-spinner>
             </ion-button>

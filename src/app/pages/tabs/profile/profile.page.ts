@@ -26,7 +26,8 @@ export class ProfilePage implements OnInit, DoCheck {
 
     async ngOnInit(){
         this.lang = this.translate.getDefaultLang();
-        this.user = await this.storage.getDriver();
+        const user = await this.storage.getDriver();
+        this.user = user ? user : {};
         console.log('-> this.lang', this.lang);
     }
 

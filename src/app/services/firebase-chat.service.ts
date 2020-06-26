@@ -16,10 +16,6 @@ export class FirebaseChatService {
     constructor(private angularFirestore: AngularFirestore) {
     }
 
-    public create(data) {
-        return this.angularFirestore.collection(COLLECTION_USERS).add(data);
-    }
-
     public getAllUsers() {
         return this.angularFirestore.collection(COLLECTION_USERS).snapshotChanges();
     }

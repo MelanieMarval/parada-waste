@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<ion-header [translucent]="true" class="header-with-segment">
     <app-toolbar></app-toolbar>
     <ion-toolbar class="toolbar-segments" color="primary">
         <ion-segment mode="ios" (ionChange)="changeSegment($event)" [value]="segmentSelected">
@@ -36,6 +36,7 @@
                     </ion-card-content>
                 </div>
             </ion-card>
+            <app-background-empty *ngIf="orders.length === 0" [title]="'historic.tabs.assignedEmpty' | translate"></app-background-empty>
         </section>
         <section class="h-100" *ngSwitchCase="'assigned'">
             <ion-card button *ngFor="let order of filterOrders('ASSIGNED')" (click)="viewDetails(order)">

@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header class="header-with-segment">
     <ion-toolbar color="primary">
         <ion-searchbar mode="ios" class="searchbar-ios"
                        [placeholder]="'chats.searchBar' | translate" [(ngModel)]="searchUser"></ion-searchbar>
@@ -8,15 +8,25 @@
             </ion-button>
         </ion-buttons>
     </ion-toolbar>
+    <ion-toolbar class="toolbar-segments" color="primary">
+        <ion-segment mode="ios" (ionChange)="changeSegment($event)" [value]="typeChat">
+            <ion-segment-button value="single">
+                {{'chats.type.single' | translate}}
+            </ion-segment-button>
+            <ion-segment-button value="group">
+                {{'chats.type.group' |translate}}
+            </ion-segment-button>
+        </ion-segment>
+    </ion-toolbar>
 </ion-header>
 <div class="progress-bar-container">
     <ion-progress-bar type="indeterminate" color="primary" *ngIf="loading"></ion-progress-bar>
 </div>
 
 <ion-content>
-    <ion-list>
+    <ion-list *ngIf="typeChat === 'single'">
         <ion-item button class="chat"
-                  *ngFor="let user of users | filterByName: searchUser" (click)="openChat(user)">
+                  *ngFor="let user of users | filterByName: searchUser" (click)="createChat(user)">
             <ion-avatar slot="start" class="chat--avatar">
                 <img src="assets/img/avatar/avatar.png" alt="Img User">
             </ion-avatar>
@@ -25,4 +35,23 @@
             </ion-label>
         </ion-item>
     </ion-list>
+
+    <ion-list *ngIf="typeChat === 'group'">
+        <ion-item class="chat" *ngFor="let user of users | filterByName: searchUser">
+            <ion-avatar slot="start" class="chat--avatar">
+                <img src="assets/img/avatar/avatar.png" alt="Img User">
+            </ion-avatar>
+            <ion-label class="chat--label">
+                {{user.name}}
+            </ion-label>
+            <ion-checkbox slot="end" [(ngModel)]="user.group"></ion-checkbox>
+        </ion-item>
+    </ion-list>
+
+    <ion-footer class="footer-button" *ngIf="typeChat === 'group'">
+        <ion-button color="primary" type="submit" expand="block" [disabled]="loading" (click)="validateGroup()">
+            <span *ngIf="!loading">{{'chats.buttonCreate' | translate}}</span>
+            <ion-spinner *ngIf="loading"></ion-spinner>
+        </ion-button>
+    </ion-footer>
 </ion-content>

@@ -20,7 +20,7 @@ export class ToolbarComponent implements OnInit {
 
     async ngOnInit() {
         const driver = await this.storage.getDriver();
-        this.username = driver.name;
+        this.username = driver ? driver.name : 'Not available';
     }
 
     openChats() {

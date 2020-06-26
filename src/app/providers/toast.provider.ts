@@ -9,11 +9,20 @@ export class ToastProvider {
     constructor(private toastController: ToastController) {
     }
 
-    async handleError(status) {
+    async handleError(status: number, info?: string) {
         console.log(status);
         let message = '';
-        if (status === 0) {
-            message = 'Check your internet connection';
+
+        switch (status) {
+            case -1:
+                message = info;
+                break;
+            case 0:
+                message = 'Check your internet connection';
+                break;
+            case 422:
+                message = 'We cannot process this request, please try restarting the app.';
+                break;
         }
 
         const toast = await this.toastController.create({
