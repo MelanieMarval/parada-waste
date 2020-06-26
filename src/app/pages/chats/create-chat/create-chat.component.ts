@@ -74,13 +74,16 @@ export class CreateChatComponent implements OnInit {
             this.toast.handleError(-1, 'You must select the users to create the group');
             return;
         }
-        const listMembers = usersGroup.map(user => {
-            return {id: user.id};
+        const listMembers: string[] = usersGroup.map(user => {
+            return user.id;
         });
-        this.createGroup(listMembers);
+        console.log('-> listMembers', listMembers);
+        listMembers.push(String(this.user.id));
+        this.addNameGroup(listMembers);
     }
 
-    async createGroup(listMembers) {
+    async addNameGroup(listMembers) {
+        console.log('-> listMembers', listMembers);
         const text = await this.translate.get('button').toPromise();
         const alert = await this.alertController.create({
             cssClass: 'prompt-primary',
@@ -105,12 +108,14 @@ export class CreateChatComponent implements OnInit {
                     handler: (alertData) => {
                         console.log(alertData);
                         if (alertData.name) {
-                            this.intentProvider.chatGroupUsers = {
+                            const group = {
                                 name: alertData.name,
-                                members: listMembers
+                                members: listMembers,
+                                createdAt: new Date(),
+                                createdBy: this.user.id,
+                                lastDate: new Date()
                             };
-                            this.router.navigate(['tabs/chats', this.user.id])
-                                .then(() => this.modalController.dismiss());
+                            this.createGroup(group);
                         }
                     },
                 },
@@ -121,6 +126,27 @@ export class CreateChatComponent implements OnInit {
             firstInput.focus();
             return;
         });
+    }
+
+    createGroup(group) {
+        this.chatService.createGroup(group)
+            .then(res => {
+                console.log('-> res', res.id);
+                this.getGroupCreated(res.id);
+            })
+            .catch(e => console.log(e));
+    }
+
+    getGroupCreated(groupId: string) {
+        this.chatService.getGroup(groupId)
+            .then(res => {
+                const group = res.data();
+                group.id = res.id;
+                this.intentProvider.chatGroupUsers = group;
+                console.log('-> res', group);
+                this.router.navigate(['tabs/chats', this.user.id])
+                    .then(() => this.modalController.dismiss());
+            });
     }
 
     changeSegment($event: CustomEvent) {

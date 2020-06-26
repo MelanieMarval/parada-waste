@@ -46,7 +46,7 @@ export class ChatComponent implements OnInit {
     getMessages() {
         this.loading = true;
         if (this.isSingle) {
-            this.chatService.getAllChatMessages(String(this.user.id), this.receiver.id)
+            this.chatService.getMessagesByChat(String(this.user.id), this.receiver.id)
                 .subscribe((res: any) => {
                     const newMessages = [];
                     res.forEach(x => {
@@ -72,24 +72,38 @@ export class ChatComponent implements OnInit {
     }
 
     sendMessage() {
-        if (this.message) {
-            this.sending = true;
-            const data: Message = {
-                message: this.message,
-                date: new Date(),
-                senderId: this.user.id,
-            };
-
-            this.chatService.sendMessage(this.user, this.receiver, data)
-                .then(() => {
-                    this.message = '';
-                    this.sending = false;
-                    // console.log('-> res', res.collection);
-                    // this.messages = newMessages;
-                }).catch((error) => {
-                this.sending = false;
-                console.log(error);
-            });
+        if (!this.message) {
+            return;
+        }
+        this.sending = true;
+        const data: Message = {
+            message: this.message,
+            date: new Date(),
+            senderId: this.user.id,
+        };
+        if (this.isSingle) {
+            this.sendMessageSingle(data);
+        } else {
+            this.sendMessageGroup(data);
         }
     }
+
+    sendMessageSingle(data: any) {
+        console.log('-> 0', typeof this.user.id, typeof this.receiver.id);
+        this.chatService.sendMessage(this.user, this.receiver, data)
+            .then(() => {
+                this.message = '';
+                this.sending = false;
+                // console.log('-> res', res.collection);
+                // this.messages = newMessages;
+            }).catch((error) => {
+            this.sending = false;
+            console.log(error);
+        });
+    }
+
+    sendMessageGroup(data: any) {
+        // this.chatService.sendMessageGroup()
+    }
+
 }

@@ -32,38 +32,61 @@ export class ChatsComponent implements OnInit {
         this.getChats();
     }
 
-    getChats() {
-        this.loading = true;
-        // try {
-            this.chatService.getAllMyChats(String(this.user.id))
-                .subscribe((res: any) => {
-                    const newChats = [];
-                    res.forEach(x => {
-                        const chat = x.payload.doc.data();
-                        chat.id = x.payload.doc.id;
-                        chat.lastDate = chat.lastDate ? chat.lastDate.toDate() : chat.lastDate;
-                        newChats.push(chat);
-                    });
-                    this.chats = newChats.sort((a, b) => b.lastDate - a.lastDate);
-                    this.loading = false;
-                    console.log('-> this.chats', this.chats);
-                });
-        // } catch (e) {
-        //     this.toast.handleError(-1, 'We cannot process this request, please try restarting the app');
-        //     this.loading = false;
-        // }
+    async getChats() {
+        await this.getMyChats();
+        await this.getMyGroups();
     }
 
-    openChat(receiver) {
+    getMyChats() {
+        this.loading = true;
+        this.chatService.getMyChats(String(this.user.id))
+            .subscribe((res: any) => {
+                const newChats = [];
+                res.forEach(x => {
+                    const chat = x.payload.doc.data();
+                    chat.id = x.payload.doc.id;
+                    chat.lastDate = chat.lastDate ? chat.lastDate.toDate() : chat.lastDate;
+                    newChats.push(chat);
+                });
+                this.chats = newChats;
+                this.loading = false;
+                console.log('-> this.chats', this.chats);
+            });
+    }
+
+    getMyGroups() {
+        this.loading = true;
+        this.chatService.getMyGroups(String(this.user.id))
+            .subscribe((res: any) => {
+                const addChats = [];
+                console.log('-> res', res);
+                res.forEach(x => {
+                    const chat = x.payload.doc.data();
+                    chat.id = x.payload.doc.id;
+                    chat.lastDate = chat.lastDate ? chat.lastDate.toDate() : chat.lastDate;
+                    addChats.push(chat);
+                });
+                console.log('-> addChats', addChats);
+                this.chats = this.chats.concat(addChats).sort((a, b) => b.lastDate - a.lastDate);
+                this.loading = false;
+                console.log('-> this.chats', this.chats);
+            });
+    }
+
+    openChat(isGroup: boolean, receiver: any) {
         console.log('-> receiver', receiver);
-        this.intentProvider.chatReceiverUser = {id: receiver.id, name: receiver.name};
+        if (isGroup) {
+            this.intentProvider.chatGroupUsers = receiver;
+        } else {
+            this.intentProvider.chatReceiverUser = {id: receiver.id, name: receiver.name};
+        }
         this.router.navigate(['tabs/chats', receiver.id]);
     }
 
     async newChat() {
         const modal = await this.modalController.create({
             component: CreateChatComponent,
-            cssClass: 'my-custom-class'
+            cssClass: 'my-custom-class',
         });
         return await modal.present();
     }

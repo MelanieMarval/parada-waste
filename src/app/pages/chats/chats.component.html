@@ -14,7 +14,7 @@
 
 <ion-content>
     <ion-list>
-        <ion-item button class="chat" *ngFor="let chat of chats" (click)="openChat(chat)"
+        <ion-item button class="chat" *ngFor="let chat of chats" (click)="chat.createdBy ? openChat(true, chat) : openChat(false, chat)"
                   [ngClass]="{'chat-unread': chat.unread}">
             <ion-avatar slot="start" class="chat--avatar">
                 <img src="assets/img/avatar/avatar.png">
