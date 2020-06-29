@@ -22,6 +22,8 @@ export class FirebaseChatService {
         return this.angularFirestore.collection(COLLECTION_USERS).get().toPromise();
     }
 
+    // CHATS PERSONAL
+
     public getMyChats(userId: string) {
         return this.angularFirestore.collection(COLLECTION_USERS).doc(userId)
             .collection(COLLECTION_CHATS).snapshotChanges();
@@ -53,6 +55,21 @@ export class FirebaseChatService {
         });
     }
 
+    public putChatRead(senderId: string, receiverId: string): Promise<any> {
+        return this.angularFirestore.collection(COLLECTION_USERS).doc(senderId)
+            .collection(COLLECTION_CHATS).doc(receiverId)
+            .update({unread: false});
+    }
+
+    public deleteChat(senderId: string, receiverId: string) {
+        return this.angularFirestore.collection(COLLECTION_USERS).doc(senderId)
+            .collection(COLLECTION_CHATS).doc(receiverId)
+            .delete();
+    }
+
+
+    // CHATS GROUP
+
     public createGroup(group: any) {
         return this.angularFirestore.collection(COLLECTION_GROUPS).add(group);
     }
@@ -81,29 +98,14 @@ export class FirebaseChatService {
         });
     }
 
-    public updateGroup(groupId: string, members) {
+    public updateGroup(groupId: string, members: string[]) {
         return this.angularFirestore.collection(COLLECTION_GROUPS).doc(groupId)
             .update({members});
     }
 
-    // public sendMessageGroup(sender: any, group: any, message: any) {
-    //     return new Promise(async resolve => {
-    //         await this.angularFirestore.collection(COLLECTION_GROUPS).doc(group.id ? group.id : undefined).set({
-    //             name: group.name,
-    //             members: group.members,
-    //             createdAt: group.createdAt,
-    //             createdBy: group.createdBy,
-    //             lastDate: message.date,
-    //             lastMessage: message.message
-    //         });
-    //         await this.angularFirestore.collection(COLLECTION_GROUPS).doc(group.id ? group.id : undefined)
-    //             .collection(COLLECTION_MESSAGES).doc().set(message);
-    //         resolve();
-    //     });
-    // }
-
     public async putChatReadGroup(groupId: string, userId: string) {
-        const group = await this.angularFirestore.collection(COLLECTION_GROUPS).doc(groupId).get().toPromise();
+        const group = await this.angularFirestore.collection(COLLECTION_GROUPS).doc(groupId)
+            .get().toPromise();
         const unread = group.data().unread;
         unread[userId] = false;
 
@@ -111,10 +113,9 @@ export class FirebaseChatService {
             .update({unread});
     }
 
-    public putChatRead(senderId: string, receiverId): Promise<any> {
-        return this.angularFirestore.collection(COLLECTION_USERS).doc(senderId)
-            .collection(COLLECTION_CHATS).doc(receiverId)
-            .update({unread: false});
+    public deleteGroup(groupId: string) {
+        return this.angularFirestore.collection(COLLECTION_GROUPS).doc(groupId)
+            .delete();
     }
 
 }

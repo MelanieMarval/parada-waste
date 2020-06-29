@@ -158,7 +158,10 @@ export class ChatComponent implements OnInit {
 
     private deleteChat() {
         if (this.isSingle) {
-
+            // this.chatService.deleteChat(String(this.user.id), this.receiver.id)
+            //     .then(res => {
+            //         console.log('-> res', res);
+            //     });
         } else {
 
         }
