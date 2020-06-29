@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { equals } from '@ngx-translate/core/lib/util';
 import { Message } from './interfaces/message';
 import { firestore } from 'firebase';
+import { last } from 'rxjs/operators';
 
 const COLLECTION_USERS = 'users';
 const COLLECTION_CHATS = 'chats';
@@ -32,7 +33,7 @@ export class FirebaseChatService {
             .collection(COLLECTION_MESSAGES).snapshotChanges();
     }
 
-    public sendMessage(sender: any, receiver: any, message: any) {
+    public sendMessage(sender: any, receiver: any, message: Message) {
         return new Promise(async resolve => {
             // create chat
             await this.angularFirestore.collection(COLLECTION_USERS).doc(receiver.id)
@@ -68,6 +69,16 @@ export class FirebaseChatService {
     public getMyGroups(userId: string) {
         return this.angularFirestore.collection(COLLECTION_GROUPS, ref => ref.where('members', 'array-contains', userId))
             .snapshotChanges();
+    }
+
+    public sendMessageGroup(groupId: string, message: Message) {
+        return new Promise(async resolve => {
+            await this.angularFirestore.collection(COLLECTION_GROUPS).doc(groupId)
+                .update({lastDate: message.date, lastMessage: message.message});
+            await this.angularFirestore.collection(COLLECTION_GROUPS).doc(groupId)
+                .collection(COLLECTION_MESSAGES).add(message);
+            resolve();
+        });
     }
 
     // public sendMessageGroup(sender: any, group: any, message: any) {

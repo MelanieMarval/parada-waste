@@ -13,7 +13,7 @@
 </div>
 
 <ion-content>
-    <ion-list>
+    <ion-list *ngIf="chats.length">
         <ion-item button class="chat" *ngFor="let chat of chats" (click)="chat.createdBy ? openChat(true, chat) : openChat(false, chat)"
                   [ngClass]="{'chat-unread': chat.unread}">
             <ion-avatar slot="start" class="chat--avatar">
@@ -27,6 +27,7 @@
             </ion-label>
         </ion-item>
     </ion-list>
+    <app-background-empty *ngIf="!chats.length && !loading" title="You don't have chats" text="Start one!" src="assets/img/no-chat.png"></app-background-empty>
     <ion-fab vertical="bottom" horizontal="end" slot="fixed">
         <ion-fab-button (click)="newChat()">
             <ion-icon name="add"></ion-icon>

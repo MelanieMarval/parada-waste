@@ -55,7 +55,6 @@ export class ChatComponent implements OnInit {
                         newMessages.push(sms);
                     });
                     this.messages = newMessages.sort((a, b) => a.date - b.date);
-                    console.log('-> this.messages', this.messages);
                     this.loading = false;
                     if (!this.init) {
                         if (this.messages.length) {
@@ -65,9 +64,18 @@ export class ChatComponent implements OnInit {
                     }
                 });
         } else {
-            console.log('-> this.receiver', this.receiver);
-            this.messages = [];
-            this.loading = false;
+            this.chatService.getMessagesByGroup(this.receiver.id)
+                .subscribe((res: any) => {
+                    const newMessages = [];
+                    res.forEach(x => {
+                        const sms = x.payload.doc.data();
+                        sms.date = sms.date.toDate();
+                        newMessages.push(sms);
+                    });
+                    this.messages = newMessages.sort((a, b) => a.date - b.date);
+                    console.log('-> this.messages', this.messages);
+                    this.loading = false;
+                });
         }
     }
 
@@ -97,13 +105,21 @@ export class ChatComponent implements OnInit {
                 // console.log('-> res', res.collection);
                 // this.messages = newMessages;
             }).catch((error) => {
-            this.sending = false;
-            console.log(error);
-        });
+                this.sending = false;
+                console.log(error);
+            });
     }
 
-    sendMessageGroup(data: any) {
-        // this.chatService.sendMessageGroup()
+    sendMessageGroup(data: Message) {
+        data.senderName = this.user.name;
+        this.chatService.sendMessageGroup(this.receiver.id, data)
+            .then(() => {
+                this.message = '';
+                this.sending = false;
+            }).catch((error) => {
+                this.sending = false;
+                console.log('-> error', error);
+            });
     }
 
 }

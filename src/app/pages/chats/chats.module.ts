@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { CreateChatComponent } from './create-chat/create-chat.component';
 import { PipesModule } from '../../pipes/pipes.module';
+import { BackgroundEmptyModule } from '../../shared/background-empty/background-empty.module';
 
 @NgModule({
     imports: [
@@ -17,7 +18,8 @@ import { PipesModule } from '../../pipes/pipes.module';
         ReactiveFormsModule,
         RouterModule.forChild([{path: '', component: ChatsComponent}, {path: ':id', component: ChatComponent}]),
         TranslateModule,
-        PipesModule
+        PipesModule,
+        BackgroundEmptyModule,
     ],
     declarations: [ChatComponent, ChatsComponent, CreateChatComponent],
     exports: [ChatComponent, ChatsComponent, CreateChatComponent]
