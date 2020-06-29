@@ -19,7 +19,7 @@ export class FirebaseChatService {
     }
 
     public getAllUsers() {
-        return this.angularFirestore.collection(COLLECTION_USERS).snapshotChanges();
+        return this.angularFirestore.collection(COLLECTION_USERS).get().toPromise();
     }
 
     public getMyChats(userId: string) {
@@ -71,14 +71,19 @@ export class FirebaseChatService {
             .snapshotChanges();
     }
 
-    public sendMessageGroup(groupId: string, message: Message) {
+    public sendMessageGroup(groupId: string, message: Message, unread) {
         return new Promise(async resolve => {
             await this.angularFirestore.collection(COLLECTION_GROUPS).doc(groupId)
-                .update({lastDate: message.date, lastMessage: message.message});
+                .update({lastDate: message.date, lastMessage: message.message, unread});
             await this.angularFirestore.collection(COLLECTION_GROUPS).doc(groupId)
                 .collection(COLLECTION_MESSAGES).add(message);
             resolve();
         });
+    }
+
+    public updateGroup(groupId: string, members) {
+        return this.angularFirestore.collection(COLLECTION_GROUPS).doc(groupId)
+            .update({members});
     }
 
     // public sendMessageGroup(sender: any, group: any, message: any) {
@@ -97,25 +102,16 @@ export class FirebaseChatService {
     //     });
     // }
 
+    public async putChatReadGroup(groupId: string, userId: string) {
+        const group = await this.angularFirestore.collection(COLLECTION_GROUPS).doc(groupId).get().toPromise();
+        const unread = group.data().unread;
+        unread[userId] = false;
+
+        return this.angularFirestore.collection(COLLECTION_GROUPS).doc(groupId)
+            .update({unread});
+    }
+
     public putChatRead(senderId: string, receiverId): Promise<any> {
-        // return new Promise((resolve, reject) => {
-        //      this.angularFirestore
-        //         .collection(COLLECTION_USERS).doc(senderId)
-        //         .collection(COLLECTION_CHATS).doc(receiverId)
-        //         .collection(COLLECTION_MESSAGES, ref => ref.where('unread', '==', true))
-        //         .get().toPromise()
-        //         .then(async (res: firestore.QuerySnapshot<firestore.DocumentData>) => {
-        //             const batch = this.angularFirestore.firestore.batch();
-        //             res.forEach(doc => {
-        //                 batch.update(doc.ref, { unread: false });
-        //             });
-        //             await batch.commit();
-        //             await this.angularFirestore
-        //                 .collection(COLLECTION_USERS).doc(senderId)
-        //                 .collection(COLLECTION_CHATS).doc(receiverId).set({ unread: false });
-        //             resolve();
-        //         }).catch(_ => reject());
-        // });
         return this.angularFirestore.collection(COLLECTION_USERS).doc(senderId)
             .collection(COLLECTION_CHATS).doc(receiverId)
             .update({unread: false});

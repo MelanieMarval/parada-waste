@@ -19,6 +19,7 @@ export class CreateChatComponent implements OnInit {
     loading = true;
     searchUser: string;
     typeChat = 'single';
+    group: any;
 
     constructor(private modalController: ModalController,
                 private router: Router,
@@ -39,18 +40,25 @@ export class CreateChatComponent implements OnInit {
     private getUsers() {
         this.loading = true;
         this.chatService.getAllUsers()
-            .subscribe((res: any) => {
+            .then((res: any) => {
                 const newUsers = [];
                 res.forEach(x => {
-                    const user = x.payload.doc.data();
-                    user.id = x.payload.doc.id;
-                    if (user.id !== this.user.id) {
+                    const user = x.data();
+                    user.id = x.id;
+                    if (user.id !== String(this.user.id)) {
                         newUsers.push(user);
                     }
                 });
                 this.users = newUsers;
+                console.log('-> this.group', this.group);
+                if (this.group) {
+                    this.typeChat = 'group';
+                    this.users.map(user => {
+                        user.group = !!this.group.members.filter(id => id === user.id).length;
+                    });
+                }
+                console.log('-> this.group', this.group);
                 this.loading = false;
-                console.log('-> this.users', this.users);
             });
     }
 
@@ -79,7 +87,11 @@ export class CreateChatComponent implements OnInit {
         });
         console.log('-> listMembers', listMembers);
         listMembers.push(String(this.user.id));
-        this.addNameGroup(listMembers);
+        if (this.group) {
+            this.updateGroup(listMembers);
+        } else {
+            this.addNameGroup(listMembers);
+        }
     }
 
     async addNameGroup(listMembers) {
@@ -128,7 +140,7 @@ export class CreateChatComponent implements OnInit {
         });
     }
 
-    createGroup(group) {
+    private createGroup(group) {
         this.chatService.createGroup(group)
             .then(res => {
                 console.log('-> res', res.id);
@@ -137,7 +149,7 @@ export class CreateChatComponent implements OnInit {
             .catch(e => console.log(e));
     }
 
-    getGroupCreated(groupId: string) {
+    private getGroupCreated(groupId: string) {
         this.chatService.getGroup(groupId)
             .then(res => {
                 const group = res.data();
@@ -153,4 +165,13 @@ export class CreateChatComponent implements OnInit {
         this.typeChat = $event.detail.value;
     }
 
+    private updateGroup(listMembers: string[]) {
+        this.group.members = listMembers;
+        this.chatService.updateGroup(this.group.id, listMembers)
+            .then(() => {
+                this.intentProvider.chatGroupUsers = this.group;
+                this.router.navigate(['tabs/chats', this.user.id])
+                    .then(() => this.modalController.dismiss());
+            });
+    }
 }

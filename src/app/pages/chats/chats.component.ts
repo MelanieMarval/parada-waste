@@ -5,7 +5,6 @@ import { CreateChatComponent } from './create-chat/create-chat.component';
 import { FirebaseChatService } from '../../services/firebase-chat.service';
 import { IntentProvider } from '../../providers/intent.provider';
 import { StorageService } from '../../services/storage.service';
-import { ToastProvider } from '../../providers/toast.provider';
 
 @Component({
     selector: 'app-chat',
@@ -16,15 +15,15 @@ export class ChatsComponent implements OnInit {
 
     user: any;
     loading = true;
+    chatsSingle: any[] = [];
+    chatsGroup: any[] = [];
     chats: any[] = [];
-    currentDate = new Date();
 
     constructor(private modalController: ModalController,
                 private router: Router,
                 private chatService: FirebaseChatService,
                 private intentProvider: IntentProvider,
-                private storage: StorageService,
-                private toast: ToastProvider) {
+                private storage: StorageService) {
     }
 
     async ngOnInit() {
@@ -41,16 +40,9 @@ export class ChatsComponent implements OnInit {
         this.loading = true;
         this.chatService.getMyChats(String(this.user.id))
             .subscribe((res: any) => {
-                const newChats = [];
-                res.forEach(x => {
-                    const chat = x.payload.doc.data();
-                    chat.id = x.payload.doc.id;
-                    chat.lastDate = chat.lastDate ? chat.lastDate.toDate() : chat.lastDate;
-                    newChats.push(chat);
-                });
-                this.chats = newChats;
+                this.chatsSingle = this.mapChats(res);
+                this.chats = this.chatsSingle.concat(this.chatsGroup).sort((a, b) => b.lastDate - a.lastDate);
                 this.loading = false;
-                console.log('-> this.chats', this.chats);
             });
     }
 
@@ -58,19 +50,21 @@ export class ChatsComponent implements OnInit {
         this.loading = true;
         this.chatService.getMyGroups(String(this.user.id))
             .subscribe((res: any) => {
-                const addChats = [];
-                console.log('-> res', res);
-                res.forEach(x => {
-                    const chat = x.payload.doc.data();
-                    chat.id = x.payload.doc.id;
-                    chat.lastDate = chat.lastDate ? chat.lastDate.toDate() : chat.lastDate;
-                    addChats.push(chat);
-                });
-                console.log('-> addChats', addChats);
-                this.chats = this.chats.concat(addChats).sort((a, b) => b.lastDate - a.lastDate);
+                this.chatsGroup = this.mapChats(res);
+                this.chats = this.chatsSingle.concat(this.chatsGroup).sort((a, b) => b.lastDate - a.lastDate);
                 this.loading = false;
-                console.log('-> this.chats', this.chats);
             });
+    }
+
+    mapChats(response) {
+        const newChats = [];
+        response.forEach(x => {
+            const chat = x.payload.doc.data();
+            chat.id = x.payload.doc.id;
+            chat.lastDate = chat.lastDate ? chat.lastDate.toDate() : chat.lastDate;
+            newChats.push(chat);
+        });
+        return newChats;
     }
 
     openChat(isGroup: boolean, receiver: any) {

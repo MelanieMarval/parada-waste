@@ -68,7 +68,7 @@
         "title": "Mensajes",
         "placeholder": "Ingrese su mensaje",
         "searchBar": "Buscar Usuario",
-        "buttonCreate": "Crear Grupo",
+        "buttonCreate": "Guardar Grupo",
         "type": {
             "single": "Individual",
             "group": "Grupal"

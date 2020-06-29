@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { IonContent, ModalController } from '@ionic/angular';
 import { FirebaseChatService } from '../../../services/firebase-chat.service';
 import { IntentProvider } from '../../../providers/intent.provider';
 import { Message } from '../../../services/interfaces/message';
 import { StorageService } from '../../../services/storage.service';
+import { ToastProvider } from '../../../providers/toast.provider';
+import { CreateChatComponent } from '../create-chat/create-chat.component';
 
 @Component({
     selector: 'app-chat',
@@ -13,19 +14,22 @@ import { StorageService } from '../../../services/storage.service';
 })
 export class ChatComponent implements OnInit {
 
+    @ViewChild('content') private content: IonContent;
     isSingle: boolean;
     init = false;
+    sending = false;
+    loading = true;
     user: any = {};
     receiver: any = {};
     messages: any[] = [];
     message = '';
-    sending = false;
-    loading = true;
+    action: number;
 
     constructor(private modalController: ModalController,
                 private intentProvider: IntentProvider,
                 private storage: StorageService,
-                private chatService: FirebaseChatService) {
+                private chatService: FirebaseChatService,
+                private toast: ToastProvider) {
     }
 
     async ngOnInit() {
@@ -48,13 +52,7 @@ export class ChatComponent implements OnInit {
         if (this.isSingle) {
             this.chatService.getMessagesByChat(String(this.user.id), this.receiver.id)
                 .subscribe((res: any) => {
-                    const newMessages = [];
-                    res.forEach(x => {
-                        const sms = x.payload.doc.data();
-                        sms.date = sms.date.toDate();
-                        newMessages.push(sms);
-                    });
-                    this.messages = newMessages.sort((a, b) => a.date - b.date);
+                    this.messages = this.mapMessages(res);
                     this.loading = false;
                     if (!this.init) {
                         if (this.messages.length) {
@@ -62,21 +60,43 @@ export class ChatComponent implements OnInit {
                         }
                         this.init = true;
                     }
+                    setTimeout(() => {
+                        this.content.scrollToBottom(300).then();
+                    }, 100);
+                }, error => {
+                    console.log('-> error', error);
+                    this.toast.handleError(0);
                 });
         } else {
+            console.log('-> this.receiver', this.receiver);
             this.chatService.getMessagesByGroup(this.receiver.id)
                 .subscribe((res: any) => {
-                    const newMessages = [];
-                    res.forEach(x => {
-                        const sms = x.payload.doc.data();
-                        sms.date = sms.date.toDate();
-                        newMessages.push(sms);
-                    });
-                    this.messages = newMessages.sort((a, b) => a.date - b.date);
-                    console.log('-> this.messages', this.messages);
+                    this.messages = this.mapMessages(res);
                     this.loading = false;
+                    if (!this.init) {
+                        if (this.messages.length) {
+                            this.chatService.putChatReadGroup(this.receiver.id, String(this.user.id)).then();
+                        }
+                        this.init = true;
+                    }
+                    setTimeout(() => {
+                        this.content.scrollToBottom(300).then();
+                    }, 100);
+                }, error => {
+                    console.log('-> error', error);
+                    this.toast.handleError(0);
                 });
         }
+    }
+
+    mapMessages(res) {
+        const newMessages = [];
+        res.forEach(x => {
+            const sms = x.payload.doc.data();
+            sms.date = sms.date.toDate();
+            newMessages.push(sms);
+        });
+        return newMessages.sort((a, b) => a.date - b.date);
     }
 
     sendMessage() {
@@ -105,21 +125,64 @@ export class ChatComponent implements OnInit {
                 // console.log('-> res', res.collection);
                 // this.messages = newMessages;
             }).catch((error) => {
-                this.sending = false;
-                console.log(error);
-            });
+            this.sending = false;
+            console.log(error);
+        });
     }
 
     sendMessageGroup(data: Message) {
         data.senderName = this.user.name;
-        this.chatService.sendMessageGroup(this.receiver.id, data)
+        const listUnread = {};
+        for (const membersKey of this.receiver.members) {
+            if (membersKey !== String(this.user.id)) {
+                listUnread[membersKey] = true;
+            }
+        }
+        this.chatService.sendMessageGroup(this.receiver.id, data, listUnread)
             .then(() => {
                 this.message = '';
                 this.sending = false;
             }).catch((error) => {
-                this.sending = false;
-                console.log('-> error', error);
-            });
+            this.sending = false;
+            console.log('-> error', error);
+        });
     }
 
+    isToday(fireDate) {
+        const date = new Date();
+        const lastDate = fireDate.getDay() + '-' + fireDate.getDate() + '-' + fireDate.getFullYear();
+        const currentDate = date.getDay() + '-' + date.getDate() + '-' + date.getFullYear();
+
+        return lastDate === currentDate;
+    }
+
+    private deleteChat() {
+        if (this.isSingle) {
+
+        } else {
+
+        }
+    }
+
+    private async editMembers() {
+        const modal = await this.modalController.create({
+            component: CreateChatComponent,
+            cssClass: 'my-custom-class',
+            componentProps: {group: this.receiver},
+        });
+        return await modal.present();
+    }
+
+    changeAction($event: any) {
+        console.log('-> $event', $event);
+        switch ($event.detail.value) {
+            case 0:
+                this.editMembers();
+                break;
+            case 1:
+                this.deleteChat();
+                break;
+        }
+        this.action = null;
+    }
 }

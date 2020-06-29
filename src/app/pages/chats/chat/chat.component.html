@@ -6,33 +6,43 @@
         <ion-title>
             {{receiver.name}}
         </ion-title>
+        <ion-buttons slot="end">
+            <ion-button>
+                <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+                <ion-select class="select-hidden" interface="popover" placeholder="Select One" mode="ios" [(ngModel)]="action" (ionChange)="changeAction($event)">
+                    <ion-select-option [value]="0" *ngIf="receiver.members">Edit members</ion-select-option>
+                    <ion-select-option [value]="1" >Delete</ion-select-option>
+                </ion-select>
+            </ion-button>
+        </ion-buttons>
     </ion-toolbar>
 </ion-header>
 <div class="progress-bar-container">
     <ion-progress-bar type="indeterminate" color="primary" *ngIf="loading || sending"></ion-progress-bar>
 </div>
 
-<ion-content>
-    <div class="ion-margin">
+<ion-content #content [fullscreen]="false">
+    <div class="ion-padding-horizontal ion-padding-top">
         <ion-list>
             <li *ngFor="let sms of messages" class="message" [ngClass]="sms.senderId === user.id ? 'message-right' : ' message-left'">
                 <div class="message-text">{{sms.message}}</div>
-                <span class="message-time">{{sms.date | date: 'shortTime'}}</span>
+                <span *ngIf="isToday(sms.date)" class="message-time">{{sms.date | date: 'shortTime'}}</span>
+                <span *ngIf="!isToday(sms.date)" class="message-time">{{sms.date | date: 'shortTime'}} - {{sms.date | date: 'shortDate'}}</span>
             </li>
         </ion-list>
     </div>
 
-    <ion-footer class="footer-input-message">
-        <ion-item>
-            <ion-textarea [placeholder]="'chats.placeholder' | translate" name="message" [(ngModel)]="message" type="text" maxlength="240"></ion-textarea>
-            <ion-buttons slot="end" class="ion-margin-start">
-                <ion-button class="ion-no-padding" (click)="sendMessage()" [disabled]="sending">
-                    <ion-icon slot="icon-only" name="document-attach" color="primary"></ion-icon>
-                </ion-button>
-                <ion-button class="ion-no-padding" (click)="sendMessage()" [disabled]="sending">
-                    <ion-icon slot="icon-only" name="send" color="primary"></ion-icon>
-                </ion-button>
-            </ion-buttons>
-        </ion-item>
-    </ion-footer>
 </ion-content>
+<ion-footer class="footer-input-message">
+    <ion-item>
+        <ion-textarea [placeholder]="'chats.placeholder' | translate" name="message" [(ngModel)]="message" type="text" maxlength="240"></ion-textarea>
+        <ion-buttons slot="end" class="ion-margin-start">
+            <ion-button class="ion-no-padding" (click)="sendMessage()" [disabled]="sending">
+                <ion-icon slot="icon-only" name="document-attach" color="primary"></ion-icon>
+            </ion-button>
+            <ion-button class="ion-no-padding" (click)="sendMessage()" [disabled]="sending">
+                <ion-icon slot="icon-only" name="send" color="primary"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-item>
+</ion-footer>

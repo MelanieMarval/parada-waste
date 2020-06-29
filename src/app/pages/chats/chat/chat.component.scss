@@ -38,12 +38,16 @@
 }
 
 .footer-input-message {
-    position: absolute;
-    bottom: 0;
+    //position: absolute;
+    //bottom: 0;
     ion-button {
         --background: transparent;
         --border-radius: 50%;
         --box-shadow: unset;
         height: 35px;
     }
+}
+.select-hidden {
+    opacity: 0;
+    position: absolute;
 }

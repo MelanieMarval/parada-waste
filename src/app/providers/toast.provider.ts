@@ -20,6 +20,9 @@ export class ToastProvider {
             case 0:
                 message = 'Check your internet connection';
                 break;
+            case 403:
+                message = 'Your user does not have the right permissions';
+                break;
             case 422:
                 message = 'We cannot process this request, please try restarting the app.';
                 break;
