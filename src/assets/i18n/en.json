@@ -58,6 +58,18 @@
     "journey": {
         "title": "Journey",
         "businessName": "Business Name",
+        "invoice": "Invoice",
+        "vehicle": {
+            "title": "Vehicle",
+            "model": "Brand and Model",
+            "serial": "Serial"
+        },
+        "container": {
+            "title": "Container",
+            "name": "Name",
+            "serial": "Serial",
+            "capacity": "Capacity"
+        },
         "prompt": {
             "title": "Enter mileage",
             "buttonCancel": "Cancel",

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
 import { ProfileEditPage } from './profile/edit/profile-edit.page';
+import { JourneyPage } from './historic/journey/journey.page';
 
 const routes: Routes = [
     {
@@ -33,8 +34,7 @@ const routes: Routes = [
         pathMatch: 'full'
     },
     {
-        path: 'historic/journey/:code',
-        loadChildren: () => import('./historic/journey/journey.module').then(m => m.JourneyModule)
+        path: 'historic/journey/:id', component: JourneyPage
     },
     {
         path: 'profile/edit', component: ProfileEditPage

@@ -6,6 +6,8 @@ import { Camera, CameraOptions } from '@ionic-native/Camera/ngx';
 import { HandleImageProvider } from '../../../../providers/handleImage.provider';
 import { File } from '@ionic-native/file/ngx';
 import { PlatformUtils } from '../../../../utils/platform.utils';
+import { OrderService } from '../../../../services/order.service';
+import { Order } from '../../../../services/interfaces/order';
 
 const win: any = window;
 
@@ -16,12 +18,11 @@ const win: any = window;
 })
 export class FinishRoutePage implements OnInit {
 
-    myParameter: boolean;
-    myOtherParameter: Date;
     private fileData: File | Blob;
     isTest = false;
     previewUrl: any;
-    journey: any = {};
+    endJourney: any = {};
+    journey: Order;
     slideOpts: { autoHeight: true, centeredSlides: true, loop: true };
 
     constructor(private modalController: ModalController,
@@ -30,21 +31,19 @@ export class FinishRoutePage implements OnInit {
                 private navParams: NavParams,
                 private platform: Platform,
                 private camera: Camera,
-                private file: File) {
+                private orderService: OrderService) {
     }
 
     async ngOnInit() {
         this.isTest = PlatformUtils.isTest();
-        console.log('-> platform', this.platform.platforms());
-        this.journey = {
+        this.endJourney = {
             receptor: '',
             files: []
         };
     }
 
     ionViewWillEnter() {
-        this.myParameter = this.navParams.get('aParameter');
-        this.myOtherParameter = this.navParams.get('otherParameter');
+        this.journey = this.navParams.get('journey');
     }
 
     async myDismiss() {
@@ -53,7 +52,7 @@ export class FinishRoutePage implements OnInit {
     }
 
     deleteImg(i: number) {
-        this.journey.files.splice(i, 1);
+        this.endJourney.files.splice(i, 1);
     }
 
     async takeImage() {
@@ -89,13 +88,6 @@ export class FinishRoutePage implements OnInit {
 
         const image = await this.camera.getPicture(options);
         const imgUrl = 'data:image/png;base64,' + image;
-        // const tempFilename = image.substr(image.lastIndexOf('/') + 1);
-        // const tempBaseFilesystemPath = image.substr(0, image.lastIndexOf('/') + 1);
-        // const newBaseFilesystemPath = this.file.dataDirectory;
-        //
-        // await this.file.copyFile(tempBaseFilesystemPath, tempFilename, newBaseFilesystemPath, tempFilename);
-        // const storedPhoto = newBaseFilesystemPath + tempFilename;
-        // const imgUrl = win.Ionic.WebView.convertFileSrc(storedPhoto);
 
         await this.chargeImage(imgUrl);
     }
@@ -107,11 +99,11 @@ export class FinishRoutePage implements OnInit {
         reader.onloadend = () => {
             this.fileData = imageBlob;
             this.previewUrl = reader.result;
-            this.journey.files.push(this.previewUrl);
+            this.endJourney.files.push(this.previewUrl);
         };
     }
 
-    endJourney() {
+    finishJourney() {
         this.router.navigateByUrl('/tabs/historic').then(() => this.modalController.dismiss(true));
     }
 }

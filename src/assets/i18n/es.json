@@ -58,6 +58,18 @@
     "journey": {
         "title": "Viaje",
         "businessName": "Nombre de la empresa",
+        "invoice": "Factura",
+        "vehicle": {
+            "title": "Vehículo",
+            "model": "Marca y Modelo",
+            "serial": "Serial"
+        },
+        "container": {
+            "title": "Contenedor",
+            "name": "Nombre",
+            "serial": "Serial",
+            "capacity": "Capacidad"
+        },
         "prompt": {
             "title": "Introduzca kilometraje",
             "buttonCancel": "Cancelar",

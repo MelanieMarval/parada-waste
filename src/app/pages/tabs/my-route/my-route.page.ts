@@ -12,6 +12,10 @@ import {
     MyLocation,
     ILatLng,
 } from '@ionic-native/google-maps';
+import { StorageService } from '../../../services/storage.service';
+import { OrderService } from '../../../services/order.service';
+import { ToastProvider } from '../../../providers/toast.provider';
+import { Order } from '../../../services/interfaces/order';
 
 const removeDefaultMarkers = [
     {
@@ -30,31 +34,40 @@ const removeDefaultMarkers = [
 })
 export class MyRoutePage implements OnInit, AfterViewInit {
 
-    hasTravel = true;
-    travel: any = {};
+    loading: boolean;
+    hasTravel = false;
+    travel: Order;
     isNear = true;
     map: GoogleMap;
-    address: string;
     collapse = true;
 
     constructor(private alertController: AlertController,
                 private platform: Platform,
-                private modalController: ModalController) {
+                private modalController: ModalController,
+                private toast: ToastProvider,
+                private orderService: OrderService) {
     }
 
-    ngOnInit(): void {
-        // get Travel by code and use interface with data
-        this.travel = {
-            id: 545454,
-            code: 8552,
-            positionBegin: 'SEDE Venezuela',
-            positionEnd: 'calle 156 c/c 189 Urb. Alianza, El Mirador, Bolivar',
-            status: 'PENDING', // PENDING, PROCESS, DONE, CANCEL
-            mileage: 15000,
-            processedAt: new Date(),
-            doneAt: null,
-            cancelAt: null,
-        };
+    async ngOnInit() {
+        this.getOrderOnRoute();
+    }
+
+    getOrderOnRoute() {
+        this.loading = true;
+        this.orderService.getOrderOnRoute()
+            .then((res: any) => {
+                if (res.status) {
+                    this.travel = res.order;
+                    this.hasTravel = true;
+                } else {
+                    this.hasTravel = false;
+                }
+                this.loading = false;
+                console.log('-> res', res);
+            }).catch(error => {
+                this.loading = false;
+                this.toast.handleError(error.status);
+            });
     }
 
     ngAfterViewInit() {
@@ -64,7 +77,6 @@ export class MyRoutePage implements OnInit, AfterViewInit {
     }
 
     loadMap() {
-
         Environment.setEnv({
             // api key for server
             API_KEY_FOR_BROWSER_RELEASE: 'AIzaSyD3t5VAdEBMdICcY9FyVcgBHlkeu72OI4s',
@@ -149,8 +161,8 @@ export class MyRoutePage implements OnInit, AfterViewInit {
         $event.stopPropagation();
         const alert = await this.alertController.create({
             cssClass: 'my-custom-class',
-            header: 'Alerta!',
-            message: 'Esta seguro de que desea cancelar este viaje?',
+            header: 'Alert!',
+            message: 'Are you sure you want to cancel this trip?',
             buttons: [
                 {
                     text: 'No',
@@ -160,9 +172,8 @@ export class MyRoutePage implements OnInit, AfterViewInit {
                         console.log('Confirm Cancel: blah');
                     },
                 }, {
-                    text: 'Si, cancelar',
+                    text: 'Yes, cancel',
                     handler: () => {
-                        this.travel.cancelAt = new Date();
                         this.travel.status = 'CANCEL';
                         this.hasTravel = false;
                     },
@@ -182,8 +193,7 @@ export class MyRoutePage implements OnInit, AfterViewInit {
             await this.modalController.create({
                 component: FinishRoutePage,
                 componentProps: {
-                    aParameter: true,
-                    otherParameter: new Date(),
+                    journey: this.travel,
                 },
             });
 

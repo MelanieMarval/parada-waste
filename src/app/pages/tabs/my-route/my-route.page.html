@@ -1,29 +1,32 @@
 <ion-header [translucent]="true">
     <app-toolbar></app-toolbar>
 </ion-header>
+<div class="progress-bar-container">
+    <ion-progress-bar type="indeterminate" color="primary" *ngIf="loading"></ion-progress-bar>
+</div>
 
 <ion-content [fullscreen]="true" [scrollY]="false">
 
-    <app-background-empty *ngIf="!hasTravel" [title]="'myRoute.ifEmpty.title' | translate" [text]="'myRoute.ifEmpty.text' | translate"></app-background-empty>
+    <app-background-empty *ngIf="!hasTravel && !loading" [title]="'myRoute.ifEmpty.title' | translate" [text]="'myRoute.ifEmpty.text' | translate"></app-background-empty>
 
-    <div *ngIf="hasTravel">
+    <div *ngIf="hasTravel" class="div-relative">
         <ion-card class="card-status" [ngClass]="{'card-hidden': collapse}" (click)="collapse = !collapse">
             <ion-card-header>
                 <div class="button-collapse">
                     <ion-icon class="icon-collapse" *ngIf="collapse" name="chevron-down-outline" size=""></ion-icon>
                     <ion-icon class="icon-collapse" *ngIf="!collapse" name="chevron-up-outline" size=""></ion-icon>
                 </div>
-                <ion-card-title>Journey #8840</ion-card-title>
-                <ion-card-subtitle><b>Receptor:</b> Julia Herrera</ion-card-subtitle>
+                <ion-card-title>{{'journey.invoice' | translate}} {{travel.invoice}}</ion-card-title>
+                <ion-card-subtitle><b>{{'journey.businessName' | translate}}:</b> {{travel.business_name}}</ion-card-subtitle>
             </ion-card-header>
             <ion-card-content>
                 <p class="detail-p">
                     <ion-text color="tertiary">{{'historic.card.beginIn' | translate}}:</ion-text>
-                    {{travel.positionBegin}}
+                    {{travel.location_begin?.address_text}}
                 </p>
                 <p class="detail-p">
                     <ion-text color="tertiary">{{'historic.card.endIn' | translate}}:</ion-text>
-                    {{travel.positionEnd}}
+                    {{travel.location_end?.address_text}}
                 </p>
                 <div class="button-cancel">
                     <ion-button size="small" color="danger" (click)="confirmCancel($event)">
@@ -35,6 +38,7 @@
     </div>
 
     <div #mapCanvas *ngIf="hasTravel" id="map_canvas"></div>
+    <ion-img class="map-example" src="assets/img/map-example.png"></ion-img>
 
 </ion-content>
 

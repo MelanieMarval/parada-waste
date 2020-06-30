@@ -109,6 +109,9 @@ a[rel='noopener'] div img, .gmnoprint {
 
 .md + .progress-bar-container {
   top: 56px;
+  &.--due-toolbar {
+    top: 98px
+  }
 }
 
 .ios + .progress-bar-container {

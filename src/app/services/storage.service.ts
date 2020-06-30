@@ -4,6 +4,7 @@ import { Storage } from '@ionic/storage';
 const DEVICE_TOKEN = 'device_token';
 const ACCESS_TOKEN = 'access_token';
 const DRIVER = 'driver';
+const ORDER_ON_ROUTE = 'order_on_route';
 const LOGGED = 'logged';
 
 @Injectable({
@@ -46,6 +47,14 @@ export class StorageService {
     async isLogged(): Promise<boolean> {
         const isLogged = await this.storage.get(LOGGED);
         return !!isLogged;
+    }
+
+    async setOrderOnRoute(order: any) {
+        await this.storage.set(ORDER_ON_ROUTE, order);
+    }
+
+    async getOrderOnRoute(): Promise<any> {
+        return await this.storage.get(ORDER_ON_ROUTE);
     }
 
 }

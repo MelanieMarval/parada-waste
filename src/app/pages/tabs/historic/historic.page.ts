@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { OrderService } from '../../../services/order.service';
 import { IntentProvider } from '../../../providers/intent.provider';
 import { ToastProvider } from '../../../providers/toast.provider';
+import { OrderStatusEnum } from '../../../domain/order-status.enum';
+import { Order } from '../../../services/interfaces/order';
 
 @Component({
     selector: 'app-historic',
@@ -12,7 +14,9 @@ import { ToastProvider } from '../../../providers/toast.provider';
 export class HistoricPage implements OnInit {
 
     segmentSelected = 'all';
-    orders: any[] = [];
+    orders: Order[] = [];
+    loading: boolean;
+    STATUS = OrderStatusEnum;
 
     constructor(private orderService: OrderService,
                 private router: Router,
@@ -25,12 +29,17 @@ export class HistoricPage implements OnInit {
     }
 
     getOrders() {
+        this.loading = true;
         this.orderService.getOrders()
             .then((res: any) => {
                 console.log('-> res', res);
                 this.orders = res;
+                this.loading = false;
             })
-            .catch(e => this.toast.handleError(e.status));
+            .catch(e => {
+                this.loading = false;
+                this.toast.handleError(e.status);
+            });
     }
 
     changeSegment($event: any) {
@@ -44,11 +53,24 @@ export class HistoricPage implements OnInit {
     }
 
 
-    filterOrders(status: string) {
+    filterOrdersByStatus(status: string) {
         return this.orders.filter(order => {
             if (order.status === status) {
                 return order;
             }
         });
+    }
+
+    filterOrdersOnRouteTop() {
+        const orderOnRoute = [];
+        const ordersList = [];
+        this.orders.filter(order => {
+            if (order.status === this.STATUS.ON_ROUTE) {
+                orderOnRoute.push(order);
+            } else {
+                ordersList.push(order);
+            }
+        });
+        return orderOnRoute.concat(ordersList);
     }
 }

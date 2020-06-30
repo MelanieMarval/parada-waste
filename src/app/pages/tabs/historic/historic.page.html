@@ -14,19 +14,23 @@
         </ion-segment>
     </ion-toolbar>
 </ion-header>
+<div class="progress-bar-container --due-toolbar">
+    <ion-progress-bar type="indeterminate" color="primary" *ngIf="loading"></ion-progress-bar>
+</div>
 
 <ion-content>
 
     <div [ngSwitch]="segmentSelected" class="h-100">
+
         <section class="h-100" *ngSwitchCase="'all'">
-            <ion-card button *ngFor="let order of orders" (click)="viewDetails(order)">
+            <ion-card button *ngFor="let order of filterOrdersOnRouteTop()" (click)="viewDetails(order)">
                 <div class="d-flex">
                     <ion-card-header class="card-header">
                         <ion-icon name="file-tray" color="tertiary" class="card-icon-left"></ion-icon>
                         <ion-text color="tertiary">{{order.container?.code}}</ion-text>
                     </ion-card-header>
                     <ion-card-content class="ion-no-padding ion-margin w-100">
-                        <ion-card-subtitle class="ion-text-right" [color]="order.status === 'DELIVERY' ? 'danger' : 'tertiary'">
+                        <ion-card-subtitle class="ion-text-right" [color]="order.status === STATUS.ON_ROUTE ? 'success' : order.status === STATUS.DELIVERED ? 'danger' : 'tertiary'">
                             {{order.status}}
                         </ion-card-subtitle>
                         <ion-text class="card-route-title" color="tertiary"><ion-icon name="location"></ion-icon> {{'historic.card.beginIn' | translate}}</ion-text>
@@ -36,10 +40,11 @@
                     </ion-card-content>
                 </div>
             </ion-card>
-            <app-background-empty *ngIf="orders.length === 0" [title]="'historic.tabs.assignedEmpty' | translate"></app-background-empty>
+            <app-background-empty *ngIf="!orders.length && !loading" [title]="'historic.tabs.assignedEmpty' | translate"></app-background-empty>
         </section>
+
         <section class="h-100" *ngSwitchCase="'assigned'">
-            <ion-card button *ngFor="let order of filterOrders('ASSIGNED')" (click)="viewDetails(order)">
+            <ion-card button *ngFor="let order of filterOrdersByStatus(STATUS.ASSIGNED)" (click)="viewDetails(order)">
                 <div class="d-flex">
                     <ion-card-header class="card-header">
                         <ion-icon name="file-tray" color="tertiary" class="card-icon-left"></ion-icon>
@@ -53,10 +58,11 @@
                     </ion-card-content>
                 </div>
             </ion-card>
-            <app-background-empty *ngIf="filterOrders('ASSIGNED').length === 0" [title]="'historic.tabs.assignedEmpty' | translate"></app-background-empty>
+            <app-background-empty *ngIf="!filterOrdersByStatus(STATUS.ASSIGNED).length && !loading" [title]="'historic.tabs.assignedEmpty' | translate"></app-background-empty>
         </section>
+
         <section class="h-100" *ngSwitchCase="'finished'">
-            <ion-card *ngFor="let order of filterOrders('DELIVERY')">
+            <ion-card *ngFor="let order of filterOrdersByStatus(STATUS.DELIVERED)">
                 <div class="d-flex">
                     <ion-card-header class="card-header">
                         <ion-icon name="file-tray" color="tertiary" class="card-icon-left"></ion-icon>
@@ -66,14 +72,13 @@
                         <ion-text class="card-route-title" color="tertiary"><ion-icon name="location"></ion-icon> {{'historic.card.beginIn' | translate}}</ion-text>
                         <p class="card-route">{{order.location_begin?.address_text}}</p>
                         <ion-text class="card-route-title" color="tertiary"><ion-icon name="navigate"></ion-icon> {{'historic.card.endIn' | translate}}</ion-text>
-                        <p class="card-route">{{order?.location_end ? order.location_end?.address_text : 'No hay destino aun'}}</p>
+                        <p class="card-route">{{order.location_end ? order.location_end?.address_text : 'No hay destino aun'}}</p>
                     </ion-card-content>
                 </div>
             </ion-card>
-            <app-background-empty *ngIf="filterOrders('DELIVERY').length === 0" [title]="'historic.tabs.finishedEmpty' | translate"></app-background-empty>
+            <app-background-empty *ngIf="!filterOrdersByStatus(STATUS.DELIVERED).length&& !loading" [title]="'historic.tabs.finishedEmpty' | translate"></app-background-empty>
         </section>
+
     </div>
-
-
 
 </ion-content>

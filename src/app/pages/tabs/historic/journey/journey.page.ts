@@ -9,9 +9,16 @@ import {
     Marker,
     GoogleMapsAnimation,
     MyLocation,
-    GoogleMapOptions, Environment,
+    GoogleMapOptions,
+    Environment,
 } from '@ionic-native/google-maps';
 import { IntentProvider } from '../../../../providers/intent.provider';
+import { PlatformUtils } from '../../../../utils/platform.utils';
+import { OrderService } from '../../../../services/order.service';
+import { ToastProvider } from '../../../../providers/toast.provider';
+import { OrderStatusEnum } from '../../../../domain/order-status.enum';
+import { StorageService } from '../../../../services/storage.service';
+import { Order } from '../../../../services/interfaces/order';
 
 const removeDefaultMarkers = [
     {
@@ -30,8 +37,9 @@ const removeDefaultMarkers = [
 })
 export class JourneyPage implements OnInit {
 
+    STATUS = OrderStatusEnum;
     travelCode: string;
-    travel: any = {};
+    travel: Order;
     map: GoogleMap;
     address: string;
 
@@ -40,38 +48,52 @@ export class JourneyPage implements OnInit {
                 private platform: Platform,
                 private alertController: AlertController,
                 private intentProvider: IntentProvider,
-                private translate: TranslateService) {
+                private translate: TranslateService,
+                private orderService: OrderService,
+                private toast: ToastProvider,
+                private storage: StorageService) {
         this.travelCode = route.snapshot.params.code;
     }
 
     ngOnInit(): void {
-        this.platform.ready();
+        this.getJourneyDetails(this.route.snapshot.params.id);
         this.loadMap();
         // get Travel by code and use interface with data
         this.travel = this.intentProvider.orderToView;
+        console.log('-> this.travel', this.travel);
+    }
+
+
+    private getJourneyDetails(id: number) {
+        this.orderService.getOrderById(id)
+            .then(res => {
+                console.log('-> res', res);
+            }).catch(error => this.toast.handleError(error.status));
     }
 
     loadMap() {
-        Environment.setEnv({
-            // api key for server
-            API_KEY_FOR_BROWSER_RELEASE: 'AIzaSyD3t5VAdEBMdICcY9FyVcgBHlkeu72OI4s',
-            // api key for local development
-            API_KEY_FOR_BROWSER_DEBUG: 'AIzaSyD3t5VAdEBMdICcY9FyVcgBHlkeu72OI4s',
-        });
+        if (!PlatformUtils.isTest()) {
+            Environment.setEnv({
+                // api key for server
+                API_KEY_FOR_BROWSER_RELEASE: 'AIzaSyD3t5VAdEBMdICcY9FyVcgBHlkeu72OI4s',
+                // api key for local development
+                API_KEY_FOR_BROWSER_DEBUG: 'AIzaSyD3t5VAdEBMdICcY9FyVcgBHlkeu72OI4s',
+            });
 
-        const options: GoogleMapOptions = {
-            camera: {
-                target: {
-                    lat: 43.0741704,
-                    lng: -89.3809802,
+            const options: GoogleMapOptions = {
+                camera: {
+                    target: {
+                        lat: 43.0741704,
+                        lng: -89.3809802,
+                    },
+                    zoom: 18,
+                    tilt: 1, // 30
                 },
-                zoom: 18,
-                tilt: 1, // 30
-            },
-            // styles: removeDefaultMarkers
-        };
-        this.map = GoogleMaps.create('map_canvas_journey', options);
-        this.goToMyLocation();
+                // styles: removeDefaultMarkers
+            };
+            this.map = GoogleMaps.create('map_canvas_journey', options);
+            this.goToMyLocation();
+        }
     }
 
     goToMyLocation() {
@@ -140,7 +162,7 @@ export class JourneyPage implements OnInit {
                     handler: (alertData) => {
                         console.log(alertData);
                         if (alertData.mileage > 0) {
-                            this.router.navigateByUrl('/tabs/my-route');
+                            this.startJourney(alertData.mileage);
                         }
                     },
                 },
@@ -149,5 +171,15 @@ export class JourneyPage implements OnInit {
         await alert.present();
     }
 
-
+    private startJourney(mileage) {
+        const params = {milleage_begin: mileage};
+        this.orderService.startTrip(this.travel.id, params)
+            .then(async res => {
+                const order = JSON.stringify(res);
+                await this.storage.setOrderOnRoute(order);
+                this.router.navigateByUrl('/tabs/my-route');
+            }).catch(error => {
+                this.toast.handleError(error.status);
+            });
+    }
 }

@@ -4,7 +4,7 @@
             <ion-back-button defaultHref="/tabs/historic"></ion-back-button>
         </ion-buttons>
         <ion-title>
-            {{'journey.title' | translate}} {{travel.type}}
+            {{'journey.title' | translate}} {{travel.order}}
         </ion-title>
     </ion-toolbar>
 </ion-header>
@@ -13,26 +13,13 @@
 
     <ion-card>
         <ion-card-header>
-            <p class="detail-p">
+            <p class="detail-p detail-location">
                 <ion-text color="tertiary">{{'journey.businessName' | translate}}:</ion-text>
                 {{travel.business_name}}
             </p>
-            <p class="detail-p detail-location">
-                <ion-text color="tertiary">{{'historic.card.beginIn' | translate}}:</ion-text>
-                {{travel.location_begin?.address_text}}
-            </p>
-            <p class="detail-p detail-location">
-                <ion-text color="tertiary">{{'historic.card.endIn' | translate}}:</ion-text>
-                {{travel.location_end ? travel.location_end?.address_text : 'Aun no hay destino'}}
-            </p>
-        </ion-card-header>
-        <ion-item-divider class="with-line">
-            <ion-label color="tertiary">{{'profile.options.title' | translate}}</ion-label>
-        </ion-item-divider>
-        <ion-card-header>
             <p class="detail-p">
-                <ion-text color="tertiary">{{'journey.businessName' | translate}}:</ion-text>
-                {{travel.business_name}}
+                <ion-text color="tertiary">{{'journey.invoice' | translate}}:</ion-text>
+                {{travel.invoice}}
             </p>
             <p class="detail-p detail-location">
                 <ion-text color="tertiary">{{'historic.card.beginIn' | translate}}:</ion-text>
@@ -46,7 +33,41 @@
 
         <div id="map_canvas_journey"></div>
 
-        <ion-card-content>
+        <ion-img src="assets/img/map-test.png"></ion-img>
+
+        <ion-item-divider class="with-line">
+            <ion-label color="tertiary">{{'journey.vehicle.title' | translate}}</ion-label>
+        </ion-item-divider>
+        <ion-card-header class="ion-no-padding ion-padding-horizontal">
+            <p class="detail-p">
+                <ion-text color="tertiary">{{'journey.vehicle.model' | translate}}:</ion-text>
+                {{travel.vehicle?.brand}} {{travel.vehicle?.model}}
+            </p>
+            <p class="detail-p">
+                <ion-text color="tertiary">{{'journey.vehicle.serial' | translate}}:</ion-text>
+                {{travel.vehicle.serial}}
+            </p>
+        </ion-card-header>
+
+        <ion-item-divider class="with-line">
+            <ion-label color="tertiary">{{'journey.container.title' | translate}}</ion-label>
+        </ion-item-divider>
+        <ion-card-header class="ion-no-padding ion-padding-horizontal">
+            <p class="detail-p">
+                <ion-text color="tertiary">{{'journey.container.name' | translate}}:</ion-text>
+                {{travel.container?.name}}
+            </p>
+            <p class="detail-p">
+                <ion-text color="tertiary">{{'journey.container.serial' | translate}}:</ion-text>
+                {{travel.container?.serial}}
+            </p>
+            <p class="detail-p">
+                <ion-text color="tertiary">{{'journey.container.capacity' | translate}}:</ion-text>
+                {{travel.container?.capacity}}
+            </p>
+        </ion-card-header>
+
+        <ion-card-content *ngIf="travel.status === STATUS.ASSIGNED">
             <ion-button color="primary" expand="block" (click)="enterMileage()">Iniciar</ion-button>
         </ion-card-content>
     </ion-card>

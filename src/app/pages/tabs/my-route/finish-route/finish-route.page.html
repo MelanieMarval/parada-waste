@@ -6,7 +6,7 @@
             </ion-button>
         </ion-buttons>
         <ion-title>
-            Viaje #{{'54545'}}
+            {{'journey.title' | translate}} {{journey.invoice}}
         </ion-title>
     </ion-toolbar>
 </ion-header>
@@ -15,18 +15,18 @@
 
     <ion-card>
         <ion-card-header>
-            <ion-card-title>Formulario de entrega</ion-card-title>
+            <ion-card-title>Delivery form</ion-card-title>
         </ion-card-header>
         <ion-card-content>
             <ion-item>
-                <ion-label position="floating">Quien recibe</ion-label>
+                <ion-label position="floating">Who receives</ion-label>
                 <ion-input type="text"></ion-input>
             </ion-item>
             <div class="input-file ion-margin-top">
-                <ion-label>Firma del cliente</ion-label>
+                <ion-label>Client's signature</ion-label>
                 <div class="img-container">
                     <ion-slides pager="true" [options]="slideOpts">
-                        <ion-slide *ngFor="let img of journey.files">
+                        <ion-slide *ngFor="let img of endJourney.files">
                             <div>
                                 <ion-img [src]="img"></ion-img>
                             </div>
@@ -34,18 +34,18 @@
                     </ion-slides>
                 </div>
                 <div class="gallery-scroll">
-                    <div class="gallery-scroll--contain" *ngFor="let img of journey.files; let i = index">
+                    <div class="gallery-scroll--contain" *ngFor="let img of endJourney.files; let i = index">
                         <ion-img class="gallery-scroll--img" [src]="img"></ion-img>
                         <ion-button class="gallery-scroll--button ion-no-padding" size="small" (click)="deleteImg(i)" color="danger">
                             <ion-icon name="close" slot="icon-only"></ion-icon>
                         </ion-button>
                     </div>
                 </div>
-                <ion-button (click)="takeImage()" color="tertiary" size="small">Anexar foto</ion-button>
+                <ion-button (click)="takeImage()" color="tertiary" size="small">Add photo</ion-button>
                 <ion-input *ngIf="isTest" accept="image/*" type="file" (change)="chargeImage($event)"></ion-input>
             </div>
 
-            <ion-button expand="block" class="ion-margin-top" (click)="endJourney()">Finalizar</ion-button>
+            <ion-button expand="block" class="ion-margin-top" (click)="finishJourney()">Finish</ion-button>
         </ion-card-content>
     </ion-card>
 
