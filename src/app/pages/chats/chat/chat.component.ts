@@ -6,6 +6,7 @@ import { Message } from '../../../services/interfaces/message';
 import { StorageService } from '../../../services/storage.service';
 import { ToastProvider } from '../../../providers/toast.provider';
 import { CreateChatComponent } from '../create-chat/create-chat.component';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-chat',
@@ -21,7 +22,7 @@ export class ChatComponent implements OnInit {
     loading = true;
     user: any = {};
     receiver: any = {};
-    messages: any[] = [];
+    messages: Message[] = [];
     message = '';
     action: number;
 
@@ -29,11 +30,13 @@ export class ChatComponent implements OnInit {
                 private intentProvider: IntentProvider,
                 private storage: StorageService,
                 private chatService: FirebaseChatService,
-                private toast: ToastProvider) {
+                private toast: ToastProvider,
+                private router: Router) {
     }
 
     async ngOnInit() {
         this.user = await this.storage.getDriver();
+        this.user.id = String(this.user.id);
         if (this.intentProvider.chatReceiverUser) {
             this.receiver = this.intentProvider.chatReceiverUser;
             this.intentProvider.chatReceiverUser = undefined;
@@ -50,13 +53,13 @@ export class ChatComponent implements OnInit {
     getMessages() {
         this.loading = true;
         if (this.isSingle) {
-            this.chatService.getMessagesByChat(String(this.user.id), this.receiver.id)
+            this.chatService.getMessagesByChat(this.user.id, this.receiver.id)
                 .subscribe((res: any) => {
                     this.messages = this.mapMessages(res);
                     this.loading = false;
                     if (!this.init) {
                         if (this.messages.length) {
-                            this.chatService.putChatRead(String(this.user.id), this.receiver.id).then();
+                            this.chatService.putChatRead(this.user.id, this.receiver.id).then();
                         }
                         this.init = true;
                     }
@@ -75,7 +78,7 @@ export class ChatComponent implements OnInit {
                     this.loading = false;
                     if (!this.init) {
                         if (this.messages.length) {
-                            this.chatService.putChatReadGroup(this.receiver.id, String(this.user.id)).then();
+                            this.chatService.putChatReadGroup(this.receiver.id, this.user.id).then();
                         }
                         this.init = true;
                     }
@@ -122,8 +125,6 @@ export class ChatComponent implements OnInit {
             .then(() => {
                 this.message = '';
                 this.sending = false;
-                // console.log('-> res', res.collection);
-                // this.messages = newMessages;
             }).catch((error) => {
             this.sending = false;
             console.log(error);
@@ -134,7 +135,7 @@ export class ChatComponent implements OnInit {
         data.senderName = this.user.name;
         const listUnread = {};
         for (const membersKey of this.receiver.members) {
-            if (membersKey !== String(this.user.id)) {
+            if (membersKey !== this.user.id) {
                 listUnread[membersKey] = true;
             }
         }
@@ -158,12 +159,15 @@ export class ChatComponent implements OnInit {
 
     private deleteChat() {
         if (this.isSingle) {
-            // this.chatService.deleteChat(String(this.user.id), this.receiver.id)
-            //     .then(res => {
-            //         console.log('-> res', res);
-            //     });
+            this.chatService.deleteChat(this.user.id, this.receiver.id)
+                .then(() => {
+                    this.router.navigateByUrl('tabs/chats');
+                }).catch(() => this.toast.handleError(0));
         } else {
-
+            this.chatService.deleteGroup(this.receiver.id)
+                .then(() => {
+                    this.router.navigateByUrl('tabs/chats');
+                }).catch(() => this.toast.handleError(0));
         }
     }
 

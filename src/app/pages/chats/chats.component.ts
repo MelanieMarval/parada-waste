@@ -5,6 +5,8 @@ import { CreateChatComponent } from './create-chat/create-chat.component';
 import { FirebaseChatService } from '../../services/firebase-chat.service';
 import { IntentProvider } from '../../providers/intent.provider';
 import { StorageService } from '../../services/storage.service';
+import { ToastProvider } from '../../providers/toast.provider';
+import { Chat } from '../../services/interfaces/chat';
 
 @Component({
     selector: 'app-chat',
@@ -15,19 +17,21 @@ export class ChatsComponent implements OnInit {
 
     user: any;
     loading = true;
-    chatsSingle: any[] = [];
-    chatsGroup: any[] = [];
-    chats: any[] = [];
+    chatsSingle: Chat[] = [];
+    chatsGroup: Chat[] = [];
+    chats: Chat[] = [];
 
     constructor(private modalController: ModalController,
                 private router: Router,
                 private chatService: FirebaseChatService,
                 private intentProvider: IntentProvider,
-                private storage: StorageService) {
+                private storage: StorageService,
+                private toast: ToastProvider) {
     }
 
     async ngOnInit() {
         this.user = await this.storage.getDriver();
+        this.user.id = String(this.user.id);
         this.getChats();
     }
 
@@ -38,22 +42,24 @@ export class ChatsComponent implements OnInit {
 
     getMyChats() {
         this.loading = true;
-        this.chatService.getMyChats(String(this.user.id))
+        this.chatService.getMyChats(this.user.id)
             .subscribe((res: any) => {
                 this.chatsSingle = this.mapChats(res);
                 this.chats = this.chatsSingle.concat(this.chatsGroup).sort((a, b) => b.lastDate - a.lastDate);
+                console.log('-> this.chats', this.chats);
                 this.loading = false;
-            });
+            }, error => this.toast.handleError(0));
     }
 
     getMyGroups() {
         this.loading = true;
-        this.chatService.getMyGroups(String(this.user.id))
+        this.chatService.getMyGroups(this.user.id)
             .subscribe((res: any) => {
                 this.chatsGroup = this.mapChats(res);
                 this.chats = this.chatsSingle.concat(this.chatsGroup).sort((a, b) => b.lastDate - a.lastDate);
+                console.log('-> this.chats', this.chats);
                 this.loading = false;
-            });
+            }, error => this.toast.handleError(0));
     }
 
     mapChats(response) {
@@ -92,4 +98,5 @@ export class ChatsComponent implements OnInit {
 
         return lastDate === currentDate;
     }
+
 }

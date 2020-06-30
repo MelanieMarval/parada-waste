@@ -50,14 +50,12 @@ export class CreateChatComponent implements OnInit {
                     }
                 });
                 this.users = newUsers;
-                console.log('-> this.group', this.group);
                 if (this.group) {
                     this.typeChat = 'group';
                     this.users.map(user => {
                         user.group = !!this.group.members.filter(id => id === user.id).length;
                     });
                 }
-                console.log('-> this.group', this.group);
                 this.loading = false;
             });
     }
@@ -85,7 +83,6 @@ export class CreateChatComponent implements OnInit {
         const listMembers: string[] = usersGroup.map(user => {
             return user.id;
         });
-        console.log('-> listMembers', listMembers);
         listMembers.push(String(this.user.id));
         if (this.group) {
             this.updateGroup(listMembers);
@@ -143,7 +140,6 @@ export class CreateChatComponent implements OnInit {
     private createGroup(group) {
         this.chatService.createGroup(group)
             .then(res => {
-                console.log('-> res', res.id);
                 this.getGroupCreated(res.id);
             })
             .catch(e => console.log(e));
@@ -155,7 +151,6 @@ export class CreateChatComponent implements OnInit {
                 const group = res.data();
                 group.id = res.id;
                 this.intentProvider.chatGroupUsers = group;
-                console.log('-> res', group);
                 this.router.navigate(['tabs/chats', this.user.id])
                     .then(() => this.modalController.dismiss());
             });
