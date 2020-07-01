@@ -6,10 +6,7 @@ import {
     GoogleMap,
     GoogleMapOptions,
     GoogleMaps,
-    GoogleMapsAnimation,
-    GoogleMapsEvent,
     Marker,
-    MyLocation,
     ILatLng,
 } from '@ionic-native/google-maps';
 import { StorageService } from '../../../services/storage.service';
@@ -34,7 +31,7 @@ const removeDefaultMarkers = [
     templateUrl: 'my-route.page.html',
     styleUrls: ['my-route.page.scss'],
 })
-export class MyRoutePage implements OnInit, AfterViewInit, DoCheck {
+export class MyRoutePage implements OnInit, DoCheck {
 
     loading: boolean;
     hasTravel = false;
@@ -49,82 +46,75 @@ export class MyRoutePage implements OnInit, AfterViewInit, DoCheck {
                 private toast: ToastProvider,
                 private orderService: OrderService,
                 private router: Router,
-                private intentProvider: IntentProvider) {
+                private intentProvider: IntentProvider,
+                private storage: StorageService) {
     }
 
-    async ngOnInit() {
-        this.getOrderOnRoute();
+    ngOnInit() {
+        this.getOrderByStorage();
     }
 
     ngDoCheck(): void {
         if (this.intentProvider.updateRoute) {
             this.intentProvider.updateRoute = false;
-            this.getOrderOnRoute();
+            this.getOrderByStorage();
         }
     }
 
-    getOrderOnRoute() {
+    async getOrderByStorage() {
         this.loading = true;
-        this.orderService.getOrderOnRoute()
-            .then((res: any) => {
-                if (res.status) {
-                    this.trip = res.order;
-                    this.isNear = !this.trip.notify;
-                    this.hasTravel = true;
-                } else {
-                    this.hasTravel = false;
-                }
-                this.loading = false;
-                console.log('-> res', res);
-            }).catch(error => {
-            this.loading = false;
-            this.toast.handleError(error.status);
-        });
-    }
-
-
-    ngAfterViewInit() {
-        if (this.platform.is('cordova')) {
-            this.loadMap();
+        const order = await this.storage.getOrderOnRoute();
+        console.log('-> order', order);
+        if (order) {
+            this.trip = order;
+            this.isNear = !this.trip.notify;
+            this.hasTravel = true;
+            if (this.platform.is('cordova')) {
+                this.loadMap();
+            }
+        } else {
+            this.hasTravel = false;
         }
+        this.loading = false;
     }
 
     loadMap() {
         Environment.setEnv({
-            // api key for server
             API_KEY_FOR_BROWSER_RELEASE: 'AIzaSyD3t5VAdEBMdICcY9FyVcgBHlkeu72OI4s',
-            // api key for local development
             API_KEY_FOR_BROWSER_DEBUG: 'AIzaSyD3t5VAdEBMdICcY9FyVcgBHlkeu72OI4s',
         });
 
-        const bounds: ILatLng[] = [
-            {lat: 40.712216, lng: -74.22655},
-            {lat: 40.773941, lng: -74.12544},
-        ];
+        const locBegin: ILatLng = {lat: this.trip.location_begin.lat, lng: this.trip.location_begin.lon};
+        const locEnd: ILatLng = {lat: this.trip.location_end.lat, lng: this.trip.location_end.lon};
+        const bounds: ILatLng[] = [locBegin, locEnd];
 
         const options: GoogleMapOptions = {
-            camera: {
-                target: bounds,
-                zoom: 18,
-                tilt: 30,
-            },
+            camera: {target: bounds, tilt: 1},
             styles: removeDefaultMarkers,
         };
         this.map = GoogleMaps.create('map_canvas', options);
+        setTimeout(() => {
+            const currentZoom: number = this.map.getCameraZoom();
+            this.map.setCameraZoom(currentZoom - 1);
+            console.log('-> hacer zoom');
+        }, 1000);
 
-        const marker: Marker = this.map.addMarkerSync({
-            title: 'Ionic',
+        const markerInit: Marker = this.map.addMarkerSync({
+            title: 'Starting point of the route',
             icon: 'red',
             animation: 'DROP',
-            position: {
-                lat: 43.0741904,
-                lng: -89.3809802,
-            },
+            position: locBegin,
+        });
+        const markerEnd: Marker = this.map.addMarkerSync({
+            title: 'Finishing point of the route',
+            icon: 'gray',
+            animation: 'DROP',
+            position: locEnd,
         });
 
-        marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
-            alert('clicked');
-        });
+        // marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
+        //     alert('clicked');
+        // });
         // this.goToMyLocation();
     }
 
@@ -200,10 +190,11 @@ export class MyRoutePage implements OnInit, AfterViewInit, DoCheck {
     async pushNotification(value: string) {
         this.loading = true;
         await this.orderService.setOrderOnRouteNotify(this.trip.id, value)
-            .then((res: any) => {
+            .then(async (res: any) => {
                 this.trip = res;
                 this.isNear = false;
                 this.loading = false;
+                await this.storage.setOrderOnRoute(res);
             })
             .catch(error => {
                 this.toast.handleError(error.status);

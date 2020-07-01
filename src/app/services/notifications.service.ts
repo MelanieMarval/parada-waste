@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
+import { StorageService } from './storage.service';
 
 @Injectable({
     providedIn: 'root'
@@ -14,8 +15,8 @@ export class NotificationsService {
         }
     ];
 
-    constructor(private oneSignal: OneSignal) {
-
+    constructor(private oneSignal: OneSignal,
+                private storage: StorageService) {
     }
 
     initConfig() {
@@ -34,8 +35,9 @@ export class NotificationsService {
             console.log('-> notificacion abierta', push);
         });
 
-        this.oneSignal.getIds().then(data => {
+        this.oneSignal.getIds().then(async data => {
             console.log(data);
+            await this.storage.setDeviceToken(data.userId);
         });
         this.oneSignal.endInit();
     }

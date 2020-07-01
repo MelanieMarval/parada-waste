@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
+import { Order } from './interfaces/order';
 
 const DEVICE_TOKEN = 'device_token';
 const ACCESS_TOKEN = 'access_token';
@@ -8,9 +9,11 @@ const ORDER_ON_ROUTE = 'order_on_route';
 const LOGGED = 'logged';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class StorageService {
+
+    currentOrderEmitter = new EventEmitter<Order>();
 
     constructor(private storage: Storage) {
     }
@@ -50,11 +53,24 @@ export class StorageService {
     }
 
     async setOrderOnRoute(order: any) {
-        await this.storage.set(ORDER_ON_ROUTE, order);
+        let orderToSave;
+        if (order) {
+            orderToSave = JSON.stringify(order);
+        }
+        await this.storage.set(ORDER_ON_ROUTE, orderToSave);
     }
 
     async getOrderOnRoute(): Promise<any> {
-        return await this.storage.get(ORDER_ON_ROUTE);
+        let order;
+        try {
+            const orderString = await this.storage.get(ORDER_ON_ROUTE);
+            if (orderString) {
+                order = JSON.parse(orderString);
+            }
+        } catch (e) {
+            order = undefined;
+        }
+        return order;
     }
 
 }
