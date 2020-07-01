@@ -44,6 +44,7 @@ export class FinishRoutePage implements OnInit {
 
     ionViewWillEnter() {
         this.journey = this.navParams.get('journey');
+        console.log('-> this.journey', this.journey);
     }
 
     async myDismiss() {

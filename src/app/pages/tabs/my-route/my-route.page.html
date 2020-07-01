@@ -16,35 +16,35 @@
                     <ion-icon class="icon-collapse" *ngIf="collapse" name="chevron-down-outline" size=""></ion-icon>
                     <ion-icon class="icon-collapse" *ngIf="!collapse" name="chevron-up-outline" size=""></ion-icon>
                 </div>
-                <ion-card-title>{{'journey.invoice' | translate}} {{travel.invoice}}</ion-card-title>
-                <ion-card-subtitle><b>{{'journey.businessName' | translate}}:</b> {{travel.business_name}}</ion-card-subtitle>
+                <ion-card-title>{{'journey.invoice' | translate}} {{trip.invoice}}</ion-card-title>
+                <ion-card-subtitle><b>{{'journey.businessName' | translate}}:</b> {{trip.business_name}}</ion-card-subtitle>
             </ion-card-header>
             <ion-card-content>
                 <p class="detail-p">
                     <ion-text color="tertiary">{{'historic.card.beginIn' | translate}}:</ion-text>
-                    {{travel.location_begin?.address_text}}
+                    {{trip.location_begin?.address_text}}
                 </p>
                 <p class="detail-p">
                     <ion-text color="tertiary">{{'historic.card.endIn' | translate}}:</ion-text>
-                    {{travel.location_end?.address_text}}
+                    {{trip.location_end?.address_text}}
                 </p>
-                <div class="button-cancel">
-                    <ion-button size="small" color="danger" (click)="confirmCancel($event)">
-                        {{'button.cancel' | translate}}
-                    </ion-button>
-                </div>
+<!--                <div class="button-cancel">-->
+<!--                    <ion-button size="small" color="danger" (click)="confirmCancel($event)">-->
+<!--                        {{'button.cancel' | translate}}-->
+<!--                    </ion-button>-->
+<!--                </div>-->
             </ion-card-content>
         </ion-card>
     </div>
 
     <div #mapCanvas *ngIf="hasTravel" id="map_canvas"></div>
-    <ion-img class="map-example" src="assets/img/map-example.png"></ion-img>
+<!--    <ion-img class="map-example" src="assets/img/map-example.png"></ion-img>-->
 
 </ion-content>
 
 <ion-footer *ngIf="hasTravel">
     <ion-fab vertical="bottom" horizontal="start" class="button-bottom-left">
-        <ion-fab-button *ngIf="isNear" (click)="pushNotification()">
+        <ion-fab-button *ngIf="isNear" (click)="pushNotification('AROUND')">
             <span>Estoy cerca</span>
         </ion-fab-button>
         <ion-fab-button *ngIf="!isNear" (click)="doneJourney()">
@@ -52,7 +52,7 @@
         </ion-fab-button>
     </ion-fab>
     <ion-fab vertical="bottom" horizontal="end">
-        <ion-fab-button>
+        <ion-fab-button (click)="goToReceiverChat()">
             <ion-icon name="chatbubble"></ion-icon>
         </ion-fab-button>
     </ion-fab>

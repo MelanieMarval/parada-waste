@@ -17,6 +17,12 @@ export class OrderService {
         return this.http.get(url, options).toPromise();
     }
 
+    async setOrderOnRouteNotify(id: number, notify) {
+        const url = `${this.api.url}app/driver/order/${id}/addNotify`;
+        const options: any = await this.api.getHeaders();
+        return this.http.post(url, {notify}, options).toPromise();
+    }
+
     async getOrderOnRoute() {
         const url = `${this.api.url}app/driver/current-order`;
         const options: any = await this.api.getHeaders();

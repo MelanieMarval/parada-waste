@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, DoCheck, OnInit } from '@angular/core';
 import { AlertController, ModalController, Platform } from '@ionic/angular';
 import { FinishRoutePage } from './finish-route/finish-route.page';
 import {
@@ -16,6 +16,8 @@ import { StorageService } from '../../../services/storage.service';
 import { OrderService } from '../../../services/order.service';
 import { ToastProvider } from '../../../providers/toast.provider';
 import { Order } from '../../../services/interfaces/order';
+import { Router } from '@angular/router';
+import { IntentProvider } from '../../../providers/intent.provider';
 
 const removeDefaultMarkers = [
     {
@@ -32,11 +34,11 @@ const removeDefaultMarkers = [
     templateUrl: 'my-route.page.html',
     styleUrls: ['my-route.page.scss'],
 })
-export class MyRoutePage implements OnInit, AfterViewInit {
+export class MyRoutePage implements OnInit, AfterViewInit, DoCheck {
 
     loading: boolean;
     hasTravel = false;
-    travel: Order;
+    trip: Order;
     isNear = true;
     map: GoogleMap;
     collapse = true;
@@ -45,11 +47,20 @@ export class MyRoutePage implements OnInit, AfterViewInit {
                 private platform: Platform,
                 private modalController: ModalController,
                 private toast: ToastProvider,
-                private orderService: OrderService) {
+                private orderService: OrderService,
+                private router: Router,
+                private intentProvider: IntentProvider) {
     }
 
     async ngOnInit() {
         this.getOrderOnRoute();
+    }
+
+    ngDoCheck(): void {
+        if (this.intentProvider.updateRoute) {
+            this.intentProvider.updateRoute = false;
+            this.getOrderOnRoute();
+        }
     }
 
     getOrderOnRoute() {
@@ -57,7 +68,8 @@ export class MyRoutePage implements OnInit, AfterViewInit {
         this.orderService.getOrderOnRoute()
             .then((res: any) => {
                 if (res.status) {
-                    this.travel = res.order;
+                    this.trip = res.order;
+                    this.isNear = !this.trip.notify;
                     this.hasTravel = true;
                 } else {
                     this.hasTravel = false;
@@ -65,10 +77,11 @@ export class MyRoutePage implements OnInit, AfterViewInit {
                 this.loading = false;
                 console.log('-> res', res);
             }).catch(error => {
-                this.loading = false;
-                this.toast.handleError(error.status);
-            });
+            this.loading = false;
+            this.toast.handleError(error.status);
+        });
     }
+
 
     ngAfterViewInit() {
         if (this.platform.is('cordova')) {
@@ -105,8 +118,8 @@ export class MyRoutePage implements OnInit, AfterViewInit {
             animation: 'DROP',
             position: {
                 lat: 43.0741904,
-                lng: -89.3809802
-            }
+                lng: -89.3809802,
+            },
         });
 
         marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
@@ -174,7 +187,7 @@ export class MyRoutePage implements OnInit, AfterViewInit {
                 }, {
                     text: 'Yes, cancel',
                     handler: () => {
-                        this.travel.status = 'CANCEL';
+                        this.trip.status = 'CANCEL';
                         this.hasTravel = false;
                     },
                 },
@@ -184,16 +197,29 @@ export class MyRoutePage implements OnInit, AfterViewInit {
         await alert.present();
     }
 
-    pushNotification() {
-        this.isNear = false;
+    async pushNotification(value: string) {
+        this.loading = true;
+        await this.orderService.setOrderOnRouteNotify(this.trip.id, value)
+            .then((res: any) => {
+                this.trip = res;
+                this.isNear = false;
+                this.loading = false;
+            })
+            .catch(error => {
+                this.toast.handleError(error.status);
+                this.loading = false;
+            });
     }
 
     async doneJourney() {
+        if (this.trip.notify !== 'REACHED') {
+            await this.pushNotification('REACHED');
+        }
         const modal: HTMLIonModalElement =
             await this.modalController.create({
                 component: FinishRoutePage,
                 componentProps: {
-                    journey: this.travel,
+                    journey: this.trip,
                 },
             });
 
@@ -205,5 +231,11 @@ export class MyRoutePage implements OnInit, AfterViewInit {
         });
 
         await modal.present();
+    }
+
+    goToReceiverChat() {
+        const id = String(this.trip.user_id);
+        this.router.navigate(['/tabs/chats', id]);
+        this.intentProvider.chatReceiverUser = {id, name: this.trip.business_name};
     }
 }

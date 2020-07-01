@@ -50,8 +50,7 @@ export class JourneyPage implements OnInit {
                 private intentProvider: IntentProvider,
                 private translate: TranslateService,
                 private orderService: OrderService,
-                private toast: ToastProvider,
-                private storage: StorageService) {
+                private toast: ToastProvider) {
         this.travelCode = route.snapshot.params.code;
     }
 
@@ -176,7 +175,7 @@ export class JourneyPage implements OnInit {
         this.orderService.startTrip(this.travel.id, params)
             .then(async res => {
                 const order = JSON.stringify(res);
-                await this.storage.setOrderOnRoute(order);
+                this.intentProvider.updateRoute = true;
                 this.router.navigateByUrl('/tabs/my-route');
             }).catch(error => {
                 this.toast.handleError(error.status);

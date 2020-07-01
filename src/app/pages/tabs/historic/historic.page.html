@@ -19,6 +19,9 @@
 </div>
 
 <ion-content>
+    <ion-refresher slot="fixed" (ionRefresh)="goRefresher($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
 
     <div [ngSwitch]="segmentSelected" class="h-100">
 
@@ -30,7 +33,7 @@
                         <ion-text color="tertiary">{{order.container?.code}}</ion-text>
                     </ion-card-header>
                     <ion-card-content class="ion-no-padding ion-margin w-100">
-                        <ion-card-subtitle class="ion-text-right" [color]="order.status === STATUS.ON_ROUTE ? 'success' : order.status === STATUS.DELIVERED ? 'danger' : 'tertiary'">
+                        <ion-card-subtitle class="ion-text-right" [color]="renderColorStatus(order.status)">
                             {{order.status}}
                         </ion-card-subtitle>
                         <ion-text class="card-route-title" color="tertiary"><ion-icon name="location"></ion-icon> {{'historic.card.beginIn' | translate}}</ion-text>

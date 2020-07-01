@@ -1,5 +1,6 @@
 export enum OrderStatusEnum {
     DELIVERED = 'DELIVERED',
     ASSIGNED = 'ASSIGNED',
-    ON_ROUTE = 'ON ROUTE'
+    ON_ROUTE = 'ON ROUTE',
+    CANCELLED = 'CANCELLED'
 }

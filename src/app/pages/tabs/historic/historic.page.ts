@@ -28,9 +28,9 @@ export class HistoricPage implements OnInit {
         this.getOrders();
     }
 
-    getOrders() {
+    async getOrders() {
         this.loading = true;
-        this.orderService.getOrders()
+        await this.orderService.getOrders()
             .then((res: any) => {
                 console.log('-> res', res);
                 this.orders = res;
@@ -53,7 +53,7 @@ export class HistoricPage implements OnInit {
     }
 
 
-    filterOrdersByStatus(status: string) {
+    filterOrdersByStatus(status: string): Order[] {
         return this.orders.filter(order => {
             if (order.status === status) {
                 return order;
@@ -61,7 +61,7 @@ export class HistoricPage implements OnInit {
         });
     }
 
-    filterOrdersOnRouteTop() {
+    filterOrdersOnRouteTop(): Order[] {
         const orderOnRoute = [];
         const ordersList = [];
         this.orders.filter(order => {
@@ -72,5 +72,25 @@ export class HistoricPage implements OnInit {
             }
         });
         return orderOnRoute.concat(ordersList);
+    }
+
+    goRefresher(event) {
+        console.log('Pull Event Triggered!');
+        this.getOrders().then(() => {
+            event.target.complete();
+        });
+    }
+
+    renderColorStatus(status: string): string {
+        switch (status) {
+            case this.STATUS.ON_ROUTE:
+                return 'success';
+            case this.STATUS.CANCELLED:
+                return 'medium';
+            case this.STATUS.ASSIGNED:
+                return 'tertiary';
+            case this.STATUS.DELIVERED:
+                return 'danger';
+        }
     }
 }

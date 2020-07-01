@@ -8,6 +8,7 @@ export class IntentProvider {
     private _chatReceiverUser: any;
     private _chatGroupUsers: any;
     private _updateDriver: boolean;
+    private _updateRoute: boolean;
     private _orderToView: any;
 
 
@@ -36,6 +37,14 @@ export class IntentProvider {
 
     set updateDriver(value: boolean) {
         this._updateDriver = value;
+    }
+
+    get updateRoute(): boolean {
+        return this._updateRoute;
+    }
+
+    set updateRoute(value: boolean) {
+        this._updateRoute = value;
     }
 
     get orderToView(): any {
