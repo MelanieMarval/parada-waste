@@ -1,8 +1,9 @@
 .button-bottom-left {
     bottom: 1rem;
+    padding: 2rem 2rem .4rem 0;
     ion-fab-button {
         --border-radius: 4px;
-        width: 7rem;
+        width: 8rem;
         height: 2rem;
     }
 }
@@ -46,4 +47,7 @@
 .div-relative {
     position: relative;
     z-index: 1;
+}
+.footer-md::before {
+    height: 0;
 }

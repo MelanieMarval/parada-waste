@@ -40,13 +40,13 @@
     <div #mapCanvas *ngIf="hasTravel" id="map_canvas"></div>
 <!--    <ion-img class="map-example" src="assets/img/map-example.png"></ion-img>-->
 
-    <ion-footer class="footer-button" *ngIf="hasTravel">
+    <ion-footer *ngIf="hasTravel" class="footer-button">
         <ion-fab vertical="bottom" horizontal="start" class="button-bottom-left">
-            <ion-fab-button *ngIf="isNear" (click)="pushNotification('AROUND')">
-                <span>Estoy cerca</span>
+            <ion-fab-button *ngIf="!trip.notify" (click)="pushNotification('AROUND')">
+                <span>I'm around</span>
             </ion-fab-button>
-            <ion-fab-button *ngIf="!isNear" (click)="doneJourney()">
-                <span>He llegado</span>
+            <ion-fab-button *ngIf="trip.notify" (click)="doneJourney()">
+                <span>I have arrived</span>
             </ion-fab-button>
         </ion-fab>
         <ion-fab vertical="bottom" horizontal="end">
@@ -55,5 +55,6 @@
             </ion-fab-button>
         </ion-fab>
     </ion-footer>
+
 </ion-content>
 

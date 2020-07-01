@@ -13,7 +13,7 @@ const LOGGED = 'logged';
 })
 export class StorageService {
 
-    currentOrderEmitter = new EventEmitter<Order>();
+    private currentOrderEmitter = new EventEmitter<Order>();
 
     constructor(private storage: Storage) {
     }
@@ -52,15 +52,16 @@ export class StorageService {
         return !!isLogged;
     }
 
-    async setOrderOnRoute(order: any) {
+    async setOrderOnRoute(order: any): Promise<any> {
         let orderToSave;
         if (order) {
             orderToSave = JSON.stringify(order);
         }
         await this.storage.set(ORDER_ON_ROUTE, orderToSave);
+        await this.emitterOnRoute();
     }
 
-    async getOrderOnRoute(): Promise<any> {
+    async getOrderOnRoute(): Promise<Order> {
         let order;
         try {
             const orderString = await this.storage.get(ORDER_ON_ROUTE);
@@ -71,6 +72,15 @@ export class StorageService {
             order = undefined;
         }
         return order;
+    }
+
+    getOrderOnRouteEmitter(): EventEmitter<Order> {
+        this.emitterOnRoute();
+        return this.currentOrderEmitter;
+    }
+
+    private async emitterOnRoute(): Promise<any> {
+        this.currentOrderEmitter.emit(await this.getOrderOnRoute());
     }
 
 }

@@ -23,7 +23,7 @@
                 <ion-item lines="none">
                     <ion-icon slot="start" name="person" color="medium"></ion-icon>
                     <ion-label position="floating">Name</ion-label>
-                    <ion-input required type="text" formControlName="name"></ion-input>
+                    <ion-input required type="text" [disabled]="saving" formControlName="name"></ion-input>
                 </ion-item>
                 <div class="error-text">
                     <small *ngIf="form.get('name').touched && form.get('name').errors?.required">{{'form.required' | translate}}</small>
@@ -31,7 +31,7 @@
                 <ion-item lines="none">
                     <ion-icon slot="start" name="call" color="medium"></ion-icon>
                     <ion-label position="floating">Phone</ion-label>
-                    <ion-input required type="tel" formControlName="phone"></ion-input>
+                    <ion-input required type="tel" [disabled]="saving" formControlName="phone"></ion-input>
                 </ion-item>
                 <div class="error-text">
                     <small *ngIf="form.get('phone').touched && form.get('phone').errors?.required">{{'form.required' | translate}}</small>
@@ -39,7 +39,7 @@
                 <ion-item lines="full">
                     <ion-icon slot="start" name="mail" color="medium"></ion-icon>
                     <ion-label position="floating">{{'profile.details.email' | translate}}</ion-label>
-                    <ion-input required type="email" formControlName="email"></ion-input>
+                    <ion-input required type="email" [disabled]="saving" formControlName="email"></ion-input>
                 </ion-item>
                 <div class="error-text">
                     <small *ngIf="form.get('email').touched && form.get('email').errors?.required">{{'form.required' | translate}}</small>

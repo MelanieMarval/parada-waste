@@ -43,7 +43,7 @@ export class FirebaseChatService {
                 .set({name: sender.name, lastDate: message.date, lastMessage: message.message, unread: true});
             await this.angularFirestore.collection(COLLECTION_USERS).doc(String(sender.id))
                 .collection(COLLECTION_CHATS).doc(receiver.id)
-                .set({name: receiver.name, lastDate: message.date, lastMessage: message.message});
+                .set({name: receiver.name, lastDate: message.date, lastMessage: message.message, unread: false});
             // add message
             await this.angularFirestore.collection(COLLECTION_USERS).doc(receiver.id)
                 .collection(COLLECTION_CHATS).doc(String(sender.id))

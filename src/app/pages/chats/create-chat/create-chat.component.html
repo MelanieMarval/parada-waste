@@ -49,7 +49,7 @@
     </ion-list>
 
     <ion-footer class="footer-button" *ngIf="typeChat === 'group'">
-        <ion-button color="primary" type="submit" expand="block" [disabled]="loading" (click)="validateGroup()">
+        <ion-button class="btn-large" color="primary" type="submit" expand="block" [disabled]="loading" (click)="validateGroup()">
             <span *ngIf="!loading">{{'chats.buttonCreate' | translate}}</span>
             <ion-spinner *ngIf="loading"></ion-spinner>
         </ion-button>

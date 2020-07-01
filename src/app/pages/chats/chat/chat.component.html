@@ -35,7 +35,7 @@
 </ion-content>
 <ion-footer class="footer-input-message">
     <ion-item>
-        <ion-textarea [placeholder]="'chats.placeholder' | translate" name="message" [(ngModel)]="message" type="text" maxlength="240"></ion-textarea>
+        <ion-textarea [placeholder]="'chats.placeholder' | translate" name="message" [disabled]="sending" [(ngModel)]="message" type="text" maxlength="240"></ion-textarea>
         <ion-buttons slot="end" class="ion-margin-start">
             <ion-button class="ion-no-padding" (click)="sendMessage()" [disabled]="sending">
                 <ion-icon slot="icon-only" name="document-attach" color="primary"></ion-icon>

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { StorageService } from '../../services/storage.service';
 import { OrderService } from '../../services/order.service';
+import { ToastProvider } from '../../providers/toast.provider';
+import { ToastController } from '@ionic/angular';
 
 @Component({
     selector: 'app-tabs',
@@ -12,7 +14,8 @@ export class TabsPage implements OnInit {
 
     constructor(private statusBar: StatusBar,
                 private storage: StorageService,
-                private orderService: OrderService) {
+                private orderService: OrderService,
+                private toastController: ToastController) {
     }
 
     ngOnInit() {
@@ -22,8 +25,8 @@ export class TabsPage implements OnInit {
     }
 
     async getOrderOnRoute() {
-        const orderOnRoute = await this.storage.getOrderOnRoute();
-        if (!orderOnRoute) {
+        // const orderOnRoute = await this.storage.getOrderOnRoute();
+        // if (!orderOnRoute) {
             this.orderService.getOrderOnRoute()
                 .then(async (res: any) => {
                     if (res.status) {
@@ -31,8 +34,22 @@ export class TabsPage implements OnInit {
                     } else {
                         await this.storage.setOrderOnRoute(undefined);
                     }
+                })
+                .catch(async error => {
+                    const toast = await this.toastController.create({
+                        header: 'Error!',
+                        message: 'You have no internet',
+                        position: 'bottom', color: 'dark', mode: 'ios',
+                        buttons: [{
+                            text: 'Try again', role: 'try',
+                            handler: () => {
+                                this.getOrderOnRoute();
+                            }
+                        }],
+                    });
+                    await toast.present();
                 });
-        }
+        // }
     }
 
 }

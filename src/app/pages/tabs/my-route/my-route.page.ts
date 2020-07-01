@@ -31,12 +31,11 @@ const removeDefaultMarkers = [
     templateUrl: 'my-route.page.html',
     styleUrls: ['my-route.page.scss'],
 })
-export class MyRoutePage implements OnInit, DoCheck {
+export class MyRoutePage implements OnInit {
 
     loading: boolean;
     hasTravel = false;
     trip: Order;
-    isNear = true;
     map: GoogleMap;
     collapse = true;
 
@@ -54,28 +53,22 @@ export class MyRoutePage implements OnInit, DoCheck {
         this.getOrderByStorage();
     }
 
-    ngDoCheck(): void {
-        if (this.intentProvider.updateRoute) {
-            this.intentProvider.updateRoute = false;
-            this.getOrderByStorage();
-        }
-    }
-
-    async getOrderByStorage() {
+    getOrderByStorage() {
         this.loading = true;
-        const order = await this.storage.getOrderOnRoute();
-        console.log('-> order', order);
-        if (order) {
-            this.trip = order;
-            this.isNear = !this.trip.notify;
-            this.hasTravel = true;
-            if (this.platform.is('cordova')) {
-                this.loadMap();
-            }
-        } else {
-            this.hasTravel = false;
-        }
-        this.loading = false;
+        this.storage.getOrderOnRouteEmitter()
+            .subscribe(order => {
+                console.log('-> order', order);
+                if (order) {
+                    this.trip = order;
+                    this.hasTravel = true;
+                    if (this.platform.is('cordova')) {
+                        this.loadMap();
+                    }
+                } else {
+                    this.hasTravel = false;
+                }
+                this.loading = false;
+            });
     }
 
     loadMap() {
@@ -96,7 +89,6 @@ export class MyRoutePage implements OnInit, DoCheck {
         setTimeout(() => {
             const currentZoom: number = this.map.getCameraZoom();
             this.map.setCameraZoom(currentZoom - 1);
-            console.log('-> hacer zoom');
         }, 1000);
 
         const markerInit: Marker = this.map.addMarkerSync({
@@ -192,7 +184,6 @@ export class MyRoutePage implements OnInit, DoCheck {
         await this.orderService.setOrderOnRouteNotify(this.trip.id, value)
             .then(async (res: any) => {
                 this.trip = res;
-                this.isNear = false;
                 this.loading = false;
                 await this.storage.setOrderOnRoute(res);
             })

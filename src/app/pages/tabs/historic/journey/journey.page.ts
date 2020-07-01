@@ -176,7 +176,6 @@ export class JourneyPage implements OnInit {
         this.orderService.startTrip(this.travel.id, params)
             .then(async res => {
                 await this.storage.setOrderOnRoute(res);
-                this.intentProvider.updateRoute = true;
                 this.router.navigateByUrl('/tabs/my-route');
             }).catch(error => {
                 this.toast.handleError(error.status);
