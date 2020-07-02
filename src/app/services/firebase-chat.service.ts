@@ -104,12 +104,16 @@ export class FirebaseChatService {
     }
 
     public sendMessageGroup(groupId: string, message: Message, unread) {
-        return new Promise(async resolve => {
-            await this.angularFirestore.collection(COLLECTION_GROUPS).doc(groupId)
-                .update({lastDate: message.date, lastMessage: message.message, unread});
-            await this.angularFirestore.collection(COLLECTION_GROUPS).doc(groupId)
-                .collection(COLLECTION_MESSAGES).add(message);
-            resolve();
+        return new Promise(async (resolve, reject) => {
+            try {
+                await this.angularFirestore.collection(COLLECTION_GROUPS).doc(groupId)
+                    .update({lastDate: message.date, lastMessage: message.message, unread});
+                await this.angularFirestore.collection(COLLECTION_GROUPS).doc(groupId)
+                    .collection(COLLECTION_MESSAGES).add(message);
+                resolve();
+            } catch (e) {
+                reject(e);
+            }
         });
     }
 

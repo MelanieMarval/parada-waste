@@ -6,12 +6,20 @@
         <ion-title>
             {{receiver.name}}
         </ion-title>
-        <ion-buttons slot="end">
+        <ion-buttons slot="end" *ngIf="receiver.createdBy && receiver.createdBy== this.user.id">
             <ion-button>
                 <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
                 <ion-select class="select-hidden" interface="popover" placeholder="Select One" mode="ios" [(ngModel)]="action" (ionChange)="changeAction($event)">
-                    <ion-select-option [value]="0" *ngIf="receiver.members"><ion-icon slot="start" name="create-outline"></ion-icon> Edit members</ion-select-option>
-                    <ion-select-option [value]="1" ><ion-icon slot="start" name="trash-outline"></ion-icon> Delete</ion-select-option>
+                    <ion-select-option [value]="0"><ion-icon slot="start" name="create-outline"></ion-icon> Edit members</ion-select-option>
+                    <ion-select-option [value]="1"><ion-icon slot="start" name="trash-outline"></ion-icon> Delete</ion-select-option>
+                </ion-select>
+            </ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end" *ngIf="!receiver.members">
+            <ion-button>
+                <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+                <ion-select class="select-hidden" interface="popover" placeholder="Select One" mode="ios" [(ngModel)]="action" (ionChange)="changeAction($event)">
+                    <ion-select-option [value]="1"><ion-icon slot="start" name="trash-outline"></ion-icon> Delete</ion-select-option>
                 </ion-select>
             </ion-button>
         </ion-buttons>

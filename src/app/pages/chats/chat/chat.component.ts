@@ -7,6 +7,7 @@ import { StorageService } from '../../../services/storage.service';
 import { ToastProvider } from '../../../providers/toast.provider';
 import { CreateChatComponent } from '../create-chat/create-chat.component';
 import { Router } from '@angular/router';
+import { Chat } from '../../../services/interfaces/chat';
 
 @Component({
     selector: 'app-chat',
@@ -21,7 +22,7 @@ export class ChatComponent implements OnInit {
     sending = false;
     loading = true;
     user: any = {};
-    receiver: any = {};
+    receiver: Chat = {};
     messages: Message[] = [];
     message = '';
     action: number;
@@ -144,9 +145,15 @@ export class ChatComponent implements OnInit {
                 this.message = '';
                 this.sending = false;
             }).catch((error) => {
-            this.sending = false;
-            console.log('-> error', error);
-        });
+                this.sending = false;
+                if (!this.messages.length) {
+                    this.router.navigateByUrl('/tabs/chats')
+                        .then(() => {
+                            this.toast.handleError(-1, 'This group was deleted by your administrator');
+                        });
+                }
+                console.log('-> error', error);
+            });
     }
 
     isToday(fireDate) {

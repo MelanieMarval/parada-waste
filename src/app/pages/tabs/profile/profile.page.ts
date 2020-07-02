@@ -71,7 +71,10 @@ export class ProfilePage implements OnInit, DoCheck {
         this.authService.logout()
             .then(async res => {
                 await this.storage.setLogged(false);
-                this.router.navigateByUrl('/login');
+                this.router.navigateByUrl('/login')
+                    .then(() => {
+                        window.location.reload();
+                    });
             }).catch(async e => {
                 console.log(e);
                 if (e.status === 401) {
@@ -80,4 +83,5 @@ export class ProfilePage implements OnInit, DoCheck {
                 }
             });
     }
+
 }
