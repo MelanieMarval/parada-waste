@@ -17,7 +17,7 @@
         <ion-item button class="chat" *ngFor="let chat of chats" (click)="chat.createdBy ? openChat(true, chat) : openChat(false, chat)"
                   [ngClass]="{'chat-unread': chat.unread === true || chat.unread[user.id]}">
             <ion-avatar slot="start" class="chat--avatar">
-                <img src="assets/img/avatar/avatar.png">
+                <ion-img src="assets/img/avatar/avatar.png"></ion-img>
             </ion-avatar>
             <ion-label class="chat--label">
                 <span *ngIf="isToday(chat.lastDate)" class="date">{{chat.lastDate | date: 'shortTime'}}</span>

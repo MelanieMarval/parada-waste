@@ -61,10 +61,25 @@ export class FirebaseChatService {
             .update({unread: false});
     }
 
-    public deleteChat(senderId: string, receiverId: string) {
-        return this.angularFirestore.collection(COLLECTION_USERS).doc(senderId)
-            .collection(COLLECTION_CHATS).doc(receiverId)
-            .delete();
+    deleteChatMessages(senderId: string, receiverId: string) {
+        return new Promise((resolve, reject) => {
+            this.angularFirestore
+                .collection(COLLECTION_USERS).doc(senderId)
+                .collection(COLLECTION_CHATS).doc(receiverId)
+                .collection(COLLECTION_MESSAGES)
+                .get().toPromise()
+                .then(async (res: firestore.QuerySnapshot<firestore.DocumentData>) => {
+                    const batch = this.angularFirestore.firestore.batch();
+                    res.forEach(doc => {
+                        batch.delete(doc.ref);
+                    });
+                    await batch.commit();
+                    await this.angularFirestore
+                        .collection(COLLECTION_USERS).doc(senderId)
+                        .collection(COLLECTION_CHATS).doc(receiverId).delete();
+                    resolve();
+                }).catch(_ => reject());
+        });
     }
 
 
@@ -113,9 +128,25 @@ export class FirebaseChatService {
             .update({unread});
     }
 
-    public deleteGroup(groupId: string) {
-        return this.angularFirestore.collection(COLLECTION_GROUPS).doc(groupId)
-            .delete();
+    deleteGroupMessages(groupId: string) {
+        return new Promise((resolve, reject) => {
+            this.angularFirestore
+                .collection(COLLECTION_GROUPS).doc(groupId)
+                .collection(COLLECTION_MESSAGES)
+                .get().toPromise()
+                .then(async (res: firestore.QuerySnapshot<firestore.DocumentData>) => {
+                    const batch = this.angularFirestore.firestore.batch();
+                    res.forEach(doc => {
+                        batch.delete(doc.ref);
+                    });
+                    await batch.commit();
+                    await this.angularFirestore
+                        .collection(COLLECTION_GROUPS).doc(groupId)
+                        .delete();
+                    resolve();
+                }).catch(_ => reject());
+        });
     }
+
 
 }

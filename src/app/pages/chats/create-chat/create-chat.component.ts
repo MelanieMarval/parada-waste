@@ -122,7 +122,8 @@ export class CreateChatComponent implements OnInit {
                                 members: listMembers,
                                 createdAt: new Date(),
                                 createdBy: this.user.id,
-                                lastDate: new Date()
+                                lastDate: new Date(),
+                                unread: {}
                             };
                             this.createGroup(group);
                         }

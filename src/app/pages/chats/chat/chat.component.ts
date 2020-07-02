@@ -159,12 +159,12 @@ export class ChatComponent implements OnInit {
 
     private deleteChat() {
         if (this.isSingle) {
-            this.chatService.deleteChat(this.user.id, this.receiver.id)
+            this.chatService.deleteChatMessages(this.user.id, this.receiver.id)
                 .then(() => {
                     this.router.navigateByUrl('tabs/chats');
                 }).catch(() => this.toast.handleError(0));
         } else {
-            this.chatService.deleteGroup(this.receiver.id)
+            this.chatService.deleteGroupMessages(this.receiver.id)
                 .then(() => {
                     this.router.navigateByUrl('tabs/chats');
                 }).catch(() => this.toast.handleError(0));
